@@ -1,0 +1,35 @@
+/* Style for the toolbar title */
+.app-title {
+    font-size: 1em;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  /* Spacer to push the nav buttons to the right */
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  /* Container for the toolbar content */
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Style for the navigation buttons */
+  .nav-buttons button {
+    margin: 0 10px;
+  }
+  
+  .mat-toolbar {
+    background-color: #1a7e1c; /* Primary color */
+    padding: 0 20px;
+  }
+  
+  /* Optional: Hover effect for buttons */
+  button.mat-button:hover,
+  button.mat-stroked-button:hover {
+    background-color: rgba(13, 72, 31, 0.1);
+  }
+  

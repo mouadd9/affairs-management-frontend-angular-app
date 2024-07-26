@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatToolbar, MatToolbarModule} from '@angular/material/toolbar'
+import {MatButton, MatButtonModule} from '@angular/material/button'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +17,9 @@ import { AdminTemplateComponent } from './admin-template/admin-template.componen
     BrowserModule,
     AppRoutingModule,
     MatToolbar,
-    MatToolbarModule
+    MatToolbarModule,
+    MatButton,
+    MatButtonModule
   ],
   providers: [
     provideAnimationsAsync()
