@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatToolbar, MatToolbarModule} from '@angular/material/toolbar'
 import {MatButton, MatButtonModule} from '@angular/material/button'
+import {MatMenuTrigger, MatMenuModule} from '@angular/material/menu'
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AdminTemplateComponent } from './admin-template/admin-template.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,13 @@ import { AdminTemplateComponent } from './admin-template/admin-template.componen
     MatToolbar,
     MatToolbarModule,
     MatButton,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuTrigger,
+    MatMenuModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule
+
   ],
   providers: [
     provideAnimationsAsync()
