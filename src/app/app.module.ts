@@ -15,6 +15,7 @@ import { ManageAgenciesComponent } from './manage-agencies/manage-agencies.compo
 import { ManageAffairsComponent } from './manage-affairs/manage-affairs.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatMenuModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
 
   ],
   providers: [

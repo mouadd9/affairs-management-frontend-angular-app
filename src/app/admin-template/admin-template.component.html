@@ -1,63 +1,63 @@
+<!-- Angular Material Toolbar -->
 <mat-toolbar color="primary" class="mat-elevation-z6">
-    <div class="toolbar-content">
-      
-      <button mat-button class="custom-icon-button" (click)="drawer.toggle()">
-        <mat-icon style="margin: 0px;">menu</mat-icon>
-         
+  <div class="toolbar-content">
+    <!-- Menu Button to toggle the drawer -->
+    <button mat-button class="custom-icon-button" (click)="drawer.toggle()">
+      <mat-icon style="margin: 0px;">menu</mat-icon>
+    </button>
+    <!-- Toolbar Title -->
+    <span style="color: #062c06; margin-left:6px; padding-top:0px; font-size:25px">Admin</span>
+
+    <!-- Spacer to push navigation buttons to the right -->
+    <span class="spacer"></span>
+    <nav class="nav-buttons">
+      <!-- Profile Button with dropdown menu -->
+      <button mat-button class="profile" [mat-menu-trigger-for]="usermenu">
+        <mat-icon style="margin: 0px; padding-right:20px;" iconPositionEnd>arrow_drop_down</mat-icon>
+        <mat-icon style="margin: 0px; padding-right:26px;" class="material-symbols-outlined">person</mat-icon>
       </button>
-      <span style="color: #d4ffd4e2; margin-left:11px; padding-top:5px; font-size:30px">Admin</span>
-      
-      <span class="spacer"></span>
-      <nav class="nav-buttons">
-       
-        <button mat-button class="profile" [mat-menu-trigger-for]="usermenu">
-          <mat-icon style="margin: 0px; padding-right:20px;" iconPositionEnd>arrow_drop_down</mat-icon>
-          <mat-icon style="margin-right: 0px; padding-right:30px;" class="material-symbols-outlined">person</mat-icon>
-        </button>
-        <mat-menu #usermenu="matMenu" class="custom-menu">
-          <button mat-menu-item>Profile</button>
-          <button mat-menu-item>Log out</button>
-        </mat-menu>
-      </nav>
-    </div>
+      <!-- User Menu -->
+      <mat-menu #usermenu="matMenu" class="custom-menu">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Log out</button>
+      </mat-menu>
+    </nav>
+  </div>
 </mat-toolbar>
-<mat-drawer-container class="drawer-container" >
+
+
+<!-- Drawer Container -->
+<mat-drawer-container class="drawer-container">
+  <!-- Side Drawer -->
   <mat-drawer class="drawer" #drawer mode="side" position="start" opened="true">
     <mat-nav-list>
       <mat-list-item>
-        <button mat-button routerLink="dashboard">
-        <mat-icon>dashboard</mat-icon> Dashboard
+        <button class="drawer_button" mat-button routerLink="dashboard">
+          <mat-icon>dashboard</mat-icon> Dashboard
         </button>
       </mat-list-item>
-      
       <mat-list-item>
-        <button mat-button routerLink="users">
-        <mat-icon>group</mat-icon> Manage Users
-      </button>
-    </mat-list-item>
-      
+        <button class="drawer_button" mat-button routerLink="users">
+          <mat-icon>group</mat-icon> Manage Users
+        </button>
+      </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="affairs">
-        <mat-icon>assignment</mat-icon> Manage Affairs
-      </button>
-    </mat-list-item>
-
-      
+        <button class="drawer_button" mat-button routerLink="affairs">
+          <mat-icon>assignment</mat-icon> Manage Affairs
+        </button>
+      </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="agencies">
-        <mat-icon>business</mat-icon> Manage Agencies
-      </button>
-    </mat-list-item>
-
-      
+        <button class="drawer_button" mat-button routerLink="agencies">
+          <mat-icon>business</mat-icon> Manage Agencies
+        </button>
+      </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
 
+  <!-- Main Content Area -->
   <mat-drawer-content>
     <div style="height: 90vh">
-    <router-outlet></router-outlet>
-  </div>
+      <router-outlet></router-outlet>
+    </div>
   </mat-drawer-content>
-
 </mat-drawer-container>
-  

@@ -1,0 +1,81 @@
+.dashboard-metrics{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    
+}
+.users-main-metric-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #131413a8;
+    padding: 20px;
+    border-radius: 10px;
+    height: 225px;
+    color: white;
+}
+
+.general-info {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    padding-bottom: 23px;
+    padding-top: 0px;
+    height: 30%;
+
+}
+
+.users-metric-cards {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    width: 100%;
+    height: 70%;
+    justify-content: space-between;
+}
+.card {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    gap: 23px;
+    border: solid 1px white;
+
+    background-color: #a0bba07e; /*background-color: #062c06c0;*/
+}
+.padding-bottom-10 {
+    padding-bottom: 10px;
+}
+
+.icon mat-icon {
+    font-size: 28px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    padding-bottom: 4px;
+    padding-right: 2px;
+}
+
+.icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: left; /* Align text to the left */
+    justify-content: flex-start; /* Align icons and text to the left */
+  }
+
+  .dash {    
+    border-bottom: solid  2.5px rgba(30, 71, 39, 0.854) ;
+  }
+
+  .container1 {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+
+  }
