@@ -21,12 +21,45 @@
   }
   
   .mat-toolbar {
-    background-color: #0f2c0f; /* Primary color */
+    background-color: #166c16; /* Primary color */
     padding: 0 20px;
+    height: 55px;
   }
   
   /* Optional: Hover effect for buttons */
-  button:hover{
+  .nav-buttons button:hover{
     background-color: rgba(196, 249, 173, 0.148);
   }
+  
+  .drawer-container{
+    background-color: #fff; 
+  
+  }
+
+  .drawer {
+   
+    background-color: #c8ffc8d9; /* Primary color */
+    box-shadow: 5px 0px 30px rgba(0, 0, 0, 0.422);   
+     border-radius: 0%;
+    width: 40vh;
+   
+   
+  }
+
+  .drawer button {
+    color: black;
+    border-radius: 0;
+    font-size: 1.05em;
+
+    
+  }
+  .drawer button:hover {
+    background-color: rgba(0, 0, 0, 0.13);
+  }
+
+  .toolbar-content .custom-icon-button {
+    color: #c8ffc8d9;
+    
+  }
+  
   
