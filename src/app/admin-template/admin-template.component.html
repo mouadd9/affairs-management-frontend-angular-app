@@ -1,23 +1,23 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
     <div class="toolbar-content">
       
-      <button mat-icon-button class="custom-icon-button" (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+      <button mat-button class="custom-icon-button" (click)="drawer.toggle()">
+        <mat-icon style="margin: 0px;">menu</mat-icon>
+         
       </button>
+      <span style="color: #d4ffd4e2; margin-left:11px; padding-top:5px; font-size:30px">Admin</span>
+      
       <span class="spacer"></span>
       <nav class="nav-buttons">
-        <button mat-button>Home</button>
-        <button mat-button>Profile</button>
-        <button mat-button [mat-menu-trigger-for]="usersmenu">
-          <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-          Users
+       
+        <button mat-button class="profile" [mat-menu-trigger-for]="usermenu">
+          <mat-icon style="margin: 0px; padding-right:20px;" iconPositionEnd>arrow_drop_down</mat-icon>
+          <mat-icon style="margin-right: 0px; padding-right:30px;" class="material-symbols-outlined">person</mat-icon>
         </button>
-        <mat-menu #usersmenu>
-          <button mat-menu-item>Load agency employees</button>
-          <button mat-menu-item>Load BA employees</button>
-          <button mat-menu-item>Load Admins</button>
+        <mat-menu #usermenu="matMenu" class="custom-menu">
+          <button mat-menu-item>Profile</button>
+          <button mat-menu-item>Log out</button>
         </mat-menu>
-        <button mat-stroked-button>Login</button>
       </nav>
     </div>
 </mat-toolbar>
@@ -25,26 +25,26 @@
   <mat-drawer class="drawer" #drawer mode="side" position="start" opened="true">
     <mat-nav-list>
       <mat-list-item>
-        <button mat-button>
+        <button mat-button routerLink="dashboard">
         <mat-icon>dashboard</mat-icon> Dashboard
         </button>
       </mat-list-item>
       
       <mat-list-item>
-        <button mat-button >
+        <button mat-button routerLink="users">
         <mat-icon>group</mat-icon> Manage Users
       </button>
     </mat-list-item>
       
       <mat-list-item>
-        <button mat-button>
+        <button mat-button routerLink="affairs">
         <mat-icon>assignment</mat-icon> Manage Affairs
       </button>
     </mat-list-item>
 
       
       <mat-list-item>
-        <button mat-button>
+        <button mat-button routerLink="agencies">
         <mat-icon>business</mat-icon> Manage Agencies
       </button>
     </mat-list-item>

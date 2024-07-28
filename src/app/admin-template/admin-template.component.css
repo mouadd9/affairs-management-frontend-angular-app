@@ -5,7 +5,14 @@
   .spacer {
     flex: 1 1 auto;
   }
-  
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0px;
+    margin-right: 0px;
+    width: auto;
+  }
   /* Container for the toolbar content */
   .toolbar-content {
     display: flex;
@@ -21,9 +28,10 @@
   }
   
   .mat-toolbar {
-    background-color: #166c16; /* Primary color */
-    padding: 0 20px;
-    height: 55px;
+    background-color: #123512; /* Primary color */
+    padding-left: 12px;
+    padding-right: 7px;
+    height: 65px;
   }
   
   /* Optional: Hover effect for buttons */
@@ -62,4 +70,105 @@
     
   }
   
+
+
+
+
+.custom-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  width: 58px; 
+  height: 40px;
+  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: #d4ffd4e2;}
+.custom-icon-button:hover {
+ 
+  background-color: #d4ffd4 !important;
+    
+}
+
+
+.custom-icon-button .mat-icon {
+  color: black;
+  font-size: 32px !important; /* Set desired size */
+  vertical-align: middle; 
+  width: auto; /* Ensure width adjusts based on font-size */
+  height: auto; /* Ensure height adjusts based on font-size */
+  line-height: normal; /* Prevent line-height from stretching the icon */
   
+}
+
+  
+
+
+
+
+
+
+
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  width: 90px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #d4ffd4e2;
+  color: black;
+ 
+}
+.profile:hover {
+  background-color: #d4ffd4 !important;
+  }
+.profile .mat-icon {
+    color: black;
+    font-size: 28px !important; /* Set desired size */
+    vertical-align: middle; 
+    width: auto; /* Ensure width adjusts based on font-size */
+    height: auto; /* Ensure height adjusts based on font-size */
+    line-height: normal; /* Prevent line-height from stretching the icon */
+    
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .custom-menu {
+    background-color: #3f51b5; /* Match the button background */
+    color: white; /* Text color */
+    border-top: none; /* Remove top border to blend with the button */
+    box-shadow: none; /* Optional: remove shadow for a flat look */
+    border-radius: 0; /* Remove border-radius for a seamless look */
+    margin-top: -4px; /* Adjust margin to remove gap */
+  }
+  
+  /* Style for mat-menu-item */
+  .custom-menu .mat-menu-item {
+    padding: 10px 20px;
+  }
+  
+  .custom-menu .mat-menu-item:hover {
+    background-color: #2c3e8e; /* Darken on hover */
+  }
