@@ -2,62 +2,59 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
   <div class="toolbar-content">
     <!-- Menu Button to toggle the drawer -->
-    <button mat-button class="custom-icon-button" (click)="drawer.toggle()">
+    <button mat-button class="custom-icon-button" (mouseenter)="iconSidenav.toggle()" (click)="iconSidenav.toggle()" >
       <mat-icon style="margin: 0px;">menu</mat-icon>
     </button>
     <!-- Toolbar Title -->
-    <span style="color: #062c06; margin-left:6px; padding-top:0px; font-size:25px">Admin</span>
+    <span
+      style="color: #062c06; margin-left:6px; padding-top:0px; font-size:25px">Admin</span>
 
     <!-- Spacer to push navigation buttons to the right -->
     <span class="spacer"></span>
-    <nav class="nav-buttons">
-      <!-- Profile Button with dropdown menu -->
-      <button mat-button class="profile" [mat-menu-trigger-for]="usermenu">
-        <mat-icon style="margin: 0px; padding-right:20px;" iconPositionEnd>arrow_drop_down</mat-icon>
-        <mat-icon style="margin: 0px; padding-right:26px;" class="material-symbols-outlined">person</mat-icon>
-      </button>
-      <!-- User Menu -->
-      <mat-menu #usermenu="matMenu" class="custom-menu">
-        <button mat-menu-item>Profile</button>
-        <button mat-menu-item>Log out</button>
-      </mat-menu>
-    </nav>
+
+    <!-- Profile Button with dropdown menu -->
+    <button mat-button class="profile">
+      <mat-icon style="margin: 0px; padding-right:20px;"
+        iconPositionEnd>arrow_drop_down</mat-icon>
+      <mat-icon style="margin: 0px; padding-right:26px;"
+        class="material-symbols-outlined">person</mat-icon>
+    </button>
+
   </div>
 </mat-toolbar>
 
-
 <!-- Drawer Container -->
-<mat-drawer-container class="drawer-container">
+<mat-sidenav-container (touchstart)="iconSidenav.toggle()">
   <!-- Side Drawer -->
-  <mat-drawer class="drawer" #drawer mode="side" position="start" opened="true">
-    <mat-nav-list>
-      <mat-list-item>
-        <button class="drawer_button" mat-button routerLink="dashboard">
-          <mat-icon>dashboard</mat-icon> Dashboard
-        </button>
+  <mat-sidenav class="fixednav" #iconSidenav mode="side" opened="true" 
+     position="start"  >
+    <mat-nav-list >
+      <mat-list-item class="drawer_button" mat-button routerLink="dashboard" >
+          <mat-icon>dashboard</mat-icon> <span>Dashboard</span>
       </mat-list-item>
-      <mat-list-item>
-        <button class="drawer_button" mat-button routerLink="users">
-          <mat-icon>group</mat-icon> Manage Users
-        </button>
+      <mat-list-item class="drawer_button" mat-button routerLink="users">
+        <mat-icon>group</mat-icon>
+         <span> Manage Users</span>
+       
       </mat-list-item>
-      <mat-list-item>
-        <button class="drawer_button" mat-button routerLink="affairs">
-          <mat-icon>assignment</mat-icon> Manage Affairs
-        </button>
+      <mat-list-item class="drawer_button" mat-button routerLink="affairs">
+        <mat-icon>assignment</mat-icon>
+          <span>Manage Affairs</span>
+        
       </mat-list-item>
-      <mat-list-item>
-        <button class="drawer_button" mat-button routerLink="agencies">
-          <mat-icon>business</mat-icon> Manage Agencies
-        </button>
+      <mat-list-item class="drawer_button" mat-button routerLink="agencies">
+        <mat-icon>business</mat-icon> 
+          <span>Manage Agencies</span>
+      
       </mat-list-item>
     </mat-nav-list>
-  </mat-drawer>
+  </mat-sidenav>
+  
 
   <!-- Main Content Area -->
-  <mat-drawer-content>
+  <mat-sidenav-content (click)="iconSidenav.close()">
     <div style="height: 90vh">
       <router-outlet></router-outlet>
     </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>

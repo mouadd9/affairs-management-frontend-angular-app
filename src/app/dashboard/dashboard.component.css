@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: #131413a8;
+    background-color: #131413c8 ;
     padding: 20px;
     border-radius: 10px;
     height: 225px;
@@ -69,7 +69,7 @@
   }
 
   .dash {    
-    border-bottom: solid  2.5px rgba(30, 71, 39, 0.854) ;
+    border-bottom: solid  2.5px #99d699;
   }
 
   .container1 {
