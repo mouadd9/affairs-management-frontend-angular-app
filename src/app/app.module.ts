@@ -4,18 +4,27 @@ import {MatToolbar, MatToolbarModule} from '@angular/material/toolbar'
 import {MatButton, MatButtonModule} from '@angular/material/button'
 import {MatMenuTrigger, MatMenuModule} from '@angular/material/menu'
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+
+
+import { LoginComponent } from './login/login.component';
+import { AppComponent } from './app.component';
+import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { ManageAgenciesComponent } from './manage-agencies/manage-agencies.component';
 import { ManageAffairsComponent } from './manage-affairs/manage-affairs.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MatCardModule } from '@angular/material/card';
+import { CreateUserComponent } from './create-user/create-user.component';
+
 
 
 @NgModule({
@@ -25,7 +34,9 @@ import { MatCardModule } from '@angular/material/card';
     ManageAgenciesComponent,
     ManageAffairsComponent,
     ManageUsersComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +50,12 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDividerModule,
+    MatInputModule
 
   ],
   providers: [

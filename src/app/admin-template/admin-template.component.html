@@ -2,7 +2,7 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
   <div class="toolbar-content">
     <!-- Menu Button to toggle the drawer -->
-    <button mat-button class="custom-icon-button" (mouseenter)="iconSidenav.toggle()" (click)="iconSidenav.toggle()" >
+    <button mat-button class="custom-icon-button" (click)="iconSidenav.toggle()" >
       <mat-icon style="margin: 0px;">menu</mat-icon>
     </button>
     <!-- Toolbar Title -->
@@ -24,7 +24,7 @@
 </mat-toolbar>
 
 <!-- Drawer Container -->
-<mat-sidenav-container (touchstart)="iconSidenav.toggle()">
+<mat-sidenav-container >
   <!-- Side Drawer -->
   <mat-sidenav class="fixednav" #iconSidenav mode="side" opened="true" 
      position="start"  >
@@ -52,7 +52,7 @@
   
 
   <!-- Main Content Area -->
-  <mat-sidenav-content (click)="iconSidenav.close()">
+  <mat-sidenav-content >
     <div style="height: 90vh">
       <router-outlet></router-outlet>
     </div>
