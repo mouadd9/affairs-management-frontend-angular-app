@@ -14,6 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient } from '@angular/common/http';
 
 
 import { LoginComponent } from './login/login.component';
@@ -24,6 +26,9 @@ import { ManageAffairsComponent } from './manage-affairs/manage-affairs.componen
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 
@@ -55,11 +60,15 @@ import { CreateUserComponent } from './create-user/create-user.component';
     MatPaginatorModule,
     MatSortModule,
     MatDividerModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    ReactiveFormsModule
 
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient()
   ],
   bootstrap: [AppComponent]
 })
