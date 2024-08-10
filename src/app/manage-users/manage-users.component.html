@@ -1,49 +1,64 @@
 <div class="container">
     <span
-        style="color: #a7d9a7; border-color:#a7d9a7; margin-top:20px; font-size:2.2em; padding-bottom:15px; margin-bottom:25px;"
+        style="color:  black; border-color: black;margin-top:20px; font-size:2.2em; padding-bottom:15px; margin-bottom:25px;"
         class="icon dash"><mat-icon
-            style="padding-right: 5px;">group</mat-icon>Users Management
+            style="padding-right: 5px; ">group</mat-icon>Users Management
     </span>
 
-    <span style="color: #a7d9a7; font-size:1.9em;"
+    <span style="color: black; font-size:1.9em;"
         class="padding-bottom-10 icon"><mat-icon
             style="padding-right: 5px;">equalizer</mat-icon>Users
     </span>
 
-    <div>
-    <mat-form-field style="width: 40vh;" >
-        <mat-label >Filter</mat-label>
-        <input matInput (change)="filterUsers($event)">
-    </mat-form-field>
-    <button mat-button (click)="navigateToAddUser()">Add User</button>
+    <div class="upperSection">
+
+        
+            <mat-form-field appearance="outline" class="custom-form-field">
+                <mat-label>Username</mat-label>
+                <input matInput type="text" (change)="filterUsers($event)">
+              </mat-form-field>
+        
+        
+
+        <span class="spacer"></span>
+
+        <button class="icon2" mat-button
+            (click)="navigateToAddUser()"><mat-icon>person_add</mat-icon>Add
+            User</button>
+
     </div>
-    <router-outlet></router-outlet>
-    <table matSort mat-table [dataSource]="dataSource" style="color: white; background-color:  #11151163 !important ;" >
+
+    <table matSort mat-table [dataSource]="dataSource"
+        style="color: white; background-color:  #11151163 !important ;">
         <!-- for each column we should have an ng-container -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th> <!-- header cell -->
-            <td mat-cell *matCellDef="let element">{{element.id}}</td> <!-- data cell --> <!-- here we will iterate over that array of objects and only show the IDs -->
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <!-- header cell -->
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+            <!-- data cell -->
+            <!-- here we will iterate over that array of objects and only show the IDs -->
         </ng-container>
 
         <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th> <!-- header cell -->
-            <td mat-cell *matCellDef="let element">{{element.firstName}}</td> 
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name
+            </th> <!-- header cell -->
+            <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
         </ng-container>
-    
+
         <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th> <!-- header cell -->
-            <td mat-cell *matCellDef="let element">{{element.lastName}}</td> 
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name
+            </th> <!-- header cell -->
+            <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator style="color: white; background-color: #131413c8 ;" [pageSizeOptions]="[5,10,15,30,50]">
 
+    <mat-paginator style="color: white; background-color: #131413c8 ;"
+        [pageSizeOptions]="[5,10,15,30,50]">
     </mat-paginator>
 
-    <span style="margin-top: 20px; color: #a7d9a7; font-size:1.9em;"
-    class="padding-bottom-10 icon"><mat-icon
-        style="padding-right: 5px;">equalizer</mat-icon>Add User
-</span>
+    <router-outlet #userFormOutlet></router-outlet>
+
 </div>

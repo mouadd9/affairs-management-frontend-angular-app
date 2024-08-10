@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { Router , ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-manage-users',
@@ -25,10 +25,12 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   // we take the paginator declared in our html
   @ViewChild(MatSort) sort! : MatSort;
 
+  @ViewChild('userFormOutlet') userFormOutlet!: ElementRef; // Reference to the router outlet
+
   // we should declare the displayed column (an array of strings)
   public displayedColumns: string[] = ['id', 'firstName', 'lastName'];
 
-  constructor(private router: Router){
+  constructor(private router: Router, private route: ActivatedRoute){
     // here we create a new instance of MatTableDataSource initilized with an empty array 
     this.dataSource = new MatTableDataSource<any>([]);
   }
@@ -61,11 +63,20 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
     let value: string = (event.target as HTMLInputElement).value;
     this.dataSource.filter= value;
     
-    }
+  }
 
-    navigateToAddUser(): void {
-      this.router.navigate(['/users/create']); // Navigate to create user route
-    }
+  navigateToAddUser(): void {
+    // this.router.navigate(['/users/create']); 
+    this.router.navigate(['create'], { relativeTo: this.route });
+    this.scrollToForm();
+
+  }
+
+  scrollToForm(): void {
+    setTimeout(() => {
+      this.userFormOutlet.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }, 100); // Adding a slight delay to ensure the navigation has occurred
+  }
    
 
 }
