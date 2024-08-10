@@ -3,3 +3,175 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .container { padding: 20px; display: flex; flex-direction: column; gap: 5px;}
+
+
+.mat-mdc-button {
+    /* default color 
+    --mdc-text-button-label-text-color: #fff;
+    --mdc-text-button-disabled-label-text-color: rgba(255, 255, 255, .5);
+    --mat-text-button-state-layer-color: #fff;
+    --mat-text-button-ripple-color: rgba(255, 255, 255, .1);*/
+  
+    /* hover/focus/active opacity */
+    --mat-text-button-hover-state-layer-opacity: 0;
+    --mat-text-button-focus-state-layer-opacity: 0;
+    --mat-text-button-pressed-state-layer-opacity: 0;
+  
+    /* text container */
+    --mdc-text-button-container-height: 40px;
+  }
+
+.mat-mdc-form-field {
+    --mat-mdc-form-field-floating-label-scale: 0.75;
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 0;
+    text-align: left;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--mat-form-field-container-text-font);
+    line-height: var(--mat-form-field-container-text-line-height);
+    font-size: var(--mat-form-field-container-text-size);
+    letter-spacing: var(--mat-form-field-container-text-tracking);
+    font-weight: var(--mat-form-field-container-text-weight);
+}
+  
+  .custom-form-field .mat-mdc-form-field-subscript-wrapper,
+.custom-form-field .mat-mdc-form-field-bottom-align::before {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    font-size: 0;  /* Ensures no text height is calculated */
+    display: none; /* Hides the element completely */
+}
+
+html {
+  /* Container Colors */
+  --mdc-filled-text-field-container-color: black; /* Input field container */
+  --mdc-filled-text-field-disabled-container-color: black; /* Disabled input container */
+  --mdc-filled-text-field-hover-container-color: black; /* Hover state container */
+  --mdc-filled-text-field-focus-container-color: black; /* Focus state container */
+
+  /* Input Background Colors */
+  --mdc-filled-text-field-input-background-color: black; /* Input background color */
+  --mdc-filled-text-field-disabled-input-background-color: black; /* Disabled input background color */
+
+  /* Input Text Colors */
+  --mdc-filled-text-field-input-text-color: black; /* Default state */
+  --mdc-filled-text-field-disabled-input-text-color: black; /* Disabled state */
+  --mdc-filled-text-field-hover-input-text-color: black; /* Hover state */
+  --mdc-filled-text-field-focus-input-text-color: black; /* Focus state */
+
+  /* Outline and Border Colors */
+  --mdc-outlined-text-field-outline-color: black; /* Default state */
+  --mdc-outlined-text-field-disabled-outline-color: black; /* Disabled state */
+  --mdc-outlined-text-field-hover-outline-color: black; /* Hover state */
+  --mdc-outlined-text-field-focus-outline-color: black; /* Focus state */
+
+  /* Label Text Colors */
+  --mdc-filled-text-field-label-text-color: black; /* Default state */
+  --mdc-filled-text-field-disabled-label-text-color: black; /* Disabled state */
+  --mdc-filled-text-field-hover-label-text-color: black; /* Hover state */
+  --mdc-filled-text-field-focus-label-text-color: black; /* Focus state */
+
+  /* Floating Label Text Colors */
+  --mdc-outlined-text-field-label-text-color: black; /* Default state */
+  --mdc-outlined-text-field-disabled-label-text-color: black; /* Disabled state */
+  --mdc-outlined-text-field-hover-label-text-color: black; /* Hover state */
+  --mdc-outlined-text-field-focus-label-text-color: black; /* Focus state */
+
+  /* Caret Color */
+  --mdc-outlined-text-field-caret-color: black; /* Caret color */
+
+  /* Focus and Hover Active Indicator Colors */
+  --mdc-filled-text-field-focus-active-indicator-color: black; /* Focus indicator */
+  --mdc-filled-text-field-hover-active-indicator-color: black; /* Hover indicator */
+
+  /* Error State Colors */
+
+
+  --mdc-outlined-text-field-input-text-color:black;
+
+
+
+  --mdc-filled-text-field-error-hover-label-text-color:  rgba(90, 20, 27, 0.815);/* 30% lighter variant of #EA002A */
+--mdc-filled-text-field-error-focus-label-text-color:  rgba(90, 20, 27, 0.815);/* 50% lighter variant of #EA002A */
+--mdc-filled-text-field-error-label-text-color:  rgba(90, 20, 27, 0.815);/* 50% lighter variant of #EA002A */
+--mdc-filled-text-field-error-active-indicator-color: #EA002A; /* Primary error color */
+--mdc-filled-text-field-error-focus-active-indicator-color: #EA002A; /* Primary error color */
+--mdc-filled-text-field-error-hover-active-indicator-color:  rgba(90, 20, 27, 0.815); /* 30% lighter variant of #EA002A */
+--mdc-outlined-text-field-error-focus-label-text-color: rgba(90, 20, 27, 0.815);  /* 50% lighter variant of #EA002A */
+--mdc-outlined-text-field-error-label-text-color:  rgba(90, 20, 27, 0.815);  /* 50% lighter variant of #EA002A */
+--mdc-outlined-text-field-error-hover-label-text-color:  rgba(90, 20, 27, 0.815); /* 30% lighter variant of #EA002A */
+--mdc-outlined-text-field-error-focus-outline-color: #EA002A; /* Primary error color */
+--mdc-outlined-text-field-error-hover-outline-color:  rgba(90, 20, 27, 0.815);
+
+
+    --mdc-outlined-text-field-error-outline-color: #EA002A; 
+    --mat-form-field-error-text-color: #EA002A; 
+    --mat-form-field-error-focus-trailing-icon-color: #EA002A; 
+    --mat-form-field-error-hover-trailing-icon-color: #EA002A; 
+    --mat-form-field-error-trailing-icon-color: #EA002A; 
+
+
+}
+
+/* Material Form Field Outline Colors */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: black !important;  /* Outline color */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: black !important;  /* Outline color when focused */
+}
+
+/* Material Form Field Label Colors */
+.mat-form-field-appearance-outline .mat-form-field-label {
+  color: black !important;  /* Label color */
+}
+
+/* Material Form Field Input Text Color */
+.mat-form-field-appearance-outline .mat-input-element {
+  color: black !important;  /* Input text color */
+}
+
+/* Material Form Field Underline Color */
+.mat-form-field-appearance-outline .mat-form-field-underline {
+  color: black !important;  /* Underline color */
+}
+
+/* Material Form Field Ripple Color */
+.mat-form-field-appearance-outline .mat-form-field-ripple {
+  color: black !important; /* Ripple color */
+}
+
+ /* Material Form Field Input Text Color */
+.mat-form-field-appearance-outline .mat-input-element {
+  color: black !important; /* Input text color */
+}
+
+/* Ensure input placeholder color is also black */
+.mat-form-field-appearance-outline .mat-input-element::placeholder {
+  color: black !important; /* Placeholder text color */
+}
+
+.mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: black !important; 
+ }
+
+ .mat-form-field-underline {
+  /*change color of underline*/
+  background-color: black !important; 
+} 
+
+.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: black !important; 
+}
+
+
+mat-list-item {
+  height: 48px !important;
+}
+

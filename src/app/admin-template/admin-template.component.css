@@ -27,11 +27,11 @@
   background-color:  #99d699cc;/* Primary color */
   padding-left: 12px;
   padding-right: 7px;
-  height: 50px;
+  height: 9vh;
 }
 
 mat-sidenav-content {
-  background-color: #3d4b3dd4;
+  background-color: #deffe2bc;
 }
  
 /* Style for the fixed icon sidenav */
@@ -39,7 +39,7 @@ mat-sidenav-content {
   width: 205px; /* Width for icon sidenav */
   padding: 0px !important;
  border-radius: 0;
-  background-color: #1c271c80 !important;
+  background-color: #48594880 !important;
 
   
 }
@@ -53,11 +53,26 @@ mat-list-item{
   
   border-radius: 0% !important;
   padding-top: 12px;
+  height: 48px;
+  color: white;
+ 
+
+}
+mat-list-item mat-icon{
   
+  
+  color: white !important;
  
 
 }
 
+mat-list-item span{
+  
+ 
+  color: white;
+ 
+
+}
 
 
 .drawer {

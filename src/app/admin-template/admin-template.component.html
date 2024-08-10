@@ -29,20 +29,20 @@
   <mat-sidenav class="fixednav" #iconSidenav mode="side" opened="true" 
      position="start"  >
     <mat-nav-list >
-      <mat-list-item class="drawer_button" mat-button routerLink="dashboard" >
+      <mat-list-item class="drawer_button" mat-button routerLink="/admin/dashboard" >
           <mat-icon>dashboard</mat-icon> <span>Dashboard</span>
       </mat-list-item>
-      <mat-list-item class="drawer_button" mat-button routerLink="users">
+      <mat-list-item class="drawer_button" mat-button routerLink="/admin/users">
         <mat-icon>group</mat-icon>
          <span> Manage Users</span>
        
       </mat-list-item>
-      <mat-list-item class="drawer_button" mat-button routerLink="affairs">
+      <mat-list-item class="drawer_button" mat-button routerLink="/admin/affairs">
         <mat-icon>assignment</mat-icon>
           <span>Manage Affairs</span>
         
       </mat-list-item>
-      <mat-list-item class="drawer_button" mat-button routerLink="agencies">
+      <mat-list-item class="drawer_button" mat-button routerLink="/admin/agencies">
         <mat-icon>business</mat-icon> 
           <span>Manage Agencies</span>
       
@@ -53,7 +53,7 @@
 
   <!-- Main Content Area -->
   <mat-sidenav-content >
-    <div style="height: 90vh">
+    <div style="height: 91vh">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
