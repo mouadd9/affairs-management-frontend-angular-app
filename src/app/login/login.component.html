@@ -1,1 +1,27 @@
-<p>login works!</p>
+<div class="container">
+    <img src="assets/logo.png" alt="Login Logo" width="268px" height="76px" style="margin-right:8px;"/>
+
+    <div class="formcontainer">
+      <div class="upperSection">
+        <span style="margin-top: 6px; color: #062c06; font-size:1.9em;" class="padding-bottom-10 icon">
+          Login
+        </span>
+      </div>
+  
+      <!-- This is my form -->
+      <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Username</mat-label>
+          <input matInput type="text" formControlName="username">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password">
+        </mat-form-field>
+  
+        <button mat-button color="primary" class="save-button" type="submit">Login</button>
+      </form>
+    </div>
+</div>
+  

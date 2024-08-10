@@ -1,0 +1,62 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%; /* Adjusted to take the full width of the viewport */
+    padding: 0; /* Added padding for responsiveness */
+    margin: 0px;
+    background-color:  #ffffff;/* Primary color */
+    gap: 25px;
+
+  }
+
+
+  
+  .formcontainer {
+    width: 65vh; /* Full width relative to its container */
+    max-width: 65vh; /* Max width for the form container */
+    height: 41vh;
+    border: solid 1px #006938;
+    border-radius: 10px;
+    
+    
+    padding: 20px; /* Slightly increased padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   
+    background-color: #b3ffdbce;
+    box-shadow: 0 0px 100px rgb(165, 255, 213) /* Added a subtle shadow */
+   
+  }
+
+  .upperSection {
+    width: 100%;
+  }
+
+  
+  .form {
+    margin-top: 15px;
+    display: flex;
+    padding: 0px;
+    flex-direction: column;
+    gap: 15px; /* Space between form fields */
+  }
+
+
+  .custom-form-field {
+    width: 100%; /* Ensure form fields take the full width */
+  }
+  
+  .save-button {
+    background-color: #006938; /* Customize the save button color */
+    color: white !important; /* Ensure text color is white */
+    width: 100%; /* Full width button */
+    border-radius: 7px;
+    margin:0;
+    padding: 0; /* Added padding for better button size */
+    font-size: 1.1em; /* Slightly increased font size for better readability */
+  }
+
