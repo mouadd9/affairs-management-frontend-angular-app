@@ -5,17 +5,32 @@ import { ManageAffairsComponent } from './manage-affairs/manage-affairs.componen
 import { ManageAgenciesComponent } from './manage-agencies/manage-agencies.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { AdminTemplateComponent } from './admin-template/admin-template.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  {path:"dashboard", component:DashboardComponent},
-  {path:"agencies", component:ManageAgenciesComponent},
-  {path:"users", component:ManageUsersComponent, children: [
-    { path: 'create', component: CreateUserComponent }
+
+  // login , admin are parent roots
+
+  {path:"", redirectTo: "/login", pathMatch : "full"}, // by default the " " path will take us to the Admin component 
+  {path:"login", component:LoginComponent},
+
+  {path:"admin", component:AdminTemplateComponent , children: [
+
+    {path:"users", component:ManageUsersComponent, children: [
+      { path: 'create', component: CreateUserComponent }
+    ]},
+
+    {path:"affairs", component:ManageAffairsComponent},
+    {path:"dashboard", component:DashboardComponent},
+    {path:"agencies", component:ManageAgenciesComponent}
+
   ]},
-  {path:"affairs", component:ManageAffairsComponent},
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Default route
-  { path: '**', redirectTo: '/dashboard' } // Fallback route
+
+ 
+
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
