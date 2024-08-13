@@ -30,7 +30,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 
 
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,14 @@ import {MatSelectModule} from '@angular/material/select';
   ],
   providers: [
     provideAnimationsAsync(),
-    provideHttpClient()
+    provideHttpClient(),
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppHttpInterceptor,
+      multi: true
+    }
+
   ],
   bootstrap: [AppComponent]
 })
