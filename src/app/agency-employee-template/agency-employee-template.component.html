@@ -1,0 +1,69 @@
+<!-- Angular Material Toolbar -->
+<mat-toolbar color="primary" class="mat-elevation-z6">
+
+    <div class="toolbar-content">
+  
+      <!-- Menu Button to toggle the drawer -->
+      <button mat-button class="custom-icon-button" (click)="iconSidenav.toggle()">
+        <mat-icon style="margin: 0px;">menu</mat-icon>
+      </button>
+  
+      <!-- Toolbar Title -->
+        <!-- Spacer to push navigation buttons to the right -->
+      <span class="spacer"></span>
+      
+      <span style="color: #062c06; margin-left:6px; padding-top:0px; font-size:25px" *ngIf="this.authService.isAuthenticated === true">
+        {{this.authService.username}}
+      </span>
+  
+     
+  
+      <!-- Profile Button with dropdown menu -->
+      <button mat-button class="profile" [matMenuTriggerFor]="appMenu">
+  
+        <mat-icon style="margin: 0px; padding-right:20px;" iconPositionEnd>arrow_drop_down</mat-icon>
+  
+        <mat-icon style="margin: 0px; padding-right:26px;" class="material-symbols-outlined">person</mat-icon>
+  
+      </button>
+  
+      <mat-menu #appMenu="matMenu" class="mat-menu-panel">
+        
+          <button mat-menu-item class="mat-menu-item"><mat-icon>person</mat-icon>Profile</button>
+          
+          <button mat-menu-item (click)="logOut()"><mat-icon>exit_to_app</mat-icon>Log out</button>
+       
+      </mat-menu>
+  
+    </div>
+  </mat-toolbar>
+  
+  <!-- Drawer Container -->
+  <mat-sidenav-container >
+    <!-- Side Drawer -->
+    <mat-sidenav class="fixednav" #iconSidenav mode="side" opened="true" position="start">
+  
+      <mat-nav-list >
+  
+        <mat-list-item class="drawer_button" mat-button routerLink="" >
+            <mat-icon>assignment</mat-icon> 
+            <span>Consult affairs</span>
+        </mat-list-item>
+  
+        <mat-list-item class="drawer_button" mat-button routerLink="">
+          <mat-icon>add_circle</mat-icon>
+          <span>Create affair</span>
+        </mat-list-item>
+      </mat-nav-list>
+  
+    </mat-sidenav>
+    
+  
+    <!-- Main Content Area -->
+    <mat-sidenav-content >
+      <div style="height: 91vh">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

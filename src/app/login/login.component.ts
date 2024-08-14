@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
       // on submit we will store the last "myForm.value" instance (with lates values typed)
       const formData = this.myForm.value;
 
-      // here we will send this.myForm.value (json) to our user service and then expect a response
+      // here we will send this.myForm.value (object) to our user service and then expect a response
+      // we act as an observer by subscribing to this obervable 
       this.auth.login(formData).subscribe({
         next: (response) => {
 
@@ -44,7 +45,8 @@ export class LoginComponent implements OnInit {
 
           this.auth.loadProfile(response); // this loads the profile (decodes the jwt and extracts the claims) and the claims will be stored in the service
        
-          this.redirectUserBasedOnRole();
+          this.auth.redirectUserBasedOnRole();
+         
         },
         error: (error) => {
           console.error('Login failed:', error);
@@ -57,13 +59,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  redirectUserBasedOnRole() {
-    if (this.auth.roles.includes('ADMIN')) {
-     
-      this.router.navigate(['/admin/dashboard']);
-    } else {
-      this.router.navigate(['/login']);
-    }
-  }
+
 
 }

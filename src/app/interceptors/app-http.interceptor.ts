@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AuthService } from "../services/auth.service";
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 
 // this intercepts each request and adds the auth token to it, we do not intercept the authentication request
 
@@ -18,13 +18,22 @@ export class AppHttpInterceptor implements HttpInterceptor {
 
         setHeaders: {
 
-          Authorization: `Bearer ${this.authService.access_token}`
+          Authorization: `Bearer ${window.localStorage.getItem("jwt-token")}`
 
         }
 
       });
 
-      return next.handle(authReq);
+      return next.handle(authReq).pipe(
+        catchError((error) => {
+          // Handle token expiration or other errors
+          if (error.status === 401) {
+            this.authService.logout();
+            // Optionally, redirect to login page
+          }
+          return throwError(() => new Error(`Failed to fetch data: ${error.message}`));
+        })
+      );
 
     } else {
 

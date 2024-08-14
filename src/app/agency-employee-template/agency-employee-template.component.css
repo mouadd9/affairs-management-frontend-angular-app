@@ -1,0 +1,175 @@
+/* General Styles */
+
+/* Toolbar content container */
+.toolbar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Spacer to push navigation buttons to the right */
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  /* Navigation buttons container */
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0px;
+    margin-right: 0px;
+    width: auto;
+  }
+  
+  /* Toolbar Styles */
+  .mat-toolbar {
+    background-color:  #99d699cc;/* Primary color */
+    padding-left: 12px;
+    padding-right: 7px;
+    height: 9vh;
+  }
+  
+  mat-sidenav-content {
+    background-color: #deffe2bc;
+  }
+  
+  
+  /* Style for the fixed icon sidenav */
+  .fixednav {
+    width: 205px; /* Width for icon sidenav */
+    padding: 0px !important;
+   border-radius: 0;
+    background-color: #48594880 !important;
+  
+    
+  }
+  mat-nav-list {
+    margin-top: 8px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  
+  }
+  mat-list-item{
+    
+    border-radius: 0% !important;
+    padding-top: 12px;
+    height: 48px;
+    color: white;
+   
+  
+  }
+  mat-list-item mat-icon{
+    
+    
+    color: white !important;
+   
+  
+  }
+  
+  mat-list-item span{
+    
+   
+    color: white;
+   
+  
+  }
+  
+  
+  .drawer {
+    background-color: #c8ffc8d9; /* Primary color */
+    border-radius: 0%;
+    width: 40vh;
+  }
+  
+  
+  
+  
+  /* Custom Icon Button Styles */
+  .custom-icon-button {
+    border-radius: 10px;
+    height: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color:  none;
+  }
+  
+  .custom-icon-button:hover {
+    background-color: #d4ffd4 !important;
+  }
+  
+  .custom-icon-button .mat-icon {
+    color: #062c06;
+    font-size: 28px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+  }
+  
+  /* Profile Button Styles */
+  .profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    width: 84px;
+    height: 35px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: none;
+    margin: 0 10px;
+  }
+  
+  .profile:hover {
+    background-color: #d4ffd4 !important;
+  }
+  
+  .profile .mat-icon {
+    color: #062c06;
+    font-size: 26px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+  }
+  
+  
+  
+  
+  /* Ensure buttons take the full width and height of the list items */
+  .drawer_button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: left; /* Align text to the left */
+    justify-content: flex-start; /* Align icons and text to the left */
+  }
+  
+  .drawer_button .mat-icon {
+    font-size: 22px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    padding-bottom: 4px;
+    padding-right: 2px;
+    
+  }
+  
+  
+  .drawer_button span {
+   
+    
+    font-size: 1em;
+  }
+  
+  
+  
+  /* Custom Menu Styles */
+  mat-menu{
+   padding: 0px !important;
+  }
+  

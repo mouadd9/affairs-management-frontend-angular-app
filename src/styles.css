@@ -114,6 +114,28 @@ html {
     --mat-form-field-error-trailing-icon-color: #EA002A; 
 
 
+    --mat-menu-item-label-text-color: white;
+    --mat-menu-item-icon-color: white;   
+    --mat-menu-item-hover-state-layer-color: #293229;
+    --mat-menu-item-focus-state-layer-color: #293229;
+    --mat-menu-container-color: #2c372ce3;
+    --mat-menu-divider-color: white;
+    --mat-menu-item-label-text-font: Roboto, sans-serif;
+    --mat-menu-item-label-text-size: 1rem;
+    --mat-menu-item-label-text-tracking: 0.006rem;
+    --mat-menu-item-label-text-line-height: 1rem;
+    --mat-menu-item-label-text-weight: 500;
+    --mat-menu-container-shape: 4px;
+    --mat-menu-divider-bottom-spacing: 8px;
+    --mat-menu-divider-top-spacing: 8px;
+    --mat-menu-item-spacing: 7px;
+    --mat-menu-item-icon-size: 24px;
+    --mat-menu-item-leading-spacing: 12px;
+    --mat-menu-item-trailing-spacing: 12px;
+    --mat-menu-item-with-icon-leading-spacing: 12px;
+    --mat-menu-item-with-icon-trailing-spacing: 12px;
+    --mat-menu-base-elevation-level: 2;
+
 }
 
 /* Material Form Field Outline Colors */

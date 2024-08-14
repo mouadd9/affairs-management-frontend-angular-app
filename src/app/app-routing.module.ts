@@ -7,6 +7,9 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { LoginComponent } from './login/login.component';
+import { AuthenticationGuard } from './guards/authentication.guard';
+import {  AuthorizationGuard} from './guards/authorization.guard';
+import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
 
 const routes: Routes = [
 
@@ -15,17 +18,22 @@ const routes: Routes = [
   {path:"", redirectTo: "/login", pathMatch : "full"}, // by default the " " path will take us to the Admin component 
   {path:"login", component:LoginComponent},
 
-  {path:"admin", component:AdminTemplateComponent , children: [
-
-    {path:"users", component:ManageUsersComponent, children: [
-      { path: 'create', component: CreateUserComponent }
+  {path:"admin", component:AdminTemplateComponent , canActivate : [AuthorizationGuard], data : {roles : ['ADMIN']},
+    
+    children: [
+    
+    {path:"users", component:ManageUsersComponent ,  canActivate : [AuthorizationGuard], data : {roles : ['ADMIN']} ,children: [
+      { path: 'create', component: CreateUserComponent  ,  canActivate : [AuthorizationGuard], data : {roles : ['ADMIN']} }
     ]},
+    {path:"affairs", component:ManageAffairsComponent ,  canActivate : [AuthorizationGuard], data : {roles : ['ADMIN']}},
+    {path:"dashboard", component:DashboardComponent ,  canActivate : [AuthorizationGuard], data : {roles : ['ADMIN']}},
+    {path:"agencies", component:ManageAgenciesComponent  ,  canActivate : [AuthorizationGuard], data : {roles : ['ADMIN']}}
 
-    {path:"affairs", component:ManageAffairsComponent},
-    {path:"dashboard", component:DashboardComponent},
-    {path:"agencies", component:ManageAgenciesComponent}
+    ]
 
-  ]},
+  },
+
+  {path:"agencyEmployee" , component:AgencyEmployeeTemplateComponent, canActivate : [AuthorizationGuard], data : {roles : ['AGENCY_EMPLOYEE']}}
 
  
 

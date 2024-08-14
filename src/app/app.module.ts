@@ -32,6 +32,8 @@ import {MatSelectModule} from '@angular/material/select';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
+import { AuthService } from './services/auth.service';
+import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
     ManageUsersComponent,
     DashboardComponent,
     LoginComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    AgencyEmployeeTemplateComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +78,8 @@ import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: AppHttpInterceptor,
       multi: true
-    }
+    },  
+    AuthService
 
   ],
   bootstrap: [AppComponent]
