@@ -16,16 +16,32 @@ import {environment} from "../../environments/environment";
   providedIn: 'root'
 })
 
-export class UsersService { 
+export class UsersService {
+
 
   private baseUrl = environment.backendHost + '/api/users'; // this is the base url 
 
   constructor(private http: HttpClient) { }
 
-  public getAllUsers(): Observable<Array<UserDTO>> { // this returns an observable that will stream a list of UserDTOs
+  getAllUsers(): Observable<UserDTO[]> { // this returns an observable that will stream a list of UserDTOs
 
-    return this.http.get<Array<UserDTO>>(this.baseUrl + '/');
+    return this.http.get<UserDTO[]>(this.baseUrl + '/');
 
   }
+
+  deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>( this.baseUrl + '/'+ userId);
+  } 
+
+  createUser(user: UserDTO): Observable<UserDTO> {
+    console.log(user);
+
+    return this.http.post<UserDTO>(this.baseUrl+'/', user);
+  }
+
+  addAdminRole(userId?: number): Observable<void> {
+    return this.http.put<void>( this.baseUrl + '/'+ userId, {});
+  }
+ 
 
 }
