@@ -13,6 +13,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.loadJwtTokenFromLocalStorage();
-   
+    const lastLog = localStorage.getItem('lastAuthGuardLog');
+    if (lastLog) {
+      console.log('Last AuthGuard Log:', lastLog);
+      localStorage.removeItem('lastAuthGuardLog');
+    }
   }
 }

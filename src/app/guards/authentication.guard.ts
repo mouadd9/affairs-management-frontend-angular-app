@@ -10,7 +10,7 @@ export class AuthenticationGuard implements CanActivate{
   constructor(private authService: AuthService, private router:Router){}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
-    console.log(this.authService.isAuthenticated);
+    
     if (this.authService.isAuthenticated) {
       return true;
     } else {

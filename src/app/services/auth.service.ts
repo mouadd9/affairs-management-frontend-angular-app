@@ -69,6 +69,7 @@ export class AuthService {
   redirectUserBasedOnRole() {
     if (this.isAuthenticated) {
       if (this.roles.includes('ADMIN')) {
+        
       this.router.navigate(['/admin/dashboard']);
     } else if (this.roles.includes('AGENCY_EMPLOYEE')) {
       this.router.navigate(['/agencyEmployee']);

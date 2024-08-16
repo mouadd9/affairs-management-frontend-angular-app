@@ -9,6 +9,7 @@ import { AdminTemplateComponent } from './admin-template/admin-template.componen
 import { LoginComponent } from './login/login.component';
 import {  AuthorizationGuard} from './guards/authorization.guard';
 import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 const routes: Routes = [
 
@@ -32,7 +33,9 @@ const routes: Routes = [
 
   },
 
-  {path:"agencyEmployee" , component:AgencyEmployeeTemplateComponent, canActivate : [AuthorizationGuard], data : {roles : ['AGENCY_EMPLOYEE']}}
+  {path:"agencyEmployee" , component:AgencyEmployeeTemplateComponent, canActivate : [AuthorizationGuard], data : {roles : ['AGENCY_EMPLOYEE']}},
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: '**', redirectTo: '/login' } // This should be the last route
 
  
 

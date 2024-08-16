@@ -15,7 +15,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import {MatRadioModule} from '@angular/material/radio';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 
 import { LoginComponent } from './login/login.component';
@@ -34,6 +35,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
 import { AuthService } from './services/auth.service';
 import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+
 
 @NgModule({
   declarations: [
@@ -45,7 +48,8 @@ import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agen
     DashboardComponent,
     LoginComponent,
     CreateUserComponent,
-    AgencyEmployeeTemplateComponent
+    AgencyEmployeeTemplateComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -67,19 +71,13 @@ import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agen
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatRadioModule
 
   ],
   providers: [
     provideAnimationsAsync(),
-    provideHttpClient(),
-
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AppHttpInterceptor,
-      multi: true
-    },  
-    AuthService
+    provideHttpClient(withInterceptors([AppHttpInterceptor]))
 
   ],
   bootstrap: [AppComponent]
