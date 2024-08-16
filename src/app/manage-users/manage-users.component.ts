@@ -3,6 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router , ActivatedRoute} from '@angular/router';
+import { UserDTO } from '../model/user.model';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-manage-users',
@@ -12,12 +14,14 @@ import { Router , ActivatedRoute} from '@angular/router';
 export class ManageUsersComponent implements OnInit, AfterViewInit {
 
 
-  public users: any[] = [];
+
+  public users: UserDTO[] = []; // here we declare the users array
+
   public showAddUserForm: boolean = false;
 
   // this is a variable of type MatTableDataSource<any> meaning 
   // it will be used to configure data for a mat table
-  public dataSource: MatTableDataSource<any>;
+  public dataSource: MatTableDataSource<UserDTO>;
   // another way to do this is :
   // public dataSource: any;
 
@@ -28,29 +32,47 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   @ViewChild('userFormOutlet') userFormOutlet!: ElementRef; // Reference to the router outlet
 
   // we should declare the displayed column (an array of strings)
-  public displayedColumns: string[] = ['id', 'firstName', 'lastName'];
+  public displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'username', 'roles', 'actions'];
 
-  constructor(private router: Router, private route: ActivatedRoute){
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private usersService: UsersService
+  ){
     // here we create a new instance of MatTableDataSource initilized with an empty array 
-    this.dataSource = new MatTableDataSource<any>([]);
+    this.dataSource = new MatTableDataSource<UserDTO>([]);
   }
 
   ngOnInit(): void {
    
-    // here we will create some data (ideally here we capture data from the backend )
-    for (let i: number = 1; i<100; i++ ){
-     this.users.push(
-      {
-        id: i,
-        firstName : Math.random().toString(20),
-        lastName : Math.random().toString(20)
+    this.loadUsers(); // this method will connect to the User service and load users to the data source
+    
+  }
+
+  loadUsers(): void {
+    this.usersService.getAllUsers().subscribe({
+      next: (users: UserDTO[]) => {
+        this.users = users; // so we store the users
+        this.dataSource.data = this.users; // then we put them as our data source
+      },
+      error: (error) => {
+        console.error('Error fetching users:', error);
       }
-     )
-    } 
-    // this.dataSource = new MatTableDataSource(this.users);
-    // we should add it to the datasource  
-    // the type of data is set to any 
-    this.dataSource.data = this.users; 
+    });
+    
+  }
+
+
+  deleteUser(userId: number) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.usersService.deleteUser(userId).subscribe({
+        next: () => {
+          this.dataSource.data = this.dataSource.data.filter(user => user.id !== userId);
+          // Optionally, show a success message
+        },
+        error: (error) => console.error('Error deleting user:', error)
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -75,7 +97,7 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   scrollToForm(): void {
     setTimeout(() => {
       this.userFormOutlet.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }, 100); // Adding a slight delay to ensure the navigation has occurred
+    }, 70); // Adding a slight delay to ensure the navigation has occurred
   }
    
 
