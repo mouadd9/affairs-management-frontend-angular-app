@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router , ActivatedRoute} from '@angular/router';
 import { UserDTO } from '../model/user.model';
 import { UsersService } from '../services/users.service';
+import { UserUpdateService } from '../services/user-update.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manage-users',
@@ -34,10 +36,13 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   // we should declare the displayed column (an array of strings)
   public displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'username', 'roles', 'actions'];
 
+  private updateSubscription!: Subscription;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private userUpdateService: UserUpdateService
   ){
     // here we create a new instance of MatTableDataSource initilized with an empty array 
     this.dataSource = new MatTableDataSource<UserDTO>([]);
@@ -46,6 +51,16 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
    
     this.loadUsers(); // this method will connect to the User service and load users to the data source
+    this.updateSubscription = this.userUpdateService.update$.subscribe({
+      next: () => this.loadUsers()
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+
+    }
     
   }
 
