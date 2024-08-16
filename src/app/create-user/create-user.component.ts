@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../services/users.service';
 import { UserDTO } from '../model/user.model';
+import { UserUpdateService } from '../services/user-update.service';
 
 @Component({
   selector: 'app-create-user',
@@ -10,7 +11,10 @@ import { UserDTO } from '../model/user.model';
 })
 export class CreateUserComponent implements OnInit {
   myForm!: FormGroup;
-  constructor(private fb: FormBuilder, private userService: UsersService){ // we will inject user service here 
+  constructor(
+    private fb: FormBuilder,
+    private userService: UsersService,
+    private userUpdateService: UserUpdateService){ // we will inject user service here 
 
   }
   ngOnInit(): void {
@@ -45,10 +49,17 @@ export class CreateUserComponent implements OnInit {
           // in case the user is created successfully we add the roles
           if (formData.role === 'ADMIN') {
             this.userService.addAdminRole(createdUser.id).subscribe({
-             next: () => console.log('Admin role added successfully'),
+             next: () => {
+              console.log('Admin role added successfully')
+              this.userUpdateService.notify(); // Trigger update after role is added
+            },
              error : (error) => console.error('Error adding admin role:', error)
               
             });
+          } else {
+            
+              this.userUpdateService.notify(); // Trigger update immediately if not adding admin role
+            
           }
           
 
