@@ -37,15 +37,16 @@ export class LoginComponent implements OnInit {
 
       // here we will send this.myForm.value (object) to our user service and then expect a response
       // we act as an observer by subscribing to this obervable 
+      
       this.auth.login(formData).subscribe({
         next: (response) => {
 
-          // if the user authenticated this should pass the token to the method that will parse it 
-          //console.log('Login successful, token:', response['access-token']);
+          // if the user exists we then parse the token and change the state to athenticated
+          // and redirect the user via its role
+          
+          console.log('Login successful, token:', response['access-token']); // this will show us the response 
 
           this.auth.loadProfile(response); // this loads the profile (decodes the jwt and extracts the claims) and the claims will be stored in the service
-       
-          this.auth.redirectUserBasedOnRole();
          
         },
         error: (error) => {
