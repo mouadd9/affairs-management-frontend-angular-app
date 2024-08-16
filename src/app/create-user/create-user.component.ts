@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsersService } from '../services/users.service';
+import { UserDTO } from '../model/user.model';
 
 @Component({
   selector: 'app-create-user',
@@ -8,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CreateUserComponent implements OnInit {
   myForm!: FormGroup;
-  constructor(private fb: FormBuilder){ // we will inject user service here 
+  constructor(private fb: FormBuilder, private userService: UsersService){ // we will inject user service here 
 
   }
   ngOnInit(): void {
@@ -16,16 +18,54 @@ export class CreateUserComponent implements OnInit {
       // each form controle has a key value pair  
       username: ['', Validators.required],
       email: ['', Validators.required],
-      lastname: ['', Validators.required],
-      firstname: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      lastName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.myForm.valid) {
       // here we will send this.myForm.value (json) to our user service and then expect a response
-      const formData = this.myForm.value;
+      const formData = this.myForm.value; // this formData contains the role of the user we want to create  
+      const userToAdd: UserDTO = {
+        username: formData.username,
+        email: formData.email,
+        lastName: formData.lastName,
+        firstName: formData.firstName,
+        password: formData.password
+      }; // here we exclude the role field
+
+      this.userService.createUser(userToAdd).subscribe({ // first we create a user with no roles
+
+        next: (createdUser) => {
+          console.log('User created:', createdUser); // this is the user created
+
+          // in case the user is created successfully we add the roles
+          if (formData.role === 'ADMIN') {
+            this.userService.addAdminRole(createdUser.id).subscribe({
+             next: () => console.log('Admin role added successfully'),
+             error : (error) => console.error('Error adding admin role:', error)
+              
+            });
+          }
+          
+
+        }, 
+        error: (error) => {
+          console.error('Creation failed:', error);
+        },
+        complete: () => {
+          console.log('Creation request completed.');
+        }
+    });
+
+  
+      
+
+      // so here we will firstly create a user detached form any role 
+      // after getting a response CREATED , we will go ahead and add a role via an API call
 
     }
   }
