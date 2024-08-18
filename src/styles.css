@@ -2,7 +2,7 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.container { padding: 20px; display: flex; flex-direction: column; gap: 5px;}
+.container { padding: 5px 20px 20px 20px ; display: flex; flex-direction: column; gap: 5px;}
 
 
 .mat-mdc-button {
@@ -135,6 +135,30 @@ html {
     --mat-menu-item-with-icon-leading-spacing: 12px;
     --mat-menu-item-with-icon-trailing-spacing: 12px;
     --mat-menu-base-elevation-level: 2;
+
+
+
+
+    --mat-sidenav-container-background-color: #131413c8 ;
+    --mat-sidenav-container-text-color: #e9e0e4;
+    --mat-sidenav-content-background-color: #deffe2bc;
+    --mat-sidenav-content-text-color: #e9e0e4;
+    --mat-sidenav-scrim-color: rgba(55, 46, 52, 0.4);
+    --mat-sidenav-container-shape: 0px;
+    --mat-sidenav-container-elevation-shadow: none;
+    --mat-sidenav-container-width: 205px;
+    --mat-sidenav-container-divider-color: transparent;
+
+
+    --mat-toolbar-container-background-color: #deffe2bc;
+    --mat-toolbar-container-text-color: #e9e0e4;
+    --mat-toolbar-title-text-font: Roboto, sans-serif;
+    --mat-toolbar-title-text-line-height: 1.75rem;
+    --mat-toolbar-title-text-size: 1.375rem;
+    --mat-toolbar-title-text-tracking: 0;
+    --mat-toolbar-title-text-weight: 400;
+    --mat-toolbar-standard-height: 64px;
+    --mat-toolbar-mobile-height: 56px;
 
 }
 

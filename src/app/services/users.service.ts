@@ -1,13 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 // we should import the UserDTO model 
 import { UserDTO } from '../model/user.model';
+import { UserCounts } from '../model/userCounts.model';
 
 // here we import the environment object 
 // This object holds configuration values that can change depending on the environment (e.g., development, production).
 import {environment} from "../../environments/environment";
+
+
 
 
 // this service will have methods related to users add user delete user ..........
@@ -27,6 +30,19 @@ export class UsersService {
 
     return this.http.get<UserDTO[]>(this.baseUrl + '/');
 
+  }
+
+  getUserCounts(): Observable<UserCounts>{
+    let params = new HttpParams()
+    .set('countOnly', 'true');
+    return this.http.get<UserCounts>(this.baseUrl+'/', {params: params});
+  }
+
+  getAgencyCounts(): Observable<number>{
+
+    let params = new HttpParams()
+    .set('countOnly', 'true');
+    return this.http.get<number>(environment.backendHost + '/api/agencies/', {params: params})
   }
 
   deleteUser(userId: number): Observable<void> {

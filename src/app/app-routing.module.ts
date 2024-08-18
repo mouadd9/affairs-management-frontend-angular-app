@@ -10,6 +10,9 @@ import { LoginComponent } from './login/login.component';
 import {  AuthorizationGuard} from './guards/authorization.guard';
 import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { UsersResolver } from './resolvers/users.resolver';
+import { userCountsResolver } from './resolvers/user-counts.resolver';
+import { AgencyDataResolver } from './resolvers/agency-counts-resolver.resolver';
 
 const routes: Routes = [
 
@@ -22,11 +25,14 @@ const routes: Routes = [
     
     children: [
     
-    {path:"users", component:ManageUsersComponent ,children: [
+    {path:"users", component:ManageUsersComponent, resolve: { users: UsersResolver } ,children: [
       { path: 'create', component: CreateUserComponent }
     ]},
     {path:"affairs", component:ManageAffairsComponent},
-    {path:"dashboard", component:DashboardComponent },
+    {path:"dashboard", component:DashboardComponent, resolve: {
+      userCounts: userCountsResolver,
+      agencyCount: AgencyDataResolver
+    } },
     {path:"agencies", component:ManageAgenciesComponent}
 
     ]

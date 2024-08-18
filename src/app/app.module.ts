@@ -36,6 +36,7 @@ import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
 import { AuthService } from './services/auth.service';
 import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { CountUpDirective } from './directives/count-up.directive';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     LoginComponent,
     CreateUserComponent,
     AgencyEmployeeTemplateComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    CountUpDirective
   ],
   imports: [
     BrowserModule,

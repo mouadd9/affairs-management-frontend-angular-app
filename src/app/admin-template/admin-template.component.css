@@ -24,28 +24,27 @@
 
 /* Toolbar Styles */
 .mat-toolbar {
-  background-color:  #99d699cc;/* Primary color */
   padding-left: 12px;
   padding-right: 7px;
   height: 9vh;
+  box-shadow:none;
 }
 
-mat-sidenav-content {
-  background-color: #deffe2bc;
-}
+
 
 
 /* Style for the fixed icon sidenav */
-.fixednav {
-  width: 205px; /* Width for icon sidenav */
+.sidenav {
   padding: 0px !important;
  border-radius: 0;
-  background-color: #48594880 !important;
+ border: 0px;
+
+
 
   
 }
 mat-nav-list {
-  margin-top: 8px !important;
+  margin-top: 0px !important;
   padding-left: 0px !important;
   padding-right: 0px !important;
 
@@ -55,7 +54,6 @@ mat-list-item{
   border-radius: 0% !important;
   padding-top: 12px;
   height: 48px;
-  color: white;
  
 
 }
@@ -77,7 +75,6 @@ mat-list-item span{
 
 
 .drawer {
-  background-color: #c8ffc8d9; /* Primary color */
   border-radius: 0%;
   width: 40vh;
 }
@@ -96,7 +93,7 @@ mat-list-item span{
 }
 
 .custom-icon-button:hover {
-  background-color: #d4ffd4 !important;
+  background-color: #a0bba07e !important;
 }
 
 .custom-icon-button .mat-icon {
@@ -124,7 +121,7 @@ mat-list-item span{
 }
 
 .profile:hover {
-  background-color: #d4ffd4 !important;
+  background-color: #a0bba07e !important;
 }
 
 .profile .mat-icon {
