@@ -14,9 +14,11 @@ export class DashboardComponent implements OnInit{
     totalAgencies: 0,
     employeeUsers: 0,
     adminUsers: 0,
-    backOfficeEmployees:0
-
+    backOfficeEmployees: 0
     // we still need 
+    ,
+    emptyAgencies: 0,
+    nonEmptyAgencies: 0
   };
 
   constructor(private route: ActivatedRoute,
@@ -33,7 +35,9 @@ export class DashboardComponent implements OnInit{
       this.dashboardCounts.adminUsers = data['userCounts']['ADMIN'];
       this.dashboardCounts.employeeUsers = data['userCounts']['AGENCY_EMPLOYEE'];
       this.dashboardCounts.backOfficeEmployees = data['userCounts']['BACK_OFFICE'];
-      this.dashboardCounts.totalAgencies = data['agencyCount'];
+      this.dashboardCounts.totalAgencies = data['agencyCount']['total'];
+      this.dashboardCounts.emptyAgencies = data['agencyCount']['empty'];
+      this.dashboardCounts.nonEmptyAgencies = data['agencyCount']['non_empty'];
 
        // Trigger the animation after a short delay to ensure all directives are initialized
        setTimeout(() => this.countUpService.triggerAnimation(), 90);

@@ -9,6 +9,7 @@ import { UserCounts } from '../model/userCounts.model';
 // here we import the environment object 
 // This object holds configuration values that can change depending on the environment (e.g., development, production).
 import {environment} from "../../environments/environment";
+import { AgencyCounts } from '../model/agencyCounts.model';
 
 
 
@@ -38,11 +39,11 @@ export class UsersService {
     return this.http.get<UserCounts>(this.baseUrl+'/', {params: params});
   }
 
-  getAgencyCounts(): Observable<number>{
+  getAgencyCounts(): Observable<AgencyCounts>{
 
     let params = new HttpParams()
     .set('countOnly', 'true');
-    return this.http.get<number>(environment.backendHost + '/api/agencies/', {params: params})
+    return this.http.get<AgencyCounts>(environment.backendHost + '/api/agencies/', {params: params})
   }
 
   deleteUser(userId: number): Observable<void> {

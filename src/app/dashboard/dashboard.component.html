@@ -7,48 +7,73 @@
         class="padding-bottom-10 icon"><mat-icon
             style="padding-right: 5px;">equalizer</mat-icon>Metrics</span>
     <div class="dashboard-metrics">
-       <div class="container1">
-        <div class="users-main-metric-card" style="height:70px; width:50%;">
+        <div class="container1">
+            <div class="users-main-metric-card" style="height:100%; width:100%;">
 
-            <span style="font-size: 1.5em;"
-                class="icon"><mat-icon>business</mat-icon>Total Agencies</span>
-            <span [appCountUp]="dashboardCounts.totalAgencies" [duration]="1500" style="font-size: 2.9em;">0</span>
+                <div class="users-metric-cards">
 
+                    <div style="display: flex; flex-direction:column;">
+                    <span style="font-size: 1.5em;"
+                        class="icon"><mat-icon>business</mat-icon>Total
+                        Agencies</span>
+
+                    <span [appCountUp]="dashboardCounts.totalAgencies"
+                        [duration]="1500" style="font-size: 2.9em;">0</span></div>
+
+                    <div class="card">
+                        <span style="font-size: 1.5em;">non empty
+                            </span>
+
+                        <span [appCountUp]="dashboardCounts.nonEmptyAgencies"
+                            [duration]="0" style="font-size: 2.9em;">0</span>
+                    </div>
+
+                    <div class="card">
+                        <span style="font-size: 1.5em;">empty</span>
+                        <span [appCountUp]="dashboardCounts.emptyAgencies"
+                            [duration]="0" style="font-size: 2.9em;">0</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="users-main-metric-card" style="height:70px;width:50%;">
+
+                <span style="font-size: 1.5em;"
+                    class="icon"><mat-icon>assignment</mat-icon>Total
+                    Affairs</span>
+                <span style="font-size: 2.9em;">0</span>
+
+            </div>
         </div>
-        <div class="users-main-metric-card" style="height:70px;width:50%;">
-
-            <span style="font-size: 1.5em;"
-                class="icon"><mat-icon>assignment</mat-icon>Total Affairs</span>
-            <span style="font-size: 2.9em;">0</span>
-
-        </div>
-    </div> 
         <div class="users-main-metric-card">
             <div class="general-info">
                 <span style="font-size: 1.5em;"
                     class="icon"><mat-icon>group</mat-icon>Total Users</span>
-                <span [appCountUp]="dashboardCounts.totalUsers" [duration]="0" style="font-size: 2.9em;">0</span>
+                <span [appCountUp]="dashboardCounts.totalUsers" [duration]="0"
+                    style="font-size: 2.9em;">0</span>
             </div>
 
             <div class="users-metric-cards">
                 <div class="card">
                     <span style="font-size: 1.5em;">Adminnistrators</span>
-                    <span [appCountUp]="dashboardCounts.adminUsers" [duration]="0" style="font-size: 2.9em;">0</span>
+                    <span [appCountUp]="dashboardCounts.adminUsers"
+                        [duration]="0" style="font-size: 2.9em;">0</span>
                 </div>
 
                 <div class="card">
                     <span style="font-size: 1.5em;">Agency employees</span>
-                    <span [appCountUp]="dashboardCounts.employeeUsers" [duration]="0" style="font-size: 2.9em;">0</span>
+                    <span [appCountUp]="dashboardCounts.employeeUsers"
+                        [duration]="0" style="font-size: 2.9em;">0</span>
                 </div>
 
                 <div class="card">
                     <span style="font-size: 1.5em;">Back office</span>
-                    <span [appCountUp]="dashboardCounts.backOfficeEmployees" [duration]="0" style="font-size: 2.9em;">0</span>
+                    <span [appCountUp]="dashboardCounts.backOfficeEmployees"
+                        [duration]="0" style="font-size: 2.9em;">0</span>
                 </div>
             </div>
 
         </div>
 
-        
     </div>
 </div>
