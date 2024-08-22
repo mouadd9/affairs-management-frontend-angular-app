@@ -19,24 +19,23 @@ import {MatRadioModule} from '@angular/material/radio';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 import { AppComponent } from './app.component';
-import { AdminTemplateComponent } from './admin-template/admin-template.component';
-import { ManageAgenciesComponent } from './manage-agencies/manage-agencies.component';
-import { ManageAffairsComponent } from './manage-affairs/manage-affairs.component';
-import { ManageUsersComponent } from './manage-users/manage-users.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { CreateUserComponent } from './create-user/create-user.component';
+import { AdminTemplateComponent } from './components/admin-template/admin-template.component';
+import { ManageAgenciesComponent } from './components/manage-agencies/manage-agencies.component';
+import { ManageAffairsComponent } from './components/manage-affairs/manage-affairs.component';
+import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 
 
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
-import { AuthService } from './services/auth.service';
-import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { AgencyEmployeeTemplateComponent } from './components/agency-employee-template/agency-employee-template.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { CountUpDirective } from './directives/count-up.directive';
+import { CreateAgencyComponent } from './components/create-agency/create-agency.component';
 
 
 @NgModule({
@@ -51,7 +50,8 @@ import { CountUpDirective } from './directives/count-up.directive';
     CreateUserComponent,
     AgencyEmployeeTemplateComponent,
     UnauthorizedComponent,
-    CountUpDirective
+    CountUpDirective,
+    CreateAgencyComponent
   ],
   imports: [
     BrowserModule,

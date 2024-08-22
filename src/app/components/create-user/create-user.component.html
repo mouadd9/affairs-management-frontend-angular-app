@@ -36,10 +36,23 @@
               <input matInput type="text" formControlName="password">
             </mat-form-field>
              <!-- Checkboxes for roles -->
-             <mat-radio-group formControlName="role">
-              <mat-radio-button value="ADMIN">Admin</mat-radio-button>
-              <mat-radio-button value="AGENCY_EMPLOYEE">Agency Employee</mat-radio-button>
-            </mat-radio-group>
+             
+            <mat-form-field appearance="outline" class="custom-form-field">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role">
+                <mat-option value="ADMIN">Admin</mat-option>
+                <mat-option value="AGENCY_EMPLOYEE">Agency Employee</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="myForm.get('role')?.value === 'AGENCY_EMPLOYEE'" appearance="outline" class="custom-form-field">
+              <mat-label>Agency</mat-label>
+              <mat-select formControlName="agency">
+                <mat-option *ngFor="let agency of activeAgencies" [value]="agency.id">
+                  {{agency.agencyCode}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
 
         <!-- Conditionally displayed dropdown for agency -->

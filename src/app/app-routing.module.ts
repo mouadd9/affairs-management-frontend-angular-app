@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ManageAffairsComponent } from './manage-affairs/manage-affairs.component';
-import { ManageAgenciesComponent } from './manage-agencies/manage-agencies.component';
-import { ManageUsersComponent } from './manage-users/manage-users.component';
-import { CreateUserComponent } from './create-user/create-user.component';
-import { AdminTemplateComponent } from './admin-template/admin-template.component';
-import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ManageAffairsComponent } from './components/manage-affairs/manage-affairs.component';
+import { ManageAgenciesComponent } from './components/manage-agencies/manage-agencies.component';
+import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
+import { AdminTemplateComponent } from './components/admin-template/admin-template.component';
+import { LoginComponent } from './components/login/login.component';
 import {  AuthorizationGuard} from './guards/authorization.guard';
-import { AgencyEmployeeTemplateComponent } from './agency-employee-template/agency-employee-template.component';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { AgencyEmployeeTemplateComponent } from './components/agency-employee-template/agency-employee-template.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UsersResolver } from './resolvers/users.resolver';
 import { userCountsResolver } from './resolvers/user-counts.resolver';
 import { AgencyDataResolver } from './resolvers/agency-counts-resolver.resolver';
+import { AgenciesResolver } from './resolvers/agencies.resolver';
+import { CreateAgencyComponent } from './components/create-agency/create-agency.component';
 
 const routes: Routes = [
 
@@ -25,7 +27,7 @@ const routes: Routes = [
     
     children: [
     
-    {path:"users", component:ManageUsersComponent, resolve: { users: UsersResolver } ,children: [
+    {path:"users", component:ManageUsersComponent, resolve: { users: UsersResolver , agencies: AgenciesResolver} ,children: [
       { path: 'create', component: CreateUserComponent }
     ]},
     {path:"affairs", component:ManageAffairsComponent},
@@ -33,7 +35,9 @@ const routes: Routes = [
       userCounts: userCountsResolver,
       agencyCount: AgencyDataResolver
     } },
-    {path:"agencies", component:ManageAgenciesComponent}
+    {path:"agencies", component:ManageAgenciesComponent, resolve: {agencies: AgenciesResolver}, children:[
+      { path: 'create', component: CreateAgencyComponent }
+    ] }
 
     ]
 

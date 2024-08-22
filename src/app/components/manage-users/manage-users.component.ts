@@ -9,9 +9,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserDTO } from '../model/user.model';
-import { UsersService } from '../services/users.service';
-import { UserUpdateService } from '../services/user-update.service';
+import { UserDTO } from '../../model/user.model';
+import { UsersService } from '../../services/users.service';
 import { Subscription } from 'rxjs';
 import { NgZone } from '@angular/core';
 
@@ -43,7 +42,6 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private usersService: UsersService,
-    private userUpdateService: UserUpdateService,
     private ngZone: NgZone
   ) {
     // here we create a new instance of MatTableDataSource initilized with an empty array
@@ -66,60 +64,26 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions to prevent memory leaks
-    this.updateSubscription.unsubscribe();
-  }
-
   // Private method to set up all subscriptions
   private setupSubscriptions(): void {
     this.updateSubscription.add(
-      this.userUpdateService.update$.subscribe(() => this.loadUsers())
-    );
-    this.updateSubscription.add(
-      this.userUpdateService.update2$.subscribe(() => this.scrollThenNavigate())
-    );
-  }
-
-  // Method to load users from the service
-  loadUsers(): void {
-    this.usersService.getAllUsers().subscribe({
-      next: (users: UserDTO[]) => {
-        this.users = users; // we store the users
-        this.dataSource.data = this.users; // then we put them as our data source
-      },
-      error: (error) => {
-        console.error('Error fetching users:', error);
-      },
-    });
-  }
-
-  // Method to delete a user
-  deleteUser(userId: number): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.usersService.deleteUser(userId).subscribe({
-        next: () => {
-
-          this.userUpdateService.updateChart();
-          
+      // if we send a signal to the observable "update$" the following will happen
+      // - we will repopulate our data source with the new users 
+      // - so that when the user clicks save a new user will add up in the table without rebooting the entire component
+      // instead of nesting subscription we just used the .pipe() and some operators "l"
+      this.usersService.changeUsersState$.subscribe({ // now we subscribe to the new observable
+        next: (newUsers: UserDTO[]) => {
+          this.users = newUsers;
+          this.dataSource.data = this.users;
         },
-        error: (error) => console.error('Error deleting user:', error),
-      });
-    }
-  }
-
-  // Method to filter users based on input
-  filterUsers(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  // Method to scroll to the user form
-  scrollToForm(): void {
-    this.router.navigate(['create'], { relativeTo: this.route });
-    setTimeout(() => {
-      this.userFormOutlet.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+        error: (error) => {
+          console.error('Error fetching users:', error);
+        },
+      })
+    )
+    this.updateSubscription.add(
+      this.usersService.closeUserForm$.subscribe(() => this.scrollThenNavigate())
+    );
   }
 
   // Method to scroll to top and then navigate
@@ -146,4 +110,46 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
       setTimeout(resolve, 700);
     });
   }
+
+
+   // Method to scroll to the user form
+   scrollToForm(): void {
+    this.router.navigate(['create'], { relativeTo: this.route });
+    setTimeout(() => {
+      this.userFormOutlet.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }
+
+
+  // Method to delete a user
+  deleteUser(userId: number): void {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.usersService.deleteUser(userId).subscribe({
+        next: () => {
+          this.usersService.changeState();
+        },
+        error: (error) => {
+          console.error('Error deleting user:', error);
+          // Handle error (e.g., show an error message to the user)
+        }
+
+      });   
+  }
+
+}
+
+  // Method to filter users based on input
+  filterUsers(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+ 
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.updateSubscription.unsubscribe();
+  }
+
+  
 }

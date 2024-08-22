@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DashboardCounts } from '../model/DashboardCounts.model';
-import { CountUpService } from '../services/count-up.service';
+import { DashboardCounts } from '../../model/DashboardCounts.model';
+import { CountUpService } from '../../services/count-up.service';
 
 @Component({
   selector: 'app-dashboard',
