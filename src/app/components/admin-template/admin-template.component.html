@@ -12,8 +12,9 @@
       <!-- Spacer to push navigation buttons to the right -->
     <span class="spacer"></span>
     
-    <span style="color: #062c06; margin-left:6px; padding-top:0px; font-size:25px" *ngIf="this.authService.isAuthenticated === true">
-      {{this.authService.username}}
+    <span class="user" *ngIf="this.authService.isAuthenticated === true">
+      <mat-icon class="icon" *ngIf="this.authService.roles.includes('ADMIN')" >admin_panel_settings</mat-icon>
+      <div>{{this.authService.username}}</div>
     </span>
 
    

@@ -1,8 +1,8 @@
 export interface DashboardCounts {
     totalUsers: number;
     totalAgencies: number;
-    emptyAgencies:number;
-    nonEmptyAgencies: number;
+    active:number;
+    inactive: number;
     employeeUsers: number;
     adminUsers: number;
     // Future additions:

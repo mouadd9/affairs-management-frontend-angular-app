@@ -3,7 +3,10 @@ import {
   Component,
   ElementRef,
   OnInit,
-  ViewChild,
+  ViewChild
+  , ChangeDetectorRef,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,28 +28,36 @@ import { AgenciesService } from '../../services/agencies.service';
 
 
 
-export class ManageAgenciesComponent implements OnInit, AfterViewInit {
+export class ManageAgenciesComponent implements OnInit, AfterViewInit  {
 
  
   
   public agencies: Agency[] = [];
   public showAddAgencyForm: boolean = false;
   public dataSource: MatTableDataSource<Agency>;
-displayedColumns: string[] = ['id', 'agencyCode', 'address', 'status', 'creationDate', 'delete', 'employees'];
+displayedColumns: string[] = ['id', 'agencyCode', 'address', 'status', 'creationDate', 'actions'];
    // ViewChild decorators for accessing DOM elements and Angular Material components
-   @ViewChild(MatPaginator) paginator!: MatPaginator;
-   @ViewChild(MatSort) sort!: MatSort;
+   @ViewChild('agencyPaginator') agencyPaginator!: MatPaginator;
+   @ViewChild('agencySort') agencySort!: MatSort;
    @ViewChild('agencyFormOutlet') agencyFormOutlet!: ElementRef;
    @ViewChild('chart') chart!: ElementRef;
 
+
+   @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sorts!: QueryList<MatSort>;
+
+
+  private employeePaginatorInitialized = false;
+  private employeeSortInitialized = false;
+
+   
 
 
    public showEmpl: boolean = false;
    public employees: UserDTO[] = [];
    public employeeDataSource: MatTableDataSource<UserDTO>;
    public employeeDisplayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'username', 'roles', 'actions']; 
-   @ViewChild('employeePaginator') employeePaginator!: MatPaginator;
-   @ViewChild('employeeSort') employeeSort!: MatSort;
+  
    @ViewChild('employees') employeeSection! : ElementRef;
 
 
@@ -59,7 +70,8 @@ displayedColumns: string[] = ['id', 'agencyCode', 'address', 'status', 'creation
     private route: ActivatedRoute,
     private agencyService: AgenciesService,
     private ngZone: NgZone,
-    private usersService: UsersService 
+    private usersService: UsersService,
+    private cdr: ChangeDetectorRef
   ) {
     // this is the data source that will be fed to our chart
     this.dataSource = new MatTableDataSource<Agency>([]);
@@ -71,26 +83,47 @@ displayedColumns: string[] = ['id', 'agencyCode', 'address', 'status', 'creation
     this.route.data.subscribe({ // we subscribe to our route's observable that emits data
       next: data => {
       this.agencies = data['agencies']; // we choose the data emitted by our agencies resolver
-      this.dataSource.data = this.agencies; // we pass it to our datasource
+      this.dataSource.data = this.agencies; // we pass it to our datasource   
     }});
 
     this.setupSubscriptions();
     
   }
 
-  ngAfterViewInit(): void {
-    // Connect the MatTableDataSource with the paginator and sort components
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.employeeDataSource.paginator = this.employeePaginator;
-    this.employeeDataSource.sort = this.employeeSort;
+  ngAfterViewInit() {
+  
+      this.dataSource.paginator = this.agencyPaginator;
+      this.dataSource.sort = this.agencySort;
+   
+
+   
+    
+  }
+
+  ngAfterViewChecked() {
+    if (this.showEmpl && !this.employeePaginatorInitialized && this.paginators.length > 1) {
+      this.employeeDataSource.paginator = this.paginators.toArray()[1];
+      this.employeePaginatorInitialized = true;
+      this.cdr.detectChanges();
+    }
+    if (this.showEmpl && !this.employeeSortInitialized && this.sorts.length > 1) {
+      this.employeeDataSource.sort = this.sorts.toArray()[1];
+      this.employeeSortInitialized = true;
+      this.cdr.detectChanges();
+    }
   }
 
    // Method to filter users based on input
    filterAgencies(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.employeeDataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+
   }
+
   
   // Private method to set up all subscriptions
   private setupSubscriptions(): void {
@@ -171,15 +204,25 @@ displayedColumns: string[] = ['id', 'agencyCode', 'address', 'status', 'creation
       }
     }
 
+
   showEmployees(agencyID: number , agencyCode: string) {
 
     this.usersService.getUsersByAgency(agencyID).subscribe({
+
       next: (employees: UserDTO[]) => {
+
         console.log('Employees fetched:', employees);
         this.employees = employees;
         this.currentAgencyCode = agencyCode;
         this.employeeDataSource.data = this.employees;
+
         this.showEmpl = true;
+
+        this.employeePaginatorInitialized = false;
+        this.employeeSortInitialized = false;
+
+        this.cdr.detectChanges();
+
         console.log('Employee data source:', this.employeeDataSource.data);
 
         setTimeout(() => {
@@ -202,6 +245,7 @@ displayedColumns: string[] = ['id', 'agencyCode', 'address', 'status', 'creation
       this.usersService.deleteUser(userId).subscribe({
         next: () => {
           this.employeeDataSource.data = this.employees.filter(employee => employee.id != userId);
+          
         },
         error: (error) => {
           console.error('Error deleting user:', error);

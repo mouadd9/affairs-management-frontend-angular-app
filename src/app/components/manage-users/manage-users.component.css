@@ -1,4 +1,69 @@
 
+.page-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: solid 2.5px rgb(0, 0, 0);
+  padding-bottom: 5px;
+}
+
+.page-header mat-icon {
+  font-size: 35px  !important;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  margin-right: 10px;
+  color: black;
+}
+
+.page-header h1 {
+  font-size: 2.2em;
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+
+.sub-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.sub-header mat-icon {
+  font-size: 27px !important;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  margin-right: 10px;
+  
+  color: black;
+}
+
+.sub-header h2 {
+  font-size: 1.8em;
+  margin: 0;
+  color: black;
+}
+
+.upperSection {
+  max-width: 1500px;
+  height: 65px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  margin-bottom: 5px;
+
+}
+
+.custom-form-field {
+    width: 35vh; /* Ensure form fields take the full width */
+    min-width: 200px;
+    background-color: transparent !important;
+    margin-right: 20px;
+    margin: 3px 0;
+  }
 
 .icon2{
   display: inline-flex;
@@ -17,13 +82,10 @@
   transition: color 0.5ms ease-in-out, transform 0.1ms ease-in-out, border-color 0.5ms ease-in-out;
 }
 
+
 .icon2:hover  {
   background-color: #d4ffd4;
-  
-  transform: scale(1.01); /* Slightly scale up on hover for effect */
-}
-.icon2:hover mat-icon {
-  color: #062c06 !important; /* Change icon color on hover */
+  transform: scale(1.05); /* Slightly scale up on hover for effect */
 }
 
 .icon2 mat-icon {
@@ -37,26 +99,8 @@
 }
 
 
-.upperSection {
-  width: 100%;
-  height: 65px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-
-}
-
-
-.custom-form-field {
-  
-  margin: 3px 0;
-  background-color: gray; 
-}
-
-
-
-.padding-bottom-10 {
-    padding-bottom: 10px;
+.icon2:hover mat-icon {
+  color: #062c06 !important; /* Change icon color on hover */
 }
 
 .icon mat-icon {
@@ -76,9 +120,6 @@
     justify-content: flex-start; /* Align icons and text to the left */
   }
 
-  .dash {    
-    border-bottom: solid  2.5px rgba(30, 71, 39, 0.854) ;
-  }
 
   .container1 {
     display: flex;
@@ -99,7 +140,4 @@
   }
 
 
-  .custom-form-field {
-    width: 35vh; /* Ensure form fields take the full width */
-    background-color: transparent !important;
-  }
+  

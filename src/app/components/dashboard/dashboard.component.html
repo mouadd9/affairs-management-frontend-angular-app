@@ -8,32 +8,33 @@
             style="padding-right: 5px;">equalizer</mat-icon>Metrics</span>
     <div class="dashboard-metrics">
         <div class="container1">
-            <div class="users-main-metric-card" style="height:100%; width:100%;">
+            <div class="container2">
 
-                <div class="users-metric-cards">
+                
 
-                    <div style="display: flex; flex-direction:column;">
-                    <span style="font-size: 1.5em;"
+                    <div style="display: flex; flex-direction:column; margin:0px; width:280px">
+                    <span style="font-size: 1.5em; padding:0px; height:50%"
                         class="icon"><mat-icon>business</mat-icon>Total
                         Agencies</span>
 
                     <span [appCountUp]="dashboardCounts.totalAgencies"
-                        [duration]="1500" style="font-size: 2.9em;">0</span></div>
+                        [duration]="1500" style="font-size: 2.9em; padding:0px; height:50%;">0</span>
+                    </div>
 
-                    <div class="card">
-                        <span style="font-size: 1.5em;">non empty
+                    <div class="container3">
+                        <span style="font-size: 1.5em;">Inactive
                             </span>
 
-                        <span [appCountUp]="dashboardCounts.nonEmptyAgencies"
+                        <span [appCountUp]="dashboardCounts.inactive"
                             [duration]="0" style="font-size: 2.9em;">0</span>
                     </div>
 
-                    <div class="card">
-                        <span style="font-size: 1.5em;">empty</span>
-                        <span [appCountUp]="dashboardCounts.emptyAgencies"
+                    <div class="container3">
+                        <span style="font-size: 1.5em;">Active</span>
+                        <span [appCountUp]="dashboardCounts.active"
                             [duration]="0" style="font-size: 2.9em;">0</span>
                     </div>
-                </div>
+              
 
             </div>
             <div class="users-main-metric-card" style="height:70px;width:50%;">
@@ -55,7 +56,7 @@
 
             <div class="users-metric-cards">
                 <div class="card">
-                    <span style="font-size: 1.5em;">Adminnistrators</span>
+                    <span style="font-size: 1.5em;">Administrators</span>
                     <span [appCountUp]="dashboardCounts.adminUsers"
                         [duration]="0" style="font-size: 2.9em;">0</span>
                 </div>

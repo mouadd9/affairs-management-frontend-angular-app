@@ -93,17 +93,41 @@ mat-list-item span{
 }
 
 .custom-icon-button:hover {
-  background-color: #a0bba07e !important;
+  background-color: rgba(0, 0, 0, 0.09) !important;
 }
 
 .custom-icon-button .mat-icon {
-  color: #062c06;
+  color: black;
   font-size: 28px !important;
   vertical-align: middle;
   width: auto;
   height: auto;
   line-height: normal;
 }
+
+.user {
+  display: flex;
+  justify-content: center;
+
+  color : black;
+ 
+
+}
+
+.user div {
+  margin-left:6px; padding-top:0px; font-size:25px
+}
+
+.icon {
+  font-size: 28px !important;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  line-height: normal;
+
+}
+
+
 
 /* Profile Button Styles */
 .profile {
@@ -116,16 +140,16 @@ mat-list-item span{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: none;
+  background-color: transparent;
   margin: 0 10px;
 }
 
 .profile:hover {
-  background-color: #a0bba07e !important;
+  background-color: rgba(0, 0, 0, 0.09) !important;
 }
 
 .profile .mat-icon {
-  color: #062c06;
+  color: black;
   font-size: 26px !important;
   vertical-align: middle;
   width: auto;
