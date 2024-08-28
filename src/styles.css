@@ -53,7 +53,7 @@ html {
   --mdc-filled-text-field-focus-container-color: black; /* Focus state container */
 
   /* Input Background Colors */
-  --mdc-filled-text-field-input-background-color: black; /* Input background color */
+  --mdc-filled-text-field-input-background-color: none !important; /* Input background color */
   --mdc-filled-text-field-disabled-input-background-color: black; /* Disabled input background color */
 
   /* Input Text Colors */
@@ -234,6 +234,9 @@ html {
 
 
     --mat-sort-arrow-color: black;
+
+
+    
 }
 
 
@@ -286,16 +289,32 @@ table.mat-mdc-table {
 }
 
 .mat-column-id { min-width: 50px; }
-.mat-column-firstName, .mat-column-lastName { min-width: 145px; }
-.mat-column-email, .mat-column-username { min-width: 155px; }
-.mat-column-roles { min-width: 100px; }
-.mat-column-actions { min-width: 80px; }
+.mat-column-firstName, .mat-column-lastName { min-width: 135px; }
+.mat-column-email { min-width: 220px; }
+.mat-column-username {min-width: 150px;}
+.mat-column-roles { min-width: 120px; }
+.mat-column-actions { min-width: 110px; }
 .mat-column-agencyCode { min-width: 120px; }
 .mat-column-address { min-width: 180px; }
 .mat-column-status { min-width: 100px; }
 .mat-column-creationDate { min-width: 180px; }
 
+.action-cell {
+  padding-right: 0px !important;
+  padding-left: 10px !important;
+  width: 120px; /* Width when not editing */
+  transition: width 0.3s ease; /* Smooth transition for width change */
+  white-space: nowrap;
+  overflow: visible;
+}
 
+.action-cell.expanded {
+  width: auto; /* or set a specific wider width, e.g., 200px */
+}
+
+.action-cell button {
+  margin-right: 5px; /* Space between buttons */
+}
 .mat-mdc-paginator {
   max-width: 1500px;
   min-width: 300px;
@@ -333,3 +352,44 @@ mat-list-item {
 
 
 
+.transparent-form-field {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.transparent-form-field ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+.transparent-form-field ::ng-deep .mat-form-field-outline {
+  background-color: transparent !important;
+}
+
+.transparent-form-field ::ng-deep .mat-form-field-infix {
+  padding: 0.5em 0 !important;
+  border-top: none !important;
+}
+
+.transparent-form-field input {
+  color: black !important;
+}
+
+.faded-pen-icon {
+  color: rgba(0, 0, 0, 0.3) !important;  /* Adjust the alpha value to change the fade level */
+  font-size: 18px !important; /* Adjust as needed */
+}
+
+/* Optional: Style for when the input is focused */
+.transparent-form-field.mat-focused .mat-form-field-outline {
+  color: none !important;  /* Very light border when focused */
+}
+
+.mat-mdc-form-field-bottom-align::before {
+  content: none !important;
+  display: inline-block;
+  height: 0px !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+}

@@ -25,7 +25,7 @@ export const AppHttpInterceptor: HttpInterceptorFn = (req, next) => {
             // Optionally, redirect to login page
             // You might need to inject Router if you want to redirect here
           }
-          return throwError(() => new Error(`Failed to fetch data: ${error.message}`));
+          return throwError(() => error);
         })
       );
     }

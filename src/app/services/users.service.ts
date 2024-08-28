@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, switchMap } from 'rxjs';
+import { catchError, Observable, Subject, switchMap, throwError } from 'rxjs';
 
 // we should import the UserDTO model 
 import { UserDTO } from '../model/user.model';
@@ -79,8 +79,35 @@ export class UsersService {
     return this.http.post<UserDTO>(this.baseUrl+'/', user);
   }
 
+
+  updateUser(user: UserDTO): Observable<UserDTO> {
+    console.log(user);
+    return this.http.put<UserDTO>(this.baseUrl+'/'+user.id , user).pipe(
+      catchError((error: HttpErrorResponse) => {
+        
+        let errorMessage: string;
+        switch (error.status) {
+          case 409:
+            console.log("Handling 409 Conflict");
+            errorMessage = error.error || 'User with this username or email already exists.';
+            break;
+          case 404:
+            errorMessage = 'User not found. The user may have been deleted.';
+            break;
+          case 400:
+            errorMessage = 'Invalid input. Please check your data and try again.';
+            break;
+          default:
+            errorMessage = 'Failed to update user. Please try again.';
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  
+  }
+
   addAdminRole(userId?: number): Observable<void> {
-    return this.http.put<void>( this.baseUrl + '/'+ userId, {});
+    return this.http.put<void>( this.baseUrl + '/'+ userId +'/add-admin-role', {});
   }
 
   addEmployeeRole(userId?: number, agencyId?:number) {

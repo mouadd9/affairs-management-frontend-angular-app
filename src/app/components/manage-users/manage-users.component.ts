@@ -20,6 +20,7 @@ import { NgZone } from '@angular/core';
   styleUrl: './manage-users.component.css',
 })
 export class ManageUsersComponent implements OnInit, AfterViewInit {
+
  
 
   public users: UserDTO[] = [];
@@ -137,6 +138,54 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   }
 
 }
+errorMessage: string = '';
+successMessage: string = '';
+isSaving: boolean = false;
+private editedUserBackup: Partial<UserDTO> = {}; 
+
+saveUser(user: UserDTO) : void {
+  this.isSaving = true;
+  user.isEditing = false;
+  this.errorMessage = '';
+  console.log('Saving user:', user);
+
+  // rn we will store user an updateUser Service , we will give it our user , the service will extract the id of the user
+  // the backend will search for that user and update it using the new data
+  this.usersService.updateUser(user).subscribe({
+    next: updatedUser => {
+      console.log('User updated successfully:', updatedUser);
+      Object.assign(user, updatedUser);
+      this.editedUserBackup = {};
+      this.successMessage = 'User updated successfully';
+setTimeout(() => this.successMessage = '', 3000);
+    },
+    error: (error: Error) => {
+      console.error('Error updating user:', error);
+      this.cancelEdit(user);
+      this.errorMessage = error.message;
+    }
+  }).add(() => {
+    this.isSaving = false;
+  });
+  }
+
+
+  
+  // the type Partial<UserDTO> is the same as UserDTO but everything is optional 
+
+  // so what will happen is , when we click the editUser button
+  // we will first change the isEditing boolean to true , so that we will hide the current value
+  // and show an form field that we will use to bind inputed data 
+editUser(user: UserDTO): void {
+  this.editedUserBackup = { ...user }; // When entering edit mode, we create a backup of the user data.
+  user.isEditing = true;
+  }
+
+  cancelEdit(user: UserDTO) : void {
+    Object.assign(user, this.editedUserBackup); // If the user cancels the edit, we restore the original values from the backup.
+    user.isEditing = false; // We then exit edit mode and clear the backup.
+    this.editedUserBackup = {};
+  }
 
   // Method to filter users based on input
   filterUsers(event: Event): void {

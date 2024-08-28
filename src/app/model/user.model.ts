@@ -6,5 +6,6 @@ export interface UserDTO {
     firstName: string;
     lastName: string;
     roles?: string[]; // an array of strings (roles)
+    isEditing?: boolean;
   }
   

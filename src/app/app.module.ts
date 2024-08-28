@@ -17,6 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 import { LoginComponent } from './components/login/login.component';
@@ -74,7 +76,9 @@ import { CreateAgencyComponent } from './components/create-agency/create-agency.
     MatCheckboxModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatRadioModule
+    MatRadioModule,
+    FormsModule,
+    MatProgressSpinnerModule
 
   ],
   providers: [
