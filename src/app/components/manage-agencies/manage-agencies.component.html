@@ -27,6 +27,15 @@
     </div>
 
     <div class="table-container">
+        <div *ngIf="errorMessage" class="error-message">
+            {{errorMessage}}
+          </div>
+          <div *ngIf="successMessage" class="success-message">
+            {{successMessage}}
+          </div>
+          <div *ngIf="deletionMessage" class="error-message">
+            {{deletionMessage}}
+          </div>
         <table matSort  #agencySort="matSort" mat-table [dataSource]="dataSource" class="mat-mdc-table">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-id"> ID </th>
@@ -35,17 +44,48 @@
     
             <ng-container matColumnDef="agencyCode">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-agencyCode"> Agency Code </th>
-                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-agencyCode">{{element.agencyCode}}</td>
+                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-agencyCode">
+                    <ng-container *ngIf="element.id !== this.editingAgencyId">
+                        {{element.agencyCode}}
+                    </ng-container>
+                    <mat-form-field *ngIf="element.id === this.editingAgencyId && editForm" appearance="fill" class="transparent-form-field">
+                        <input matInput [formControl]="getFormControl('agencyCode')" name="agencyCode">
+                        <mat-error *ngIf="editForm.get('agencyCode')?.hasError('required')">Agency code is required</mat-error>
+                        <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                    </mat-form-field>
+                </td>
             </ng-container>
     
             <ng-container matColumnDef="address">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-address"> Address </th>
-                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-address">{{element.address}}</td>
+                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-address">
+                 
+                    <ng-container *ngIf="element.id !== this.editingAgencyId">
+                        {{element.address}}
+                    </ng-container>
+                    <mat-form-field *ngIf="element.id === this.editingAgencyId && editForm" appearance="fill" class="transparent-form-field">
+                        <input matInput [formControl]="getFormControl('address')" name="address">
+                        <mat-error *ngIf="editForm.get('address')?.hasError('required')">address is required</mat-error>
+                        <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                    </mat-form-field>
+                </td>
             </ng-container>
     
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-status"> Status </th>
-                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-status">{{element.status}}</td>
+                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-status">
+                    <ng-container *ngIf="element.id !== editingAgencyId">
+                        {{element.status}}
+                    </ng-container>
+                    <mat-form-field *ngIf="element.id === editingAgencyId && editForm" appearance="fill" class="transparent-form-field">
+                        <mat-select [formControl]="getFormControl('status')">
+                            <mat-option value="ACTIVE">ACTIVE</mat-option>
+                            <mat-option value="SUSPENDED">SUSPENDED</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="editForm.get('status')?.hasError('required')">Status is required</mat-error>
+                        <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                    </mat-form-field>
+                </td>
             </ng-container>
     
             <ng-container matColumnDef="creationDate">
@@ -55,15 +95,27 @@
     
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef class="mat-mdc-header-cell mat-column-actions"> Actions </th>
-                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-actions">
-                    <button mat-icon-button color="warn" (click)="deleteAgency(element.id)">
+                <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-actions action-cell" [class.expanded]="element.id === this.editingAgencyId">
+                    <div class="action-buttons-container">
+                    <button mat-icon-button color="primary" (click)="editAgency(element)" *ngIf="element.id !== this.editingAgencyId">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="cancelEdit()" *ngIf="element.id === this.editingAgencyId">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="saveChanges(element)" *ngIf="element.id === this.editingAgencyId" [disabled]="isSaving || editForm?.invalid">
+                        <mat-icon *ngIf="!isSaving">save</mat-icon>
+                        <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteAgency(element.id)" *ngIf="element.id !== this.editingAgencyId" >
                         <mat-icon>delete</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" (click)="showEmployees(element.id, element.agencyCode)">
+                    <button mat-icon-button color="primary" (click)="showEmployees(element.id, element.agencyCode)" *ngIf="element.id !== this.editingAgencyId">
                         <mat-icon>group</mat-icon>
                     </button>
+                </div>
                 </td>
-            </ng-container>
+            </ng-container> 
     
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-mdc-header-row"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-mdc-row"></tr>

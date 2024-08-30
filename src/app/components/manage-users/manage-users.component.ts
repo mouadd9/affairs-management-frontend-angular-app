@@ -13,6 +13,7 @@ import { UserDTO } from '../../model/user.model';
 import { UsersService } from '../../services/users.service';
 import { Subscription } from 'rxjs';
 import { NgZone } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-users',
@@ -37,16 +38,23 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
 
 
 
+  
+
   private updateSubscription: Subscription = new Subscription();
+  editForm: FormGroup | null = null;
+  editingUserId: any;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private usersService: UsersService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private fb: FormBuilder
   ) {
     // here we create a new instance of MatTableDataSource initilized with an empty array
     this.dataSource = new MatTableDataSource<UserDTO>([]);
+    // Added: Initialize the editForm
+    
   }
 
   ngOnInit(): void {
@@ -121,13 +129,16 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-
+  deletionMessage: string = '';
   // Method to delete a user
   deleteUser(userId: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
       this.usersService.deleteUser(userId).subscribe({
         next: () => {
           this.usersService.changeState();
+          this.deletionMessage = 'User deleted successfully';
+      setTimeout(() => this.deletionMessage = '', 2000);
+
         },
         error: (error) => {
           console.error('Error deleting user:', error);
@@ -141,51 +152,85 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
 errorMessage: string = '';
 successMessage: string = '';
 isSaving: boolean = false;
-private editedUserBackup: Partial<UserDTO> = {}; 
 
 saveUser(user: UserDTO) : void {
-  this.isSaving = true;
-  user.isEditing = false;
-  this.errorMessage = '';
-  console.log('Saving user:', user);
+   // First, update the form with the current user data
+   if (this.editForm && this.editForm.valid) {
+   
 
-  // rn we will store user an updateUser Service , we will give it our user , the service will extract the id of the user
-  // the backend will search for that user and update it using the new data
-  this.usersService.updateUser(user).subscribe({
-    next: updatedUser => {
-      console.log('User updated successfully:', updatedUser);
-      Object.assign(user, updatedUser);
-      this.editedUserBackup = {};
-      this.successMessage = 'User updated successfully';
-setTimeout(() => this.successMessage = '', 3000);
-    },
-    error: (error: Error) => {
-      console.error('Error updating user:', error);
-      this.cancelEdit(user);
-      this.errorMessage = error.message;
-    }
-  }).add(() => {
-    this.isSaving = false;
-  });
+    this.isSaving = true;
+    console.log("this is the live form")
+    console.log(this.editForm.value);
+    const updatedUser: UserDTO = {
+      ...user,
+      ...this.editForm.value
+    };
+    console.log(updatedUser);
+
+    this.usersService.updateUser(updatedUser).subscribe({
+      next: response => {
+        Object.assign(user, response);
+        this.successMessage = 'User updated successfully';
+        setTimeout(() => this.successMessage = '', 3000);
+        this.cancelEdit(user);
+      },
+      error: (error: Error) => {
+        
+        this.errorMessage = error.message;
+        setTimeout(() => this.errorMessage = '', 3000);
+  
+  
+      }
+    }).add(() => {
+      this.isSaving = false;
+    });
+
+
+
+   } else {
+    this.errorMessage = 'Please fill all required fields correctly';
+    setTimeout(() => this.errorMessage = '', 3000);
+  }
+    
+
+    
+
+    // Create an updated user object with the form values
+   
+  
   }
 
 
   
-  // the type Partial<UserDTO> is the same as UserDTO but everything is optional 
+  //  the type Partial<UserDTO> is the same as UserDTO but everything is optional 
 
   // so what will happen is , when we click the editUser button
   // we will first change the isEditing boolean to true , so that we will hide the current value
   // and show an form field that we will use to bind inputed data 
 editUser(user: UserDTO): void {
-  this.editedUserBackup = { ...user }; // When entering edit mode, we create a backup of the user data.
-  user.isEditing = true;
+
+   // Added: Set form values when entering edit mode
+   this.editingUserId = user.id;
+    this.editForm = this.fb.group({
+      firstName: [user.firstName, Validators.required],
+      lastName: [user.lastName, Validators.required],
+      email: [user.email, [Validators.required, Validators.email]],
+      username: [user.username, Validators.required]
+    });
+    console.log("this is the created form group");
+    console.log(this.editForm.value);
+
+   
+  }
+
+  getFormControl(fieldName: string): FormControl {
+    return this.editForm?.get(fieldName) as FormControl || new FormControl('');
   }
 
   cancelEdit(user: UserDTO) : void {
-    Object.assign(user, this.editedUserBackup); // If the user cancels the edit, we restore the original values from the backup.
-    user.isEditing = false; // We then exit edit mode and clear the backup.
-    this.editedUserBackup = {};
-  }
+    this.editingUserId = null;
+    this.editForm = null;
+    }
 
   // Method to filter users based on input
   filterUsers(event: Event): void {

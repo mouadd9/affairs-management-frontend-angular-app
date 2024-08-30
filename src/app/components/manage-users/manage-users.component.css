@@ -161,6 +161,28 @@
     margin-right: 10px;
     font-size: 1.2em;
   }
+
+  .success-message {
+    background-color: #44ff57;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    margin-bottom: 15px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .success-message::before {
+    content: "⚠️";
+    margin-right: 10px;
+    font-size: 1.2em;
+  }
   
   @keyframes shake {
     10%, 90% {
@@ -179,6 +201,10 @@
       transform: translate3d(4px, 0, 0);
     }
   }
+
+
+
+
 
 
   .mdc-text-field--filled:not(.mdc-text-field--disabled) {

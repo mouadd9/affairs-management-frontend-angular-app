@@ -84,11 +84,13 @@ export class UsersService {
     console.log(user);
     return this.http.put<UserDTO>(this.baseUrl+'/'+user.id , user).pipe(
       catchError((error: HttpErrorResponse) => {
-        
+        console.log(error.error);
+        console.log(error.status);
+        console.log(error.message);
         let errorMessage: string;
         switch (error.status) {
           case 409:
-            console.log("Handling 409 Conflict");
+           
             errorMessage = error.error || 'User with this username or email already exists.';
             break;
           case 404:

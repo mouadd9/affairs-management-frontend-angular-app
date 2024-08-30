@@ -13,7 +13,7 @@
 
     <div class="upperSection">
 
-        <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-form-field appearance="fill" class="custom-form-field">
             <mat-label>Filter</mat-label>
             <input matInput type="text" (change)="filterUsers($event)">
             <mat-icon matSuffix>search</mat-icon>
@@ -31,6 +31,12 @@
         <div *ngIf="errorMessage" class="error-message">
             {{errorMessage}}
           </div>
+          <div *ngIf="successMessage" class="success-message">
+            {{successMessage}}
+          </div>
+          <div *ngIf="deletionMessage" class="error-message">
+            {{deletionMessage}}
+          </div>
         <table matSort mat-table [dataSource]="dataSource" class="mat-mdc-table">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-id"> ID </th>
@@ -38,39 +44,32 @@
             </ng-container>
     
             <ng-container matColumnDef="firstName">
-
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> First Name </th>
-
                 <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-firstName">
-
-                    <ng-container *ngIf="!user.isEditing">
-
+                    <ng-container *ngIf="user.id !== editingUserId">
                         {{user.firstName}}
-
                     </ng-container>
-
                     <!--so here we do data binding whenever we input a nex firstNama it changes in the Ts-->
-                    <mat-form-field *ngIf="user.isEditing" appearance="fill" class="transparent-form-field" >
-
-                        <input matInput [(ngModel)]="user.firstName" name="firstName">
+                    <mat-form-field *ngIf="user.id === editingUserId  && editForm" appearance="fill" class="transparent-form-field" >
+                        <input matInput [formControl]="getFormControl('firstName')" name="firstName">
+                        <mat-error *ngIf="editForm.get('firstName')?.hasError('required')">First name is required</mat-error>
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
-
                     </mat-form-field>
-                
                 </td>
-
             </ng-container>
     
             <ng-container matColumnDef="lastName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-lastName"> Last Name </th>
                 <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-lastName">
-                    <ng-container *ngIf="!user.isEditing">
+                    <ng-container *ngIf="user.id !== editingUserId">
 
                         {{user.lastName}}
 
                     </ng-container>
-                    <mat-form-field *ngIf="user.isEditing" appearance="fill" class="transparent-form-field">
-                        <input matInput [(ngModel)]="user.lastName" name="lastName">
+                    <mat-form-field *ngIf="user.id === editingUserId  && editForm" appearance="fill" class="transparent-form-field">
+                        <input matInput [formControl]="getFormControl('lastName')" name="lastName">
+                        <mat-error *ngIf="editForm.get('lastName')?.hasError('required')">Last name is required</mat-error>
+
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
                 </td>
@@ -80,14 +79,16 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-email"> Email </th>
                 <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-email">
                     
-                    <ng-container *ngIf="!user.isEditing">
+                    <ng-container *ngIf="user.id !== editingUserId">
                         {{user.email}}
                     </ng-container>
 
                     <!-- so here we used to just bind data from our data source  {{element.email}} -->
                     <!-- instead of doing this we will do a two way binding with ngModel and give the user the possibility to edit objects in our datasource -->
-                    <mat-form-field *ngIf="user.isEditing" appearance="fill" class="transparent-form-field">
-                        <input matInput [(ngModel)]="user.email" name="email">
+                    <mat-form-field *ngIf="user.id === editingUserId  && editForm" appearance="fill" class="transparent-form-field">
+                        <input matInput [formControl]="getFormControl('email')" name="email">
+                        <mat-error *ngIf="editForm.get('email')?.hasError('required')">Email is required</mat-error>
+                        <mat-error *ngIf="editForm.get('email')?.hasError('email')">Please enter a valid email address</mat-error>
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
                 </td>
@@ -97,12 +98,14 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-username"> Username </th>
                 <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-username">
 
-                    <ng-container *ngIf="!user.isEditing">
+                    <ng-container *ngIf="user.id !== editingUserId">
                         {{user.username}}
                     </ng-container>
 
-                    <mat-form-field *ngIf="user.isEditing" appearance="fill" class="transparent-form-field">
-                        <input matInput [(ngModel)]="user.username" name="username">
+                    <mat-form-field *ngIf="user.id === editingUserId && editForm" appearance="fill" class="transparent-form-field">
+                        <input matInput [formControl]="getFormControl('username')" name="username">
+                        <mat-error *ngIf="editForm.get('username')?.hasError('required')">Username is required</mat-error>
+
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
                 </td>
@@ -113,21 +116,21 @@
                 <td mat-cell *matCellDef="let element" class="mat-mdc-cell mat-column-roles">{{element.roles.join(', ')}}</td>
             </ng-container>
     
-            <!-- Actions column -->
+            <!-- Actions column   -->
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef class="mat-mdc-header-cell mat-column-actions"> Actions </th>
-                <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-actions action-cell" [class.expanded]="user.isEditing">
-                    <div class="action-buttons-container">
-                    <button mat-icon-button color="primary" (click)="editUser(user)" *ngIf="!user.isEditing" [disabled]="isSaving">
+                <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-actions action-cell" [class.expanded]="user.id === editingUserId">
+                <div class="action-buttons-container">
+                    <button mat-icon-button color="primary" (click)="editUser(user)"  *ngIf="user.id !== editingUserId" [disabled]="isSaving">
                         <mat-icon>edit</mat-icon>
 
                     </button>
-                    <button mat-icon-button color="accent" (click)="saveUser(user)" *ngIf="user.isEditing" [disabled]="isSaving">
+                    <button mat-icon-button color="accent" (click)="saveUser(user)" *ngIf="user.id === editingUserId" [disabled]="isSaving || editForm?.invalid">
                         <mat-icon *ngIf="!isSaving" >save</mat-icon>
                         <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
 
                     </button>
-                    <button mat-icon-button color="warn" (click)="cancelEdit(user)" *ngIf="user.isEditing">
+                    <button mat-icon-button color="warn" (click)="cancelEdit(user)" *ngIf="user.id === editingUserId">
                         <mat-icon>cancel</mat-icon>
                     </button>
                     <button mat-icon-button color="warn" (click)="deleteUser(user.id)" [disabled]="isSaving">
