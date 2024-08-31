@@ -130,11 +130,12 @@
                         <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
 
                     </button>
-                    <button mat-icon-button color="warn" (click)="cancelEdit(user)" *ngIf="user.id === editingUserId">
+                    <button mat-icon-button color="warn" (click)="cancelEdit()" *ngIf="user.id === editingUserId">
                         <mat-icon>cancel</mat-icon>
                     </button>
                     <button mat-icon-button color="warn" (click)="deleteUser(user.id)" [disabled]="isSaving">
-                        <mat-icon>delete</mat-icon>
+                        <mat-icon *ngIf="!isDeleting">delete</mat-icon>
+                        <mat-spinner *ngIf="isDeleting" diameter="24"></mat-spinner>
                     </button>
                 </div>
                 </td>

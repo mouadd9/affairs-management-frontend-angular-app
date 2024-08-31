@@ -130,9 +130,12 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   }
 
   deletionMessage: string = '';
+  isDeleting: boolean = false;
   // Method to delete a user
   deleteUser(userId: number): void {
+
     if (confirm('Are you sure you want to delete this user?')) {
+      this.isDeleting = true;
       this.usersService.deleteUser(userId).subscribe({
         next: () => {
           this.usersService.changeState();
@@ -145,6 +148,8 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
           // Handle error (e.g., show an error message to the user)
         }
 
+      }).add(()=> {
+        this.isDeleting = false;
       });   
   }
 
@@ -172,7 +177,7 @@ saveUser(user: UserDTO) : void {
         Object.assign(user, response);
         this.successMessage = 'User updated successfully';
         setTimeout(() => this.successMessage = '', 3000);
-        this.cancelEdit(user);
+        this.cancelEdit();
       },
       error: (error: Error) => {
         
@@ -227,7 +232,7 @@ editUser(user: UserDTO): void {
     return this.editForm?.get(fieldName) as FormControl || new FormControl('');
   }
 
-  cancelEdit(user: UserDTO) : void {
+  cancelEdit() : void {
     this.editingUserId = null;
     this.editForm = null;
     }

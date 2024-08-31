@@ -74,6 +74,10 @@ export class ManageAgenciesComponent implements OnInit, AfterViewInit {
 
   private updateSubscription: Subscription = new Subscription();
 
+
+  editUserForm: FormGroup | null = null;
+  editingUserId: any;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -203,7 +207,14 @@ export class ManageAgenciesComponent implements OnInit, AfterViewInit {
   // - takes the id of the current element (row) and stores it in a variable called editingUserId
   errorMessage: string = '';
   successMessage: string = '';
+  deletionMessage: string = '';
+  errorMessage2: string = '';
+  successMessage2: string = '';
+  deletionMessage2: string = '';
+
+  
   isSaving: boolean = false;
+  isDeleting: boolean = false;
   editingAgencyId: any; // this variable will be used to determine which row will be in editing mode
   // for example if we clicked on editAgency we will redeem the id of the exact row we operated on
   // and using our html , we will check for each row if the id of our agency is equal to the one we stored
@@ -259,50 +270,75 @@ This binding persists as long as the row is in edit mode. */
     this.editForm = null;
   }
 
+
+
   saveChanges(agency: Agency): void {
     if (this.editForm && this.editForm?.valid) {
       this.isSaving = true;
-      // we update Optimisticaly 
-      // so we create a new agency with the new fields from the form 
+      // we update Optimisticaly
+      // so we create a new agency with the new fields from the form
       // then we replace the old one by it
       const updatedAgency: Agency = {
         ...agency,
-        ...this.editForm.value
+        ...this.editForm.value,
       };
 
       // then we will go ahead and call the API responsible for updating the agency
-      console.log("this agency will be sent to the backend to be registered")
+      console.log('this agency will be sent to the backend to be registered');
       console.log(updatedAgency);
-      console.log(" we will either get an error saying that the agencyCode is taken or we will get a success message saying that agency has been registered ")
+      console.log(
+        ' we will either get an error saying that the agencyCode is taken or we will get a success message saying that agency has been registered '
+      );
 
-      
+      this.agencyService
+        .updateAgency(updatedAgency)
+        .subscribe({
+          next: (response) => {
+            // now we replace the old agency with the new one
+            Object.assign(agency, response);
+            this.successMessage = 'Agency updated successfully';
+            setTimeout(() => (this.successMessage = ''), 3000);
+            this.cancelEdit();
+          },
 
+          error: (error: Error) => {
+            this.errorMessage = error.message;
+            setTimeout(() => (this.errorMessage = ''), 3000);
+          },
+        })
+        .add(() => {
+          this.isSaving = false;
+        });
     } else {
-      // in case we press the save button while the form is not valid 
+      // in case we press the save button while the form is not valid
       this.errorMessage = 'Please fill all required fields correctly';
-      setTimeout(() => this.errorMessage = '', 3000);
+      setTimeout(() => (this.errorMessage = ''), 3000);
     }
   }
 
-  deletionMessage: string = '';
   // Method to delete a user
   deleteAgency(AgencyId: number): void {
     if (confirm('Are you sure you want to delete this agency?')) {
-      this.agencyService.deleteAgency(AgencyId).subscribe({
-        next: (response) => {
-          console.log(response);
-          console.log('Agency deleted successfully');
-          // Handle successful deletion
-          this.agencyService.changeState();
-          this.deletionMessage = 'agency deleted successfully';
-      setTimeout(() => this.deletionMessage = '', 2000);
-        },
-        error: (error: Error) => {
-          this.errorMessage = error.message;
-        setTimeout(() => this.errorMessage = '', 3000);
-         
-        },
-      });
+      this.isDeleting = true;
+      this.agencyService
+        .deleteAgency(AgencyId)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            console.log('Agency deleted successfully');
+            // Handle successful deletion
+            this.agencyService.changeState();
+            this.deletionMessage = 'agency deleted successfully';
+            setTimeout(() => (this.deletionMessage = ''), 2000);
+          },
+          error: (error: Error) => {
+            this.errorMessage = error.message;
+            setTimeout(() => (this.errorMessage = ''), 3000);
+          },
+        })
+        .add(() => {
+          this.isDeleting = false;
+        });
     }
   }
 
@@ -337,22 +373,112 @@ This binding persists as long as the row is in edit mode. */
     // then we populate the table then we show it
   }
 
+
+ 
+
+  isDeletingUser: boolean = false;
+
   // Method to delete a user
   deleteUser(userId: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
+      this.isDeletingUser = true;
       this.usersService.deleteUser(userId).subscribe({
         next: () => {
           this.employeeDataSource.data = this.employees.filter(
             (employee) => employee.id != userId
           );
+
+          this.deletionMessage2 = 'User deleted successfully';
+          setTimeout(() => this.deletionMessage2 = '', 2000);
         },
         error: (error) => {
           console.error('Error deleting user:', error);
           // Handle error (e.g., show an error message to the user)
         },
-      });
+      }).add(()=> {
+        this.isDeletingUser = false;
+      }); ;
     }
   }
+
+
+
+  isSavingUser: boolean = false;
+
+saveUser(user: UserDTO) : void {
+   // First, update the form with the current user data
+   if (this.editUserForm && this.editUserForm.valid) {
+   
+
+    this.isSavingUser = true;
+    console.log("this is the live form")
+    console.log(this.editUserForm.value);
+    const updatedUser: UserDTO = {
+      ...user,
+      ...this.editUserForm.value
+    };
+    console.log(updatedUser);
+
+    this.usersService.updateUser(updatedUser).subscribe({
+      next: response => {
+        Object.assign(user, response);
+        this.successMessage2 = 'User updated successfully';
+        setTimeout(() => this.successMessage2 = '', 3000);
+        this.cancelEdit();
+      },
+      error: (error: Error) => {
+        
+        this.errorMessage2 = error.message;
+        setTimeout(() => this.errorMessage2 = '', 3000);
+  
+  
+      }
+    }).add(() => {
+      this.isSavingUser = false;
+    });
+
+
+
+   } else {
+    this.errorMessage2 = 'Please fill all required fields correctly';
+    setTimeout(() => this.errorMessage2 = '', 3000);
+  }
+    
+
+    
+
+    // Create an updated user object with the form values
+   
+  
+  }
+
+  editUser(user: UserDTO): void {
+
+    // Added: Set form values when entering edit mode
+    this.editingUserId = user.id;
+     this.editUserForm = this.fb.group({
+       firstName: [user.firstName, Validators.required],
+       lastName: [user.lastName, Validators.required],
+       email: [user.email, [Validators.required, Validators.email]],
+       username: [user.username, Validators.required]
+     });
+     console.log("this is the created form group");
+     console.log(this.editUserForm.value);
+ 
+    
+   }
+
+
+   cancelUserEdit() : void {
+    this.editingUserId = null;
+    this.editUserForm = null;
+    }
+ 
+   getUserFormControl(fieldName: string): FormControl {
+     return this.editUserForm?.get(fieldName) as FormControl || new FormControl('');
+   }
+
+
 
   goBack() {
     this.chart.nativeElement.scrollIntoView({ behavior: 'smooth' });
@@ -370,3 +496,8 @@ This binding persists as long as the row is in edit mode. */
 
 // first we will create an observable
 // when we subscribe to this observable we will update the chart
+
+
+
+
+
