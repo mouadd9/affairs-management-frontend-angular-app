@@ -178,9 +178,9 @@ html {
     --mat-select-enabled-trigger-text-color: #000000;
     --mat-select-disabled-trigger-text-color: rgba(233, 224, 228, 0.38);
     --mat-select-placeholder-text-color: #d1c2cb;
-    --mat-select-enabled-arrow-color: #000000;
+    --mat-select-enabled-arrow-color:  rgba(0, 0, 0, 0.403) ;
     --mat-select-disabled-arrow-color: rgba(233, 224, 228, 0.38);
-    --mat-select-focused-arrow-color: #ffffff;
+    --mat-select-focused-arrow-color: black;
     --mat-select-invalid-arrow-color: #ff0000;
     --mat-select-trigger-text-font: Roboto, sans-serif;
     --mat-select-trigger-text-line-height: 1.5rem;
@@ -233,7 +233,7 @@ html {
     --mat-paginator-touch-target-display: block;
 
 
-    --mat-sort-arrow-color: black;
+    --mat-sort-arrow-color:  black ;
 
 
     
