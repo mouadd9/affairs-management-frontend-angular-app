@@ -1,113 +1,130 @@
-.icon mat-icon {
-    font-size: 28px !important;
-    vertical-align: middle;
-    width: auto;
-    height: auto;
-    line-height: normal;
-    padding-bottom: 4px;
-    padding-right: 2px;
-}
-
-.icon {
-    display: block;
-    
-    text-align: left; /* Align text to the left */
-    justify-content: flex-start; /* Align icons and text to the left */
-  }
-
-
-  .spacer {
-    flex: 1 1 auto;
-  }
- 
-.icon2 {
-   
-    border-radius: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    background-color: none;
-    margin: 0;
-    border: none; 
-    border-radius: 10px;
-  }
-  
-  .icon2:hover {
-    background-color: #9ab2a41e !important;
-  }
-  
-  .icon2 mat-icon {
-    color: #062c06; 
-    font-size: 30px !important;
-    vertical-align: middle;
-    width: auto;
-    height: auto;
-    line-height: normal;
-    padding:0;
-    margin:0;
-
-
-}
-
-button {
-  width: auto  !important;
-}
-
-
-.container {
+/* Container styles */
+.user-form-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: transparent;
+  padding: 20px;
+}
+
+/* Card styles */
+.user-form-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: solid 1px #7b7b7b77;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.user-form-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Header styles */
+.user-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.user-form-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  display: flex;
   align-items: center;
 }
 
+.user-form-header h2 mat-icon {
+  margin-right: 10px;
+  color: #062c06;
+}
 
-  .formcontainer {
+.close-button {
+  color: #7b7b7b77;
+}
 
-    width: 90vh;
-    height: auto;
+/* Message styles */
+.message-container {
+  margin-bottom: 20px;
+}
 
-    border: solid 1px #062c06; 
-    border-radius: 10px;
+.error-message, .success-message {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
 
-    margin-top: 20px;
-    padding: 15px;
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+}
 
-    display: flex;
-    flex-direction: column;
-    
-    background-color: white;
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
 
-    
-    
+.error-message mat-icon, .success-message mat-icon {
+  margin-right: 8px;
+}
+
+/* Form styles */
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+/* Submit button styles */
+button[type="submit"] {
+  background-color: #2c372ce3;
+  border-radius: 4px;
+  border: solid 1px #7b7b7b77;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 48px;
+  font-size: 16px;
+  transition: all 0.10s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  background-color: #576657e3 !important;
+}
+
+button[type="submit"] mat-icon {
+  color: white;
+  font-size: 22px !important;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  margin-right: 5px; /* Space between icon and text */
+}
+
+mat-spinner {
+  color: white !important;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .user-form-card {
+    padding: 20px;
   }
-
-
-  .upperSection {
-    width: 100%;
-   
-    display: flex;
-    flex-direction: row;
-
-  }
-
-
-  .custom-form-field {
-    width: 100%; /* Ensure form fields take the full width */
-  }
-  
-  .save-button {
-    background-color:  #062c06;  /* Customize the save button color */
-    color: white; /* Ensure text color is white */
-    width: 100%; /* Full width button */
-    border-radius: 7px;
-    margin-bottom: 7px;
-  }
-
-  .form {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Space between form fields */
-
-  }
+}

@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  Router, Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
+  Resolve
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 
-import { catchError } from 'rxjs/operators';
 import { UsersService } from '../services/users.service'; // Adjust the path as needed
 import { UserCounts } from '../model/userCounts.model';
 

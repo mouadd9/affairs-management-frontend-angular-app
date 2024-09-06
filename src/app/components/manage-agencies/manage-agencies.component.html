@@ -32,16 +32,15 @@
 
     <!-- Table container for displaying agencies -->
     <div class="table-container">
-        <!-- Error, success, and deletion message displays -->
-        <div *ngIf="errorMessage" class="error-message">
-            {{errorMessage}}
-        </div>
-        <div *ngIf="successMessage" class="success-message">
-            {{successMessage}}
-        </div>
-        <div *ngIf="deletionMessage" class="error-message">
-            {{deletionMessage}}
-        </div>
+               <!-- Container for error and success messages -->
+<div class="message-container">
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error</mat-icon> {{errorMessage}}
+    </div>
+    <div *ngIf="successMessage" class="success-message">
+      <mat-icon>check_circle</mat-icon> {{successMessage}}
+    </div>
+  </div>
         
         <!-- Agencies table -->
         <table matSort #agencySort="matSort" mat-table [dataSource]="dataSource" class="mat-mdc-table">
@@ -63,7 +62,8 @@
                     <!-- Edit mode -->
                     <mat-form-field *ngIf="element.id === this.editingAgencyId && editForm" appearance="fill" class="transparent-form-field">
                         <input matInput [formControl]="getFormControl('agencyCode')" name="agencyCode">
-                        <mat-error *ngIf="editForm.get('agencyCode')?.hasError('required')">Agency code is required</mat-error>
+                        <mat-error *ngIf="editForm.get('agencyCode')?.hasError('required')">Agency code is required.</mat-error>
+                        <mat-error *ngIf="editForm.get('agencyCode')?.hasError('pattern')">Agency code must be a number.</mat-error>
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
                 </td>
@@ -125,19 +125,17 @@
                         <mat-icon>cancel</mat-icon>
                     </button>
                     <!-- Save changes button -->
-                    <button mat-icon-button color="primary" (click)="saveChanges(element)" *ngIf="element.id === this.editingAgencyId" [disabled]="isSaving || editForm?.invalid">
-                        <mat-icon *ngIf="!isSaving">save</mat-icon>
+                    <button mat-icon-button color="primary" (click)="saveChanges(element)" *ngIf="element.id === this.editingAgencyId" [disabled]="isSaving">
+                        <mat-icon *ngIf="!isSaving ">save</mat-icon>
                         <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
                     </button>
                     <!-- Delete agency button -->
-                    <button mat-icon-button color="warn" (click)="deleteAgency(element.id)" *ngIf="element.id !== this.editingAgencyId" >
-                        <mat-icon *ngIf="!isDeleting">delete</mat-icon>
-                        <mat-spinner *ngIf="isDeleting" diameter="24" color="warn"></mat-spinner>
+                    <button mat-icon-button color="warn" (click)="deleteAgency(element.id)" [disabled]="isSaving" >
+                        <mat-icon>delete</mat-icon>
                     </button>
                     <!-- Show employees button -->
-                    <button mat-icon-button color="primary" (click)="showEmployees(element.id, element.agencyCode)" *ngIf="element.id !== this.editingAgencyId" [disabled]="isLoadingEmployees">
-                        <mat-icon *ngIf="!isLoadingEmployees">group</mat-icon>
-                        <mat-spinner diameter="20" *ngIf="isLoadingEmployees"></mat-spinner>
+                    <button mat-icon-button color="primary" (click)="showEmployees(element.id, element.agencyCode)" *ngIf="element.id !== this.editingAgencyId" >
+                        <mat-icon>group</mat-icon>
                     </button>
                 </div>
                 </td>
@@ -169,16 +167,15 @@
 
         <!-- Table container for displaying employees -->
         <div class="table-container">
-            <!-- Error, success, and deletion message displays for employees -->
-            <div *ngIf="errorMessage2" class="error-message">
-                {{errorMessage2}}
-            </div>
-            <div *ngIf="successMessage2" class="success-message">
-                {{successMessage2}}
-            </div>
-            <div *ngIf="deletionMessage2" class="error-message">
-                {{deletionMessage2}}
-            </div>
+                   <!-- Container for error and success messages -->
+<div class="message-container">
+    <div *ngIf="errorMessage2" class="error-message">
+      <mat-icon>error</mat-icon> {{errorMessage2}}
+    </div>
+    <div *ngIf="successMessage2" class="success-message">
+      <mat-icon>check_circle</mat-icon> {{successMessage2}}
+    </div>
+  </div>
             <!-- Employees table -->
             <table matSort #employeeSort="matSort" mat-table [dataSource]="employeeDataSource" class="mat-mdc-table">
                 <!-- ID Column -->
@@ -263,11 +260,11 @@
                     <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-actions action-cell" [class.expanded]="user.id === editingUserId">
                     <div class="action-buttons-container">
                         <!-- Edit user button -->
-                        <button mat-icon-button color="primary" (click)="editUser(user)"  *ngIf="user.id !== editingUserId" [disabled]="isSaving">
+                        <button mat-icon-button color="primary" (click)="editUser(user)"  *ngIf="user.id !== editingUserId" [disabled]="isSavingUser">
                             <mat-icon>edit</mat-icon>
                         </button>
                         <!-- Save user changes button -->
-                        <button mat-icon-button color="accent" (click)="saveUser(user)" *ngIf="user.id === editingUserId" [disabled]="isSaving || editForm?.invalid">
+                        <button mat-icon-button color="accent" (click)="saveUser(user)" *ngIf="user.id === editingUserId" [disabled]="isSavingUser">
                             <mat-icon *ngIf="!isSavingUser" >save</mat-icon>
                             <mat-spinner *ngIf="isSavingUser" diameter="24"></mat-spinner>
                         </button>
@@ -276,9 +273,9 @@
                             <mat-icon>cancel</mat-icon>
                         </button>
                         <!-- Delete user button -->
-                        <button mat-icon-button color="warn" (click)="deleteUser(user.id)" [disabled]="isSaving">
-                            <mat-icon *ngIf="!isDeletingUser">delete</mat-icon>
-                            <mat-spinner *ngIf="isDeletingUser" diameter="24"></mat-spinner>
+                        <button mat-icon-button color="warn" (click)="deleteUser(user.id)" [disabled]="isSavingUser">
+                            <mat-icon>delete</mat-icon>
+                           
                         </button>
                     </div>
                     </td>
@@ -294,7 +291,7 @@
         <mat-paginator #employeePaginator class="mat-mdc-paginator" [pageSizeOptions]="[5,10,15,30,50]"></mat-paginator>
     </div>
 
-    <!-- Router outlet for the agency form (likely used for creating new agencies) -->
+    <!-- Router outlet for the agency form -->
     <router-outlet #agencyFormOutlet></router-outlet>
 
 </div>

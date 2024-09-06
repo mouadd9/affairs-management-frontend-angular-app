@@ -1,1 +1,71 @@
-<p>manage-affairs works!</p>
+<div #chart class="container">
+
+    <header class="page-header">
+        <mat-icon>assignment</mat-icon>
+        <h1>>ADL ISKANE Affairs Management</h1>
+    </header>
+
+    <div class="sub-header">
+        <mat-icon>list_alt</mat-icon>
+        <h2>Affair Directory</h2>
+    </div>
+
+    <div class="upperSection">
+        
+
+        <span class="spacer"></span>
+
+        <button class="icon2" mat-button >
+            <mat-icon>add_circle_outline</mat-icon>
+            Create Affair
+        </button>
+
+    </div>
+
+        
+
+        <mat-tab-group>
+            <mat-tab label="General Information">
+                <table mat-table [dataSource]="generalInfoDataSource" matSort #generalInfoSort="matSort">
+                    <ng-container matColumnDef="codeEvenement">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Code Evenement </th>
+                      <td mat-cell *matCellDef="let element"> {{element.codeEvenement}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="codeAgence">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Code Agence </th>
+                      <td mat-cell *matCellDef="let element"> {{element.codeAgence}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="typeFinancement">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Type Financement </th>
+                      <td mat-cell *matCellDef="let element"> {{element.typeFinancement}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="typeIntervention">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Type Intervention </th>
+                      <td mat-cell *matCellDef="let element"> {{element.typeIntervention}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="cible">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cible </th>
+                      <td mat-cell *matCellDef="let element"> {{element.cible}} </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="generalInfoColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: generalInfoColumns;"></tr>
+                  </table>
+            
+                  <mat-paginator #generalInfoPaginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of general information"></mat-paginator>
+            </mat-tab>
+            <mat-tab label="Beneficiaire"> Content 2 </mat-tab>
+            <mat-tab label="Financement"> Content 3 </mat-tab>
+            <mat-tab label="Logement"> Content 4 </mat-tab>
+            <mat-tab label="Co-Indivisaire"> Content 5 </mat-tab>
+        </mat-tab-group>
+
+        
+
+    
+
+</div>

@@ -1,67 +1,111 @@
-
-<div class="container">
-<div class="formcontainer">
-    <mat-card-header>
-        <mat-card-title>
-        <div class="upperSection">
-            <span style="margin-top: 6px; color: #062c06;  font-size:1.9em;"
-            class="padding-bottom-10 icon"><mat-icon
-                style="padding-right: 5px;">equalizer</mat-icon>Add User
-            </span>
-            <span class="spacer"></span>
-            <button mat-button class="icon2" (click)="goBack()"><mat-icon>close</mat-icon></button>
-            </div></mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        
-        <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="outline" class="custom-form-field">
-              <mat-label>Username</mat-label>
-              <input matInput type="text" formControlName="username">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="custom-form-field">
-              <mat-label>Email</mat-label>
-              <input matInput type="text" formControlName="email">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="custom-form-field">
-              <mat-label>LastName</mat-label>
-              <input matInput type="text" formControlName="lastName">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="custom-form-field">
-              <mat-label>FirstName</mat-label>
-              <input matInput type="text" formControlName="firstName">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="custom-form-field">
-              <mat-label>Password</mat-label>
-              <input matInput type="text" formControlName="password">
-            </mat-form-field>
-             <!-- Checkboxes for roles -->
-             
-            <mat-form-field appearance="outline" class="custom-form-field">
-              <mat-label>Role</mat-label>
-              <mat-select formControlName="role">
-                <mat-option value="ADMIN">Admin</mat-option>
-                <mat-option value="AGENCY_EMPLOYEE">Agency Employee</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="myForm.get('role')?.value === 'AGENCY_EMPLOYEE'" appearance="outline" class="custom-form-field">
-              <mat-label>Agency</mat-label>
-              <mat-select formControlName="agency">
-                <mat-option *ngFor="let agency of activeAgencies" [value]="agency.id">
-                  {{agency.agencyCode}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-
-        <!-- Conditionally displayed dropdown for agency -->
-        
-            <button mat-button color="primary" class="save-button" type="submit" >Save</button>
-          </form>
-    </mat-card-content>
-    <mat-card-actions></mat-card-actions>
+<!-- Main container for the user form -->
+<div class="user-form-container">
+  <div class="user-form-card">
+    <!-- Header section with title and close button -->
+    <div class="user-form-header">
+      <h2><mat-icon>person_add</mat-icon> Add New User</h2>
+      <button mat-icon-button class="close-button" (click)="goBack()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     
+    <!-- Container for error and success messages -->
+<div class="message-container">
+  <div *ngIf="errorMessage" class="error-message">
+    <mat-icon>error</mat-icon> {{errorMessage}}
+  </div>
+  <div *ngIf="successMessage" class="success-message">
+    <mat-icon>check_circle</mat-icon> {{successMessage}}
+  </div>
 </div>
 
+    <!-- User creation form -->
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="user-form">
+      <!-- Username input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="Enter username">
+        <mat-error *ngIf="myForm.get('username')?.hasError('required')" style="margin-top: 2px">Username is required</mat-error>
+        <mat-error *ngIf="myForm.get('username')?.hasError('pattern')" style="margin-top: 2px">
+          Username must contain:
+          • Letters
+          • Numbers
+          • Underscores only
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Enter email">
+        <mat-error *ngIf="myForm.get('email')?.hasError('required')" style="margin-top: 2px">Email is required</mat-error>
+        <mat-error *ngIf="myForm.get('email')?.hasError('email')">Please enter a valid email address</mat-error>
+      </mat-form-field>
+
+      <!-- Last Name input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" placeholder="Enter last name">
+        <mat-error *ngIf="myForm.get('lastName')?.hasError('required')" style="margin-top: 2px">Last name is required</mat-error>
+        <mat-error *ngIf="myForm.get('lastName')?.hasError('pattern')" style="margin-top: 2px">
+          Only letters and spaces permitted.
+          </mat-error>
+      </mat-form-field>
+
+      <!-- First Name input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" placeholder="Enter first name">
+        <mat-error *ngIf="myForm.get('firstName')?.hasError('required')" style="margin-top: 2px">First name is required</mat-error>
+        <mat-error *ngIf="myForm.get('firstName')?.hasError('pattern')" style="margin-top: 2px">
+        Only letters and spaces permitted.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Password</mat-label>
+        
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Enter password">
+  <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+  </button>
+        <mat-error *ngIf="myForm.get('password')?.hasError('required')" style="margin-top: 2px">Password is required</mat-error>
+        <mat-error *ngIf="myForm.get('password')?.hasError('minlength')" style="margin-top: 2px">Password must be at least 6 characters long</mat-error>
+        <mat-error *ngIf="myForm.get('password')?.hasError('pattern')" style="margin-top: 2px">
+          Password must contain:
+          • At least 6 characters
+          • Uppercase and lowercase letters
+          • At least one number
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Role selection field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="ADMIN">Admin</mat-option>
+          <mat-option value="AGENCY_EMPLOYEE">Agency Employee</mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm.get('role')?.hasError('required')" style="margin-top: 2px">Role is required</mat-error>
+      </mat-form-field>
+
+      <!-- Agency selection field (only shown for AGENCY_EMPLOYEE role) -->
+      <mat-form-field *ngIf="myForm.get('role')?.value === 'AGENCY_EMPLOYEE'" appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Agency</mat-label>
+        <mat-select formControlName="agency">
+          <mat-option *ngFor="let agency of activeAgencies" [value]="agency.id">
+            {{agency.agencyCode}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm.get('agency')?.hasError('required')" style="margin-top: 2px">Agency is required for Agency Employees</mat-error>
+      </mat-form-field>
+
+      <!-- Submit button with loading spinner -->
+      <button color="primary" type="submit">
+        <mat-spinner *ngIf="isCreatingUser" diameter="24"></mat-spinner>
+        <div *ngIf="!isCreatingUser"><mat-icon>save</mat-icon>Create User</div>
+      </button>
+    </form>
+  </div>
 </div>

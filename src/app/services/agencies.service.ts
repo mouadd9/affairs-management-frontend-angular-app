@@ -102,7 +102,7 @@ export class AgenciesService {
           break;
 
         case 409:
-          errorMessage = 'Conflict: The agency code is already taken.';
+          errorMessage = 'The agency code is already taken.';
           break;
         case 403:
           errorMessage =

@@ -36,6 +36,9 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
    @ViewChild('chart') chart!: ElementRef;
  
 
+   errorMessage: string = '';
+successMessage: string = '';
+isSaving: boolean = false;
 
 
   
@@ -129,34 +132,28 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  deletionMessage: string = '';
-  isDeleting: boolean = false;
+ 
   // Method to delete a user
   deleteUser(userId: number): void {
 
     if (confirm('Are you sure you want to delete this user?')) {
-      this.isDeleting = true;
       this.usersService.deleteUser(userId).subscribe({
         next: () => {
           this.usersService.changeState();
-          this.deletionMessage = 'User deleted successfully';
-      setTimeout(() => this.deletionMessage = '', 2000);
+          this.showSuccess('User deleted successfully');
 
         },
         error: (error) => {
           console.error('Error deleting user:', error);
           // Handle error (e.g., show an error message to the user)
+          this.showError('Unexpected error deleting user.');
         }
 
-      }).add(()=> {
-        this.isDeleting = false;
-      });   
+      });
   }
 
 }
-errorMessage: string = '';
-successMessage: string = '';
-isSaving: boolean = false;
+
 
 saveUser(user: UserDTO) : void {
    // First, update the form with the current user data
@@ -175,34 +172,19 @@ saveUser(user: UserDTO) : void {
     this.usersService.updateUser(updatedUser).subscribe({
       next: response => {
         Object.assign(user, response);
-        this.successMessage = 'User updated successfully';
-        setTimeout(() => this.successMessage = '', 3000);
+        this.showSuccess('User updated successfully');
         this.cancelEdit();
       },
       error: (error: Error) => {
-        
-        this.errorMessage = error.message;
-        setTimeout(() => this.errorMessage = '', 3000);
-  
-  
+        this.showError(error.message);  
       }
     }).add(() => {
       this.isSaving = false;
     });
-
-
-
    } else {
-    this.errorMessage = 'Please fill all required fields correctly';
-    setTimeout(() => this.errorMessage = '', 3000);
+    this.showError('Please fill all required fields correctly');
   }
-    
 
-    
-
-    // Create an updated user object with the form values
-   
-  
   }
 
 
@@ -213,19 +195,14 @@ saveUser(user: UserDTO) : void {
   // we will first change the isEditing boolean to true , so that we will hide the current value
   // and show an form field that we will use to bind inputed data 
 editUser(user: UserDTO): void {
-
    // Added: Set form values when entering edit mode
    this.editingUserId = user.id;
     this.editForm = this.fb.group({
-      firstName: [user.firstName, Validators.required],
-      lastName: [user.lastName, Validators.required],
-      email: [user.email, [Validators.required, Validators.email]],
-      username: [user.username, Validators.required]
-    });
-    console.log("this is the created form group");
-    console.log(this.editForm.value);
-
-   
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
+      email: ['', [Validators.required, Validators.email]],
+      lastName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
+      firstName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')]
+    });   
   }
 
   getFormControl(fieldName: string): FormControl {
@@ -241,6 +218,21 @@ editUser(user: UserDTO): void {
   filterUsers(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+
+  showError(message: string) {
+    this.successMessage = '';
+    this.errorMessage = message;
+    
+    setTimeout(() => this.errorMessage = '', 7000);
+  }
+
+  showSuccess(message: string) {
+    this.errorMessage = '';
+    this.successMessage = message;
+    
+    setTimeout(() => this.successMessage = '', 7000);
   }
 
  

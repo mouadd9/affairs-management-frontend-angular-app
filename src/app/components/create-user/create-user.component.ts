@@ -8,135 +8,147 @@ import { Agency } from '../../model/agency.model';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
-  styleUrl: './create-user.component.css',
+  styleUrls: ['./create-user.component.css']
 })
 export class CreateUserComponent implements OnInit {
   myForm!: FormGroup;
-
   public activeAgencies: Agency[] = [];
+  errorMessage: string = '';
+  successMessage: string = '';
+  isCreatingUser: boolean = false;
+  hidePassword = true; 
+
   constructor(
     private fb: FormBuilder,
     private userService: UsersService,
     private agencyService: AgenciesService
-  ) {
-    // we will inject user service here
-  }
+  ) {}
+
   ngOnInit(): void {
+    this.initForm();
+    this.fetchActiveAgencies();
+    this.handleRoleChanges();
+  }
+
+  private initForm(): void {
     this.myForm = this.fb.group({
-      // each form controle has a key value pair
-      username: ['', Validators.required],
-      email: ['', Validators.required],
-      lastName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
+      email: ['', [Validators.required, Validators.email]],
+      lastName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
+      firstName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$')]],
       role: ['', Validators.required],
       agency: ['']
     });
-
-    this.fetchActiveAgencies();
-
-    this.myForm.get('role')?.valueChanges.subscribe(role => {
-      if (role === 'AGENCY_EMPLOYEE') {
-        this.myForm.get('agency')?.setValidators(Validators.required);
-      } else {
-        this.myForm.get('agency')?.clearValidators();
-      }
-      this.myForm.get('agency')?.updateValueAndValidity();
-    });
-
-
   }
-  
-  
+
+  private handleRoleChanges(): void {
+    this.myForm.get('role')?.valueChanges.subscribe(role => {
+      const agencyControl = this.myForm.get('agency');
+      if (role === 'AGENCY_EMPLOYEE') {
+        agencyControl?.setValidators(Validators.required);
+      } else {
+        agencyControl?.clearValidators();
+      }
+      agencyControl?.updateValueAndValidity();
+    });
+  }
 
   fetchActiveAgencies(): void {
     this.agencyService.getAllAgencies().subscribe({
       next: data => {
         this.activeAgencies = data.filter(agency => agency.status === 'ACTIVE');
       },
-      error: (error) => console.error('Error fetching agencies:', error)
+      error: (error) => {
+        console.error('Error fetching agencies:', error);
+        this.showError('Failed to fetch agencies. Please try again.');
+      }
     });
   }
 
   onSubmit(): void {
     if (this.myForm.valid) {
-      // here we will send this.myForm.value (json) to our user service and then expect a response
-      const formData = this.myForm.value; // this formData contains the role of the user we want to create
-      console.log(formData);
+      this.isCreatingUser = true;
+      const formData = this.myForm.value;
       const userToAdd: UserDTO = {
         username: formData.username,
         email: formData.email,
         lastName: formData.lastName,
         firstName: formData.firstName,
         password: formData.password,
-      }; // here we exclude the role field
-
-      const agencyId = formData.agency;
-      console.log(agencyId);
+      };
 
       this.userService.createUser(userToAdd).subscribe({
-        // first we create a user with no roles
-
         next: (createdUser) => {
-          console.log('User created:', createdUser); // this is the user created
-          console.log(formData.role);
-          console.log(createdUser.id)
-          console.log(agencyId)
-
-          // in case the user is created successfully we add the roles
           if (formData.role === 'ADMIN') {
-            this.userService.addAdminRole(createdUser.id).subscribe({
-              next: () => {
-                console.log('Admin role added successfully');
-                this.userService.changeState(); // so after we alter data we should update the chart
-                // in user service we created a subject that emits data 
-                // a subject is an observable but a more flexible observable , meaning we can control when will it emmit data by using .next 
-                // so in our service we will have two main things : 
-                // 1- a public subject that we can subscribe to 
-                // 2- and a method that sends data to the subject to execute a change in state
-
-                // in this specific use case we notify another component to refresh users
-                this.myForm.reset();
-                // Optionally, you can set default values for certain fields
-                this.myForm.patchValue({
-                  role: '' // Reset role to empty string or a default value
-                });
-              },
-              error: (error) =>
-                console.error('Error adding admin role:', error),
-            });
-          } else if (formData.role === 'AGENCY_EMPLOYEE'){
-            this.userService.addEmployeeRole(createdUser.id, agencyId).subscribe({
-              next: () => {
-                console.log('Employee role added successfully');
-                this.userService.changeState(); // Trigger update after role is added
-                this.myForm.reset();
-                // Optionally, you can set default values for certain fields
-                this.myForm.patchValue({
-                  role: '' // Reset role to empty string or a default value
-                });
-              },
-              error: (error) =>
-                console.error('Error adding admin role:', error),
-            })
-
-
-          }else {
-            this.userService.changeState(); // Trigger update immediately if not adding admin role
+            this.addAdminRole(createdUser.id);
+          } else if (formData.role === 'AGENCY_EMPLOYEE') {
+            this.addEmployeeRole(createdUser.id, formData.agency);
+          } else {
+            this.handleSuccessfulCreation();
           }
         },
         error: (error) => {
-          console.error('Creation failed:', error);
-        },
-        complete: () => {
-          console.log('Creation request completed.');
-        },
+          console.error('User creation failed:', error);
+          this.showError(error.message || 'Failed to create user. Please try again.');
+          this.isCreatingUser = false;
+        }
       });
-
-      // so here we will firstly create a user detached form any role
-      // after getting a response CREATED , we will go ahead and add a role via an API call
+    } else {
+      this.showError('Please fill all required fields correctly');
     }
   }
+
+  private addAdminRole(userId?: number): void {
+    this.userService.addAdminRole(userId).subscribe({
+      next: () => this.handleSuccessfulCreation(),
+      error: (error) => {
+        console.error('Error adding admin role:', error);
+        this.showError('Failed to add admin role. Please try again.');
+        this.isCreatingUser = false;
+      }
+    });
+  }
+
+  private addEmployeeRole(userId?: number, agencyId?: number): void {
+    this.userService.addEmployeeRole(userId, agencyId).subscribe({
+      next: () => this.handleSuccessfulCreation(),
+      error: (error) => {
+        console.error('Error adding employee role:', error);
+        this.showError('Failed to add employee role. Please try again.');
+        this.isCreatingUser = false;
+      }
+    });
+  }
+
+  private handleSuccessfulCreation(): void {
+    this.userService.changeState();
+    this.showSuccess('User created successfully');
+    this.myForm.reset();
+    this.myForm.patchValue({ role: '' });
+    this.isCreatingUser = false;
+  }
+
+  togglePasswordVisibility(event: MouseEvent) {
+    event.preventDefault();  // Prevent the form from submitting
+    this.hidePassword = !this.hidePassword;
+  }
+
+  showError(message: string) {
+    this.successMessage = '';
+    this.errorMessage = message;
+    
+    setTimeout(() => this.errorMessage = '', 7000);
+  }
+
+  showSuccess(message: string) {
+    this.errorMessage = '';
+    this.successMessage = message;
+    
+    setTimeout(() => this.successMessage = '', 7000);
+  }
+
+ 
 
   goBack() {
     this.userService.closeForm();

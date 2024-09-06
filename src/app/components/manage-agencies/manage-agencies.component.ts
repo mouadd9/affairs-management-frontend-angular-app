@@ -94,12 +94,9 @@ export class ManageAgenciesComponent
 
   // Flags for tracking save and delete operations
   isSaving: boolean = false;
-  isDeleting: boolean = false;
   isSavingUser: boolean = false;
-  isDeletingUser: boolean = false;
+ 
 
-  // Property to track if employees are currently being loaded
-  isLoadingEmployees: boolean = false;
 
   constructor(
     private router: Router,
@@ -220,7 +217,7 @@ export class ManageAgenciesComponent
     // This allows us to edit the agency's data without affecting the original object
     this.editForm = this.fb.group({
       // Each form control is initialized with the current value and required validator
-      agencyCode: [agency.agencyCode, Validators.required],
+      agencyCode: [agency.agencyCode, [Validators.required, Validators.pattern('^[0-9]+$')]],
       address: [agency.address, Validators.required],
       status: [agency.status, Validators.required],
     });
@@ -259,19 +256,15 @@ export class ManageAgenciesComponent
             // This updates the agency in the component's data
             Object.assign(agency, response);
 
-            // Set a success message to display to the user
-            this.successMessage = 'Agency updated successfully';
-            // Clear the success message after 3 seconds
-            setTimeout(() => (this.successMessage = ''), 3000);
+            this.showSuccess('Agency updated successfully');
 
             // Cancel the edit mode
             this.cancelEdit();
           },
           error: (error: Error) => {
             // If there's an error, set the error message to display to the user
-            this.errorMessage = error.message;
-            // Clear the error message after 3 seconds
-            setTimeout(() => (this.errorMessage = ''), 3000);
+            
+            this.showError(error.message);
           },
         })
         .add(() => {
@@ -281,32 +274,23 @@ export class ManageAgenciesComponent
         });
     } else {
       // If the form is invalid, display an error message to the user
-      this.errorMessage = 'Please fill all required fields correctly';
-      // Clear the error message after 3 seconds
-      setTimeout(() => (this.errorMessage = ''), 3000);
+     this.showError('Please fill all required fields correctly');
     }
   }
 
   // Method to delete an agency
   deleteAgency(AgencyId: number): void {
     if (confirm('Are you sure you want to delete this agency?')) {
-      this.isDeleting = true;
       this.agencyService
         .deleteAgency(AgencyId)
         .subscribe({
           next: (response) => {
-            console.log('Agency deleted successfully');
             this.agencyService.changeState();
-            this.deletionMessage = 'agency deleted successfully';
-            setTimeout(() => (this.deletionMessage = ''), 2000);
+            this.showSuccess('agency deleted successfully');
           },
           error: (error: Error) => {
-            this.errorMessage = error.message;
-            setTimeout(() => (this.errorMessage = ''), 3000);
+            this.showError(error.message);
           },
-        })
-        .add(() => {
-          this.isDeleting = false;
         });
     }
   }
@@ -314,9 +298,6 @@ export class ManageAgenciesComponent
   // Method to show employees of a specific agency
   // This is called when a user clicks to view employees of an agency
   showEmployees(agencyID: number, agencyCode: string) {
-    // Set the loading flag to true to show a spinner or loading indicator
-    this.isLoadingEmployees = true;
-
     // Call the service method to get users (employees) by agency ID
     this.usersService
       .getUsersByAgency(agencyID)
@@ -352,25 +333,22 @@ export class ManageAgenciesComponent
               behavior: 'smooth',
             });
           }, 100);
+
+          this.showSuccess2('Employees fetched successfully');
         },
         error: (error) => {
           // If there's an error fetching employees, log it to the console
           console.error('Error fetching employees:', error);
+          this.showError2('Error fetching employees');
           // You might want to add user-facing error handling here
           // For example, setting an error message to display in the template
         },
-      })
-      .add(() => {
-        // Whether the request succeeds or fails, set the loading flag back to false
-        // This will hide the loading spinner
-        this.isLoadingEmployees = false;
       });
   }
 
   // Method to delete a user
   deleteUser(userId: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      this.isDeletingUser = true;
       this.usersService
         .deleteUser(userId)
         .subscribe({
@@ -378,15 +356,12 @@ export class ManageAgenciesComponent
             this.employeeDataSource.data = this.employees.filter(
               (employee) => employee.id != userId
             );
-            this.deletionMessage2 = 'User deleted successfully';
-            setTimeout(() => (this.deletionMessage2 = ''), 2000);
+            this.showSuccess2('User deleted successfully');
           },
           error: (error) => {
             console.error('Error deleting user:', error);
+            this.showError2('Error deleting user');
           },
-        })
-        .add(() => {
-          this.isDeletingUser = false;
         });
     }
   }
@@ -402,21 +377,19 @@ export class ManageAgenciesComponent
         .subscribe({
           next: (response) => {
             Object.assign(user, response);
-            this.successMessage2 = 'User updated successfully';
-            setTimeout(() => (this.successMessage2 = ''), 3000);
+            this.showSuccess2('User updated successfully');
+            
             this.cancelUserEdit();
           },
           error: (error: Error) => {
-            this.errorMessage2 = error.message;
-            setTimeout(() => (this.errorMessage2 = ''), 3000);
+            this.showError2(error.message);
           },
         })
         .add(() => {
           this.isSavingUser = false;
         });
     } else {
-      this.errorMessage2 = 'Please fill all required fields correctly';
-      setTimeout(() => (this.errorMessage2 = ''), 3000);
+      this.showError2('Please fill all required fields correctly');
     }
   }
 
@@ -475,6 +448,34 @@ export class ManageAgenciesComponent
       element.scrollIntoView({ behavior: 'smooth' });
       setTimeout(resolve, 700);
     });
+  }
+
+  showError(message: string) {
+    this.successMessage = '';
+    this.errorMessage = message;
+    
+    setTimeout(() => this.errorMessage = '', 7000);
+  }
+
+  showSuccess(message: string) {
+    this.errorMessage = '';
+    this.successMessage = message;
+    
+    setTimeout(() => this.successMessage = '', 7000);
+  }
+
+  showError2(message: string) {
+    this.successMessage2 = '';
+    this.errorMessage2 = message;
+    
+    setTimeout(() => this.errorMessage2 = '', 7000);
+  }
+
+  showSuccess2(message: string) {
+    this.errorMessage2 = '';
+    this.successMessage2 = message;
+    
+    setTimeout(() => this.successMessage2 = '', 7000);
   }
 
   ngOnDestroy(): void {

@@ -19,6 +19,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 import { LoginComponent } from './components/login/login.component';
@@ -78,8 +80,9 @@ import { CreateAgencyComponent } from './components/create-agency/create-agency.
     ReactiveFormsModule,
     MatRadioModule,
     FormsModule,
-    MatProgressSpinnerModule
-
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+    MatTabsModule
   ],
   providers: [
     provideAnimationsAsync(),

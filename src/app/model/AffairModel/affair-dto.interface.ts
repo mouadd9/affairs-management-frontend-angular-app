@@ -1,0 +1,33 @@
+export interface AffairDTO {
+    id: number;
+    codeAgence: string;
+    typeFinancement: string;
+    typeIntervention: string;
+    cible: string;
+    nomBeneficiaire: string;
+    prenomBeneficiaire: string;
+    numeroCNIEBeneficiaire: string;
+    genreBeneficiaire: string;
+    dateDeNaissanceBeneficiaire: Date;
+    numeroFinancementBanque: string;
+    objetDuFinancement: string;
+    montantDuFinancement: number;
+    coutAcquisition: number;
+    tauxDeMarge: number;
+    margeSurDiffere: boolean;
+    apportDuBeneficiaire: number;
+    prixLogement: number;
+    duree: number;
+    numeroTF: string;
+    natureDuTF: string;
+    acquisitionIndivision: boolean;
+    adresseLogement: string;
+    codeVille: string;
+    superficie: number;
+    vendeurLogement: string;
+    nomCoIndivisaire?: string;
+    prenomCoIndivisaire?: string;
+    numeroCNIECoIndivisaire?: string;
+    genreCoIndivisaire?: string;
+    liaisonFamilialeCoIndivisaire?: string;
+  }

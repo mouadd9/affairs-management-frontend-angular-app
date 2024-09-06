@@ -1,42 +1,56 @@
+<!-- Main container for the agency form -->
+<div class="agency-form-container">
+  <div class="agency-form-card">
+    <!-- Header section with title and close button -->
+    <div class="agency-form-header">
+      <h2><mat-icon>business</mat-icon> Create New Agency</h2>
+      <button mat-icon-button class="close-button" (click)="goBack()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+       <!-- Container for error and success messages -->
+<div class="message-container">
+  <div *ngIf="errorMessage" class="error-message">
+    <mat-icon>error</mat-icon> {{errorMessage}}
+  </div>
+  <div *ngIf="successMessage" class="success-message">
+    <mat-icon>check_circle</mat-icon> {{successMessage}}
+  </div>
+</div>
 
-<div class="container">
-    <div class="formcontainer">
-        <mat-card-header>
-            <mat-card-title>
-            <div class="upperSection">
-                <span style="margin-top: 6px; color: #062c06;  font-size:1.5em;"
-                class="padding-bottom-10 icon"><mat-icon
-                    style="padding-right: 5px;">add_circle_outline</mat-icon>Create agency
-                </span>
-                <span class="spacer"></span>
-                <button mat-button class="icon2" (click)="goBack()"><mat-icon>close</mat-icon></button>
-                </div></mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            
-            <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-                <mat-form-field appearance="outline" class="custom-form-field">
-                  <mat-label>Agency Code</mat-label>
-                  <input matInput type="text" formControlName="agencyCode">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="custom-form-field">
-                  <mat-label>Address</mat-label>
-                  <input matInput type="text" formControlName="address">
-                </mat-form-field>
-                 <!-- Checkboxes for roles -->
-                 <mat-radio-group formControlName="status">
-                  <mat-radio-button value="ACTIVE">Active</mat-radio-button>
-                  <mat-radio-button value="SUSPENDED">Suspended</mat-radio-button>
-                </mat-radio-group>
-    
-    
-            <!-- Conditionally displayed dropdown for agency -->
-            
-                <button mat-button color="primary" class="save-button" type="submit" >Save</button>
-              </form>
-        </mat-card-content>
-        <mat-card-actions></mat-card-actions>
-        
-    </div>
-    
-    </div>
+    <!-- Agency creation form -->
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="agency-form">
+      <!-- Agency Code input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Agency Code</mat-label>
+        <input matInput formControlName="agencyCode" placeholder="Enter agency code">
+        <mat-error *ngIf="myForm.get('agencyCode')?.hasError('required')" style="margin-top: 2px">Agency code is required</mat-error>
+        <mat-error *ngIf="myForm.get('agencyCode')?.hasError('pattern')" style="margin-top: 2px">Agency code must be a number.</mat-error>
+
+      </mat-form-field>
+
+      <!-- Address input field -->
+      <mat-form-field appearance="fill" style="background-color: #deffe25c !important;">
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address" placeholder="Enter agency address">
+        <mat-error *ngIf="myForm.get('address')?.hasError('required')" style="margin-top: 2px">Address is required</mat-error>
+      </mat-form-field>
+
+      <!-- Status radio button group -->
+      <div class="status-radio-group">
+        <label>Status:</label>
+        <mat-radio-group formControlName="status">
+          <mat-radio-button value="ACTIVE">Active</mat-radio-button>
+          <mat-radio-button value="SUSPENDED">Suspended</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Submit button with loading spinner -->
+      <button color="primary" type="submit">
+        <mat-spinner *ngIf="isCreatingAgency" diameter="24"></mat-spinner>
+        <div *ngIf="!isCreatingAgency"><mat-icon>save</mat-icon>Create Agency</div>
+      </button>
+    </form>
+  </div>
+</div>

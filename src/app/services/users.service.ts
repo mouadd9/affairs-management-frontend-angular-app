@@ -76,7 +76,29 @@ export class UsersService {
   createUser(user: UserDTO): Observable<UserDTO> {
     console.log(user);
 
-    return this.http.post<UserDTO>(this.baseUrl+'/', user);
+    return this.http.post<UserDTO>(this.baseUrl+'/', user).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.log(error.error);
+        console.log(error.status);
+        console.log(error.message);
+        let errorMessage: string;
+        switch (error.status) {
+          case 409:
+           
+            errorMessage = error.error || 'User with this username or email already exists.';
+            break;
+          case 404:
+            errorMessage = 'User not found. The user may have been deleted.';
+            break;
+          case 400:
+            errorMessage = 'Invalid input. Please check your data and try again.';
+            break;
+          default:
+            errorMessage = 'Failed to update user. Please try again.';
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
 

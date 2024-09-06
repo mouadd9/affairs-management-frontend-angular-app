@@ -1,6 +1,5 @@
 <div #chart class="container">
 
-
     <header class="page-header">
         <mat-icon>group</mat-icon>
         <h1>Users Management</h1>
@@ -27,16 +26,16 @@
         </button>
 
     </div>
+
     <div class="table-container">
-        <div *ngIf="errorMessage" class="error-message">
-            {{errorMessage}}
-          </div>
-          <div *ngIf="successMessage" class="success-message">
-            {{successMessage}}
-          </div>
-          <div *ngIf="deletionMessage" class="error-message">
-            {{deletionMessage}}
-          </div>
+  <div class="message-container">
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error</mat-icon> {{errorMessage}}
+    </div>
+    <div *ngIf="successMessage" class="success-message">
+      <mat-icon>check_circle</mat-icon> {{successMessage}}
+    </div>
+  </div>
         <table matSort mat-table [dataSource]="dataSource" class="mat-mdc-table">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-id"> ID </th>
@@ -52,11 +51,17 @@
                     <!--so here we do data binding whenever we input a nex firstNama it changes in the Ts-->
                     <mat-form-field *ngIf="user.id === editingUserId  && editForm" appearance="fill" class="transparent-form-field" >
                         <input matInput [formControl]="getFormControl('firstName')" name="firstName">
-                        <mat-error *ngIf="editForm.get('firstName')?.hasError('required')">First name is required</mat-error>
+                        <mat-error *ngIf="editForm.get('firstName')?.hasError('required')">Firs name is required</mat-error>
+                        <mat-error *ngIf="editForm.get('firstName')?.hasError('pattern')">
+                            Only letters and spaces permitted.
+                            </mat-error>
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
                 </td>
             </ng-container>
+
+
+            
     
             <ng-container matColumnDef="lastName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-lastName"> Last Name </th>
@@ -69,6 +74,9 @@
                     <mat-form-field *ngIf="user.id === editingUserId  && editForm" appearance="fill" class="transparent-form-field">
                         <input matInput [formControl]="getFormControl('lastName')" name="lastName">
                         <mat-error *ngIf="editForm.get('lastName')?.hasError('required')">Last name is required</mat-error>
+                        <mat-error *ngIf="editForm.get('lastName')?.hasError('pattern')">
+                            Only letters and spaces permitted.
+                            </mat-error>
 
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
@@ -105,6 +113,12 @@
                     <mat-form-field *ngIf="user.id === editingUserId && editForm" appearance="fill" class="transparent-form-field">
                         <input matInput [formControl]="getFormControl('username')" name="username">
                         <mat-error *ngIf="editForm.get('username')?.hasError('required')">Username is required</mat-error>
+                        <mat-error *ngIf="editForm.get('username')?.hasError('pattern')">
+                            Username must contain:
+                            • Letters
+                            • Numbers
+                            • Underscores only
+                          </mat-error>
 
                         <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
                     </mat-form-field>
@@ -134,8 +148,7 @@
                         <mat-icon>cancel</mat-icon>
                     </button>
                     <button mat-icon-button color="warn" (click)="deleteUser(user.id)" [disabled]="isSaving">
-                        <mat-icon *ngIf="!isDeleting">delete</mat-icon>
-                        <mat-spinner *ngIf="isDeleting" diameter="24"></mat-spinner>
+                        <mat-icon>delete</mat-icon>
                     </button>
                 </div>
                 </td>
