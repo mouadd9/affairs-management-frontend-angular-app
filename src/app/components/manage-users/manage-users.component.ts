@@ -198,15 +198,17 @@ editUser(user: UserDTO): void {
    // Added: Set form values when entering edit mode
    this.editingUserId = user.id;
     this.editForm = this.fb.group({
-      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
-      email: ['', [Validators.required, Validators.email]],
-      lastName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
-      firstName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')]
+      username: [user.username, [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
+      email: [user.email, [Validators.required, Validators.email]],
+      lastName: [user.lastName, [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      firstName: [user.firstName, [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]]
     });   
   }
 
   getFormControl(fieldName: string): FormControl {
-    return this.editForm?.get(fieldName) as FormControl || new FormControl('');
+    return (
+      (this.editForm?.get(fieldName) as FormControl) || new FormControl('')
+    );
   }
 
   cancelEdit() : void {

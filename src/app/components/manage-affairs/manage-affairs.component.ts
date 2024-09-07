@@ -1,58 +1,248 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild  } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AffairsService } from '../../services/affairs.service';
-import { Affair, GeneralInfo, Beneficiaire, Financement, Logement, CoIndivisaire } from '../../model/AffairModel';
+import { AffairDTO } from '../../model/affair-dto.interface';
 import { ActivatedRoute } from '@angular/router';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-manage-affairs',
   templateUrl: './manage-affairs.component.html',
-  styleUrl: './manage-affairs.component.css'
+  styleUrl: './manage-affairs.component.css',
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ManageAffairsComponent implements OnInit {
-  affairs: Affair[] = []; // this will hold affairs fetched by the resolvers
-  generalInfoDataSource: MatTableDataSource<GeneralInfo>;
-  beneficiaireDataSource: MatTableDataSource<Beneficiaire>;
-  financementDataSource: MatTableDataSource<Financement>;
-  logementDataSource: MatTableDataSource<Logement>;
-  coIndivisaireDataSource: MatTableDataSource<CoIndivisaire>;
+  affairs: AffairDTO[] = []; // this will hold affairs fetched by the resolvers
+  dataSource: MatTableDataSource<AffairDTO>;
 
-  generalInfoColumns: string[] = ['codeAgence', 'typeFinancement', 'typeIntervention', 'cible'];
-  beneficiaireColumns: string[] = ['nom', 'prenom', 'numeroCNIE', 'genre', 'dateDeNaissance'];
-  financementColumns: string[] = ['numeroFinancementBanque', 'objetDuFinancement', 'montantDuFinancement', 'coutAcquisition', 'tauxDeMarge', 'margeSurDiffere', 'apportDuBeneficiaire', 'prixLogement', 'duree'];
-  logementColumns: string[] = ['numeroTF', 'natureDuTF', 'acquisitionIndivision', 'adresseLogement', 'codeVille', 'superficie', 'vendeurLogement'];
-  coIndivisaireColumns: string[] = ['nom', 'prenom', 'numeroCNIE', 'genre', 'liaisonFamiliale'];
+  displayedColumns: string[] = [
+    'codeAgence',
+    'typeFinancement',
+    'typeIntervention',
+    'cible',
+    'actions'
+  ];
 
-  constructor(private affairsService: AffairsService, private route: ActivatedRoute) {
-    this.generalInfoDataSource = new MatTableDataSource<GeneralInfo>([]);
-    this.beneficiaireDataSource = new MatTableDataSource<Beneficiaire>([]);
-    this.financementDataSource = new MatTableDataSource<Financement>([]);
-    this.logementDataSource = new MatTableDataSource<Logement>([]);
-    this.coIndivisaireDataSource = new MatTableDataSource<CoIndivisaire>([]);
+  expandedColumns: string[] = [
+    'codeAgence',
+    'typeFinancement',
+    'typeIntervention',
+    'cible',
+    'nomBeneficiaire',
+    'prenomBeneficiaire',
+    'numeroCNIEBeneficiaire',
+    'genreBeneficiaire',
+    'dateDeNaissanceBeneficiaire',
+    'numeroFinancementBanque',
+    'objetDuFinancement',
+    'montantDuFinancement',
+    'coutAcquisition',
+    'tauxDeMarge',
+    'margeSurDiffere',
+    'apportDuBeneficiaire',
+    'prixLogement',
+    'duree',
+    'numeroTF', 'natureDuTF', 'acquisitionIndivision', 'adresseLogement',
+  'codeVille', 'superficie', 'vendeurLogement',
+  'nomCoIndivisaire', 'prenomCoIndivisaire', 'numeroCNIECoIndivisaire',
+  'genreCoIndivisaire', 'liaisonFamilialeCoIndivisaire',
+    'actions'
+  ];
+
+  allColumns: string[] = [...this.displayedColumns.slice(0, -1), ...this.expandedColumns, 'actions'];
+
+  groupHeaders: string[] = ['generalInfo', 'beneficiaireInfo', 'financementInfo', 'logementInfo' , 'CoindivisaireInfo'];
+
+  errorMessage: string = '';
+  successMessage: string = '';
+  isSaving: boolean = false;
+  showDetailedView: boolean = false;
+  showScrollTopButton: boolean = false;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  editForm: FormGroup | null = null;
+  editingAffairId: any;
+
+  constructor(
+    private affairsService: AffairsService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {
+    this.dataSource = new MatTableDataSource<AffairDTO>([]);
   }
 
   ngOnInit() {
-   
     this.route.data.subscribe({
       next: (data) => {
         this.affairs = data['affairs']; // Get affairs from the resolver
         this.initializeDataSources(); // Populate tables
       },
-      error: error => console.error('Error fetching affairs:', error)
+      error: (error) => console.error('Error fetching affairs:', error),
     });
-    
   }
 
-  initializeDataSources(){
-    // here we will set up the datasource for all the tables
-    this.generalInfoDataSource.data = this.affairs.map(a => a.generalInfo);
-    this.beneficiaireDataSource.data = this.affairs.map(a => a.beneficiaire);
-    this.financementDataSource.data = this.affairs.map(a => a.financement);
-    this.logementDataSource.data = this.affairs.map(a => a.logement);
-    this.coIndivisaireDataSource.data = this.affairs.filter(a => a.coIndivisaire).map(a => a.coIndivisaire!);
-
+  initializeDataSources() {
+    this.dataSource.data = this.affairs;
+    console.log('data fetched from the server: ');
+    console.log(this.dataSource.data);
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  toggleDetailedView() {
+    this.showDetailedView = !this.showDetailedView;
+    this.displayedColumns = this.showDetailedView ? this.allColumns : this.displayedColumns;
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollPosition = window.scrollY  || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.showScrollTopButton = scrollPosition > 300;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // edit
+
+  editAffair(affair: AffairDTO): void {
+    this.editingAffairId = affair.id;
+    this.editForm = this.fb.group({
+      typeFinancement: [affair.typeFinancement, Validators.required],
+      typeIntervention: [affair.typeIntervention, [Validators.required]],
+      cible: [affair.cible, Validators.required],
+      nomBeneficiaire: [affair.nomBeneficiaire, Validators.required],
+      prenomBeneficiaire: [affair.prenomBeneficiaire, Validators.required],
+      numeroCNIEBeneficiaire: [
+        affair.numeroCNIEBeneficiaire,
+        Validators.required,
+      ],
+      genreBeneficiaire: [affair.genreBeneficiaire, Validators.required],
+      dateDeNaissanceBeneficiaire: [
+        new Date(affair.dateDeNaissanceBeneficiaire),
+        Validators.required,
+      ],
+      numeroFinancementBanque: [affair.numeroFinancementBanque, Validators.required],
+      objetDuFinancement: [affair.objetDuFinancement, Validators.required],
+      montantDuFinancement: [affair.montantDuFinancement, [Validators.required, Validators.min(0)]],
+      coutAcquisition: [affair.coutAcquisition, [Validators.required, Validators.min(0)]],
+      tauxDeMarge: [affair.tauxDeMarge, [Validators.required, Validators.min(0), Validators.max(100)]],
+      margeSurDiffere: [affair.margeSurDiffere, Validators.required],
+      apportDuBeneficiaire: [affair.apportDuBeneficiaire, [Validators.required, Validators.min(0)]],
+      prixLogement: [affair.prixLogement, [Validators.required, Validators.min(0)]],
+      duree: [affair.duree, [Validators.required, Validators.min(1)]],
+      numeroTF: [affair.numeroTF, Validators.required],
+    natureDuTF: [affair.natureDuTF, Validators.required],
+    acquisitionIndivision: [affair.acquisitionIndivision, Validators.required],
+    adresseLogement: [affair.adresseLogement, Validators.required],
+    codeVille: [affair.codeVille, Validators.required],
+    superficie: [affair.superficie, [Validators.required, Validators.min(1)]],
+    vendeurLogement: [affair.vendeurLogement, Validators.required],
+    nomCoIndivisaire: [affair.nomCoIndivisaire || ''],
+    prenomCoIndivisaire: [affair.prenomCoIndivisaire || ''],
+    numeroCNIECoIndivisaire: [affair.numeroCNIECoIndivisaire || ''],
+    genreCoIndivisaire: [affair.genreCoIndivisaire || ''],
+    liaisonFamilialeCoIndivisaire: [affair.liaisonFamilialeCoIndivisaire || ''],
+      // here we will add other fields
+    });
+  }
+
+  cancelEdit(): void {
+    this.editingAffairId = null;
+    this.editForm = null;
+  }
+
+  saveChanges(affair: AffairDTO): void {
+    if (this.editForm && this.editForm?.valid) {
+      this.isSaving = true;
+      const updatedAffair: AffairDTO = { ...affair, ...this.editForm.value }; // 1
+
+      // new affair
+      console.log('new affair after update: ');
+      console.log(updatedAffair);
+
+      this.affairsService // 2
+        .updateAffair(updatedAffair)
+        .subscribe({
+          next: (response) => {
+            Object.assign(affair, response); // 3
+            this.showSuccess('Affair updated successfully');
+            this.cancelEdit();
+          },
+          error: (error: Error) => {
+            this.showError(error.message);
+          },
+        })
+        .add(() => {
+          this.isSaving = false;
+        });
+    } else {
+      this.showError('Please fill all required fields correctly');
+    }
+  }
+
+  // Method to delete an affair
+  deleteAffair(AffairId: number): void {
+    if (confirm('Are you sure you want to delete this agency?')) {
+      this.affairsService.deleteAffair(AffairId).subscribe({
+        next: (response) => {
+          //this.agencyService.changeState();
+          this.showSuccess('agency deleted successfully');
+        },
+        error: (error: Error) => {
+          this.showError(error.message);
+        },
+      });
+    }
+  }
+
+  getFormControl(fieldName: string): FormControl {
+    return (
+      (this.editForm?.get(fieldName) as FormControl) || new FormControl('')
+    );
+  }
+  // save
+  // cancel
+  // then we go and finish the fields
+
+  // Method to filter users based on input
+  filterAffairs(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  showError(message: string) {
+    this.successMessage = '';
+    this.errorMessage = message;
+
+    setTimeout(() => (this.errorMessage = ''), 7000);
+  }
+
+  showSuccess(message: string) {
+    this.errorMessage = '';
+    this.successMessage = message;
+
+    setTimeout(() => (this.successMessage = ''), 7000);
+  }
 }

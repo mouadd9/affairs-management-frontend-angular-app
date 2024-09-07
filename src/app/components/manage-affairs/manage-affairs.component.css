@@ -1,0 +1,202 @@
+.page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: solid 2.5px rgb(0, 0, 0);
+    padding-bottom: 5px;
+  }
+  
+  .page-header mat-icon {
+    font-size: 35px  !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    margin-right: 10px;
+    color: black;
+  }
+  
+  .page-header h1 {
+    font-size: 2.2em;
+    margin: 0;
+    padding: 0;
+    color: black;
+  }
+  
+  .sub-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .sub-header mat-icon {
+    font-size: 27px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    margin-right: 10px;
+    
+    color: black;
+  }
+  
+  .sub-header h2 {
+    font-size: 1.8em;
+    margin: 0;
+    color: black;
+  }
+  
+  .upperSection {
+    max-width: 1500px;
+    height: 65px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+  
+  }
+  
+  .custom-form-field {
+      width: 35vh; /* Ensure form fields take the full width */
+      min-width: 200px;
+      background-color: transparent !important;
+      margin-right: 20px;
+      margin: 3px 0;
+    }
+  
+  .icon2{
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, 0.060) ;
+    border-radius: 4px;
+    border: solid 1px #7b7b7b77;
+    color: black;
+    font-size: 16px;
+    padding: 0px 12px; /* Add some padding for better appearance */
+    margin-bottom: 3px;
+  
+    transition: all 0.15s ease-in-out;
+  }
+  
+  
+  .icon2:hover  {
+    background-color: transparent !important;
+  }
+  .icon2:focus  {
+    background-color: transparent !important;
+  }
+  
+  .icon2 mat-icon {
+    color: #000000;
+    font-size: 22px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    margin-right: 5px; /* Space between icon and text */
+  }
+  
+  
+  .icon2:hover mat-icon {
+    color: #062c06 !important; /* Change icon color on hover */
+  }
+  
+  .icon mat-icon {
+      vertical-align: middle;
+      width: auto;
+      height: auto;
+      line-height: normal;
+      padding-bottom: 4px;
+      padding-right: 2px;
+  }
+  
+  .icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-align: left; /* Align text to the left */
+      justify-content: flex-start; /* Align icons and text to the left */
+    }
+  
+  
+    .container1 {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      width: 100%;
+  
+    }
+  
+   button {
+      height: 30px !important;
+    }
+  
+    .spacer {
+      flex: 1 1 auto;
+    }
+    
+  
+    /* Message styles */
+  .message-container {
+    margin-bottom: 10px;
+    margin-top: 9px;
+  }
+  
+  .error-message, .success-message {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    border:1px solid #7b7b7b77;
+  }
+  
+  .error-message {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .error-message mat-icon, .success-message mat-icon {
+    margin-right: 8px;
+  }
+  
+  
+    
+    
+  .toggle-details-button {
+    position: absolute;
+    left: -120px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: right center;
+    height: 48px;
+    width: 200px;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-details-button:hover {
+    left: -116px;
+  }
+  
+  .scroll-to-top-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  
+  
+  
+  
+  
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+      background-color: transparent !important;
+  }

@@ -2,7 +2,7 @@
 
     <header class="page-header">
         <mat-icon>assignment</mat-icon>
-        <h1>>ADL ISKANE Affairs Management</h1>
+        <h1>ADL ISKANE Affairs Management</h1>
     </header>
 
     <div class="sub-header">
@@ -11,6 +11,12 @@
     </div>
 
     <div class="upperSection">
+
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>Filter</mat-label>
+        <input matInput type="text" (change)="filterAffairs($event)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
         
 
         <span class="spacer"></span>
@@ -21,51 +27,512 @@
         </button>
 
     </div>
+    <div class="table-container">
+      <div class="message-container">
+        <div *ngIf="errorMessage" class="error-message">
+          <mat-icon>error</mat-icon> {{errorMessage}}
+        </div>
+        <div *ngIf="successMessage" class="success-message">
+          <mat-icon>check_circle</mat-icon> {{successMessage}}
+        </div>
+      </div>
+     
+            <table matSort mat-table [dataSource]="dataSource" class="mat-mdc-table">
+
+                <ng-container matColumnDef="generalInfo">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="4" class="group-header-row"> Informations globales </th>
+                  </ng-container>
+                
+                  <!-- Group header for Beneficiary Info -->
+                  <ng-container matColumnDef="beneficiaireInfo">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="5" class="group-header-row" > BENEFICIAIRE </th>
+                  </ng-container>
+
+                  <ng-container matColumnDef="financementInfo">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="9" class="group-header-row" > FINANCEMENT </th>
+                  </ng-container>
+
+                  <ng-container matColumnDef="logementInfo">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="7" class="group-header-row" > LOGEMENT </th>
+                  </ng-container>
+                  <ng-container matColumnDef="CoindivisaireInfo">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="5" class="group-header-row" > CO-INDIVISAIRE </th>
+                  </ng-container>
+                 
+                <!--the agency code is never updated-->
+                <ng-container matColumnDef="codeAgence">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-short "> Code agence </th>
+                  <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-short ">
+                      <ng-container>
+                          {{affair.codeAgence}}
+                      </ng-container>
+                  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="typeFinancement">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Type de financement </th>
+                <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+                    <ng-container *ngIf="affair.id !== editingAffairId">
+                        {{affair.typeFinancement}}
+                    </ng-container>
+                    <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                        <input matInput [formControl]="getFormControl('typeFinancement')" name="typeFinancement">
+                        <mat-error *ngIf="editForm.get('typeFinancement')?.hasError('required')">required</mat-error>
+                        <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="typeIntervention">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Type d'intervention </th>
+              <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+                  <ng-container *ngIf="affair.id !== editingAffairId">
+                      {{affair.typeIntervention}}
+                  </ng-container>
+                  <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                      <input matInput [formControl]="getFormControl('typeIntervention')" name="typeIntervention">
+                      <mat-error *ngIf="editForm.get('typeIntervention')?.hasError('required')">required</mat-error>
+                      <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                  </mat-form-field>
+              </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cible">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> Cible </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+                <ng-container *ngIf="affair.id !== editingAffairId">
+                    {{affair.cible}}
+                </ng-container>
+                <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                    <input matInput [formControl]="getFormControl('cible')" name="cible">
+                    <mat-error *ngIf="editForm.get('cible')?.hasError('required')">required</mat-error>
+                    <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                </mat-form-field>
+            </td>
+        </ng-container>
 
         
 
-        <mat-tab-group>
-            <mat-tab label="General Information">
-                <table mat-table [dataSource]="generalInfoDataSource" matSort #generalInfoSort="matSort">
-                    <ng-container matColumnDef="codeEvenement">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Code Evenement </th>
-                      <td mat-cell *matCellDef="let element"> {{element.codeEvenement}} </td>
-                    </ng-container>
-            
-                    <ng-container matColumnDef="codeAgence">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Code Agence </th>
-                      <td mat-cell *matCellDef="let element"> {{element.codeAgence}} </td>
-                    </ng-container>
-            
-                    <ng-container matColumnDef="typeFinancement">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Type Financement </th>
-                      <td mat-cell *matCellDef="let element"> {{element.typeFinancement}} </td>
-                    </ng-container>
-            
-                    <ng-container matColumnDef="typeIntervention">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Type Intervention </th>
-                      <td mat-cell *matCellDef="let element"> {{element.typeIntervention}} </td>
-                    </ng-container>
-            
-                    <ng-container matColumnDef="cible">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cible </th>
-                      <td mat-cell *matCellDef="let element"> {{element.cible}} </td>
-                    </ng-container>
-            
-                    <tr mat-header-row *matHeaderRowDef="generalInfoColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: generalInfoColumns;"></tr>
-                  </table>
-            
-                  <mat-paginator #generalInfoPaginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of general information"></mat-paginator>
-            </mat-tab>
-            <mat-tab label="Beneficiaire"> Content 2 </mat-tab>
-            <mat-tab label="Financement"> Content 3 </mat-tab>
-            <mat-tab label="Logement"> Content 4 </mat-tab>
-            <mat-tab label="Co-Indivisaire"> Content 5 </mat-tab>
-        </mat-tab-group>
+        <ng-container matColumnDef="nomBeneficiaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> Nom </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+                <ng-container *ngIf="affair.id !== editingAffairId">
+                    {{affair.nomBeneficiaire}}
+                </ng-container>
+                <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                    <input matInput [formControl]="getFormControl('nomBeneficiaire')" name="nomBeneficiaire">
+                    <mat-error *ngIf="editForm.get('nomBeneficiaire')?.hasError('required')">required</mat-error>
+                    <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                </mat-form-field>
+            </td>
+        </ng-container>
 
-        
+        <ng-container matColumnDef="prenomBeneficiaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> Prénom </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+                <ng-container *ngIf="affair.id !== editingAffairId">
+                    {{affair.prenomBeneficiaire}}
+                </ng-container>
+                <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                    <input matInput [formControl]="getFormControl('prenomBeneficiaire')" name="prenomBeneficiaire">
+                    <mat-error *ngIf="editForm.get('prenomBeneficiaire')?.hasError('required')">required</mat-error>
+                    <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                </mat-form-field>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="numeroCNIEBeneficiaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> N°CNIE </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+                <ng-container *ngIf="affair.id !== editingAffairId">
+                    {{affair.numeroCNIEBeneficiaire}}
+                </ng-container>
+                <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                    <input matInput [formControl]="getFormControl('numeroCNIEBeneficiaire')" name="numeroCNIEBeneficiaire">
+                    <mat-error *ngIf="editForm.get('numeroCNIEBeneficiaire')?.hasError('required')">required</mat-error>
+                    <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                </mat-form-field>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="genreBeneficiaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> Genre </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+                <ng-container *ngIf="affair.id !== editingAffairId">
+                    {{affair.genreBeneficiaire}}
+                </ng-container>
+                <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                    <mat-select [formControl]="getFormControl('genreBeneficiaire')" name="genreBeneficiaire">
+                        <mat-option value="">-- Sélectionner --</mat-option>
+                        <mat-option value="M">Masculin</mat-option>
+                        <mat-option value="F">Féminin</mat-option>
+                      </mat-select>
+                    <mat-error *ngIf="editForm.get('genreBeneficiaire')?.hasError('required')">required</mat-error>
+                    <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateDeNaissanceBeneficiaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> Date de Naissance </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+                <ng-container *ngIf="affair.id !== editingAffairId">
+                    {{affair.dateDeNaissanceBeneficiaire}}
+                </ng-container>
+                <mat-form-field *ngIf="affair.id === editingAffairId  && editForm" appearance="fill" class="transparent-form-field" >
+                    <input matInput [matDatepicker]="picker" 
+                    [formControl]="getFormControl('dateDeNaissanceBeneficiaire')" 
+                    name="dateDeNaissanceBeneficiaire"
+                    placeholder="JJ/MM/AAAA">
+             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+             <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="editForm.get('dateDeNaissanceBeneficiaire')?.hasError('required')">required</mat-error>
+                
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numeroFinancementBanque">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> N° Financement Banque </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.numeroFinancementBanque}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('numeroFinancementBanque')" name="numeroFinancementBanque">
+                <mat-error *ngIf="editForm.get('numeroFinancementBanque')?.hasError('required')">Required</mat-error>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="objetDuFinancement">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-long "> Objet du Financement </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-long ">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.objetDuFinancement}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('objetDuFinancement')" name="objetDuFinancement">
+                <mat-error *ngIf="editForm.get('objetDuFinancement')?.hasError('required')">Required</mat-error>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="montantDuFinancement">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-firstName"> Montant du Financement </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-firstName">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.montantDuFinancement | currency:'DH '}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('montantDuFinancement')" name="montantDuFinancement">
+                <mat-error *ngIf="editForm.get('montantDuFinancement')?.hasError('required')">Required</mat-error>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="coutAcquisition">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Coût d'Acquisition </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.coutAcquisition | currency:'DH '}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('coutAcquisition')" name="coutAcquisition">
+                <mat-error *ngIf="editForm.get('coutAcquisition')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="tauxDeMarge">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Taux de Marge </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.tauxDeMarge | percent:'1.2-2'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('tauxDeMarge')" name="tauxDeMarge">
+                <mat-error *ngIf="editForm.get('tauxDeMarge')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="margeSurDiffere">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-short"> Marge sur Différé </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.margeSurDiffere ? 'OUI' : 'NON'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <mat-select [formControl]="getFormControl('margeSurDiffere')" name="margeSurDiffere">
+                  <mat-option [value]="true">OUI</mat-option>
+                  <mat-option [value]="false">NON</mat-option>
+                </mat-select>
+                <mat-error *ngIf="editForm.get('margeSurDiffere')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="apportDuBeneficiaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Apport du Bénéficiaire </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.apportDuBeneficiaire | currency:'DH '}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('apportDuBeneficiaire')" name="apportDuBeneficiaire">
+                <mat-error *ngIf="editForm.get('apportDuBeneficiaire')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="prixLogement">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Prix Logement </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.prixLogement | currency:'DH '}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('prixLogement')" name="prixLogement">
+                <mat-error *ngIf="editForm.get('prixLogement')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="duree">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-short"> Durée </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-short">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.duree}} mois
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('duree')" name="duree">
+                <mat-error *ngIf="editForm.get('duree')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="numeroTF">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> N° TF </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.numeroTF}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('numeroTF')" name="numeroTF">
+                <mat-error *ngIf="editForm.get('numeroTF')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="natureDuTF">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Nature du TF </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.natureDuTF}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input  matInput [formControl]="getFormControl('natureDuTF')" name="natureDuTF">
+                  
+                <mat-error *ngIf="editForm.get('natureDuTF')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="acquisitionIndivision">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-short"> Acquisition dans l'indivision </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-short">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.acquisitionIndivision ? 'OUI' : 'NON'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <mat-select [formControl]="getFormControl('acquisitionIndivision')" name="acquisitionIndivision">
+                  <mat-option [value]="true">OUI</mat-option>
+                  <mat-option [value]="false">NON</mat-option>
+                </mat-select>
+                <mat-error *ngIf="editForm.get('acquisitionIndivision')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="adresseLogement">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-long"> Adresse du logement </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-long">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.adresseLogement}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('adresseLogement')" name="adresseLogement">
+                <mat-error *ngIf="editForm.get('adresseLogement')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="codeVille">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Code ville </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.codeVille}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('codeVille')" name="codeVille">
+                <mat-error *ngIf="editForm.get('codeVille')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="superficie">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-short"> Superficie (m²) </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-short">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.superficie}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput type="number" [formControl]="getFormControl('superficie')" name="superficie">
+                <mat-error *ngIf="editForm.get('superficie')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="vendeurLogement">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Vendeur du logement </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.vendeurLogement}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('vendeurLogement')" name="vendeurLogement">
+                  
+                <mat-error *ngIf="editForm.get('vendeurLogement')?.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nomCoIndivisaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Nom Co-Indivisaire </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.nomCoIndivisaire || 'N/A'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('nomCoIndivisaire')" name="nomCoIndivisaire">
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="prenomCoIndivisaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Prénom Co-Indivisaire </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.prenomCoIndivisaire || 'N/A'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('prenomCoIndivisaire')" name="prenomCoIndivisaire">
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="numeroCNIECoIndivisaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> N°CNIE Co-Indivisaire </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.numeroCNIECoIndivisaire || 'N/A'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <input matInput [formControl]="getFormControl('numeroCNIECoIndivisaire')" name="numeroCNIECoIndivisaire">
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="genreCoIndivisaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-short"> Genre Co-Indivisaire </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-short">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.genreCoIndivisaire || 'N/A'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <mat-select [formControl]="getFormControl('genreCoIndivisaire')" name="genreCoIndivisaire">
+                  <mat-option value="">-- Sélectionner --</mat-option>
+                  <mat-option value="M">Masculin</mat-option>
+                  <mat-option value="F">Féminin</mat-option>
+                </mat-select>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="liaisonFamilialeCoIndivisaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-mdc-header-cell mat-column-medium-width"> Liaison Familiale Co-Indivisaire </th>
+            <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-medium-width">
+              <ng-container *ngIf="affair.id !== editingAffairId">
+                {{affair.liaisonFamilialeCoIndivisaire || 'N/A'}}
+              </ng-container>
+              <mat-form-field *ngIf="affair.id === editingAffairId && editForm" appearance="fill" class="transparent-form-field">
+                <mat-select [formControl]="getFormControl('liaisonFamilialeCoIndivisaire')" name="liaisonFamilialeCoIndivisaire">
+                  <mat-option value="">-- Sélectionner --</mat-option>
+                  <mat-option value="conjoint">Conjoint</mat-option>
+                  <mat-option value="enfant">Enfant</mat-option>
+                  <mat-option value="parent">Parent</mat-option>
+                  <mat-option value="autre">Autre</mat-option>
+                  <!-- Add more options as needed -->
+                </mat-select>
+                <mat-icon matSuffix class="faded-pen-icon">edit</mat-icon>
+              </mat-form-field>
+            </td>
+          </ng-container>
 
     
+        
+                <!-- Actions column   -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="mat-mdc-header-cell mat-column-actions"> Actions </th>
+                    <td mat-cell *matCellDef="let affair" class="mat-mdc-cell mat-column-actions action-cell" [class.expanded]="affair.id === editingAffairId">
+                    <div class="action-buttons-container">
+                        <button mat-icon-button color="primary" (click)="editAffair(affair)"  *ngIf="affair.id !== editingAffairId" [disabled]="isSaving">
+                            <mat-icon>edit</mat-icon>
+    
+                        </button>
+                        <button mat-icon-button color="accent" (click)="saveChanges(affair)" *ngIf="affair.id === editingAffairId" [disabled]="isSaving">
+                            <mat-icon *ngIf="!isSaving" >save</mat-icon>
+                            <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
+    
+                        </button>
+                        <button mat-icon-button color="warn" (click)="cancelEdit()" *ngIf="affair.id === editingAffairId">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteAffair(affair.id)" [disabled]="isSaving">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    </td>
+                </ng-container>
+               
+
+                <!-- Header row definitions -->
+                <tr mat-header-row *matHeaderRowDef="groupHeaders" ></tr>
+        
+                <tr mat-header-row *matHeaderRowDef="expandedColumns" class="mat-mdc-header-row"></tr>
+                <tr mat-row *matRowDef="let row; columns: expandedColumns;" class="mat-mdc-row"></tr>
+            </table>
+        </div>
+    
+        <mat-paginator class="mat-mdc-paginator" [pageSizeOptions]="[5,10,15,30,50]"></mat-paginator>
 
 </div>
+
+

@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { map, Observable } from 'rxjs';
-import { Affair } from '../model/AffairModel';
-import { AffairDTO } from '../model/AffairModel/affair-dto.interface';
-import { mapAffairDTOToAffair } from '../model/AffairModel/affair-mapper'; 
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { AffairDTO } from '../model/affair-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +13,40 @@ export class AffairsService {
 
   constructor(private http: HttpClient) {}
 
-  getAffairs(): Observable<Affair[]> {
+  getAffairs(): Observable<AffairDTO[]> {
     
-    return this.http.get<AffairDTO[]>(this.baseUrl + '/').pipe(
-      // operations
-      // map
-      map((dtos: AffairDTO[]) => 
-        dtos.map((dto: AffairDTO) => 
-          mapAffairDTOToAffair(dto)
-        )
-      )
+    return this.http.get<AffairDTO[]>(this.baseUrl + '/');
+
+  }
+
+  updateAffair(affair: AffairDTO): Observable<AffairDTO> {
+    return this.http
+    .put<AffairDTO>(this.baseUrl + '/' ,affair)
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === HttpStatusCode.NotFound) {
+          // Handle CONFLICT error
+          console.log('Conflict error: The Affair with the id' + affair.id + 'is not found');
+          // You can return a custom error message or handle it as needed
+          return throwError(() => new Error('affair not found.'));
+        }
+        return throwError(() => new Error('An error occurred while updating the affair.'));
+      })
     );
 
+  }
+
+  deleteAffair(affairId: number): Observable<void> {
+    return this.http.delete<void>(this.baseUrl + '/' + affairId).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === HttpStatusCode.NotFound) {
+          // Handle CONFLICT error
+          console.log('Conflict error: The Affair with the id' + affairId + 'is not found');
+          // You can return a custom error message or handle it as needed
+          return throwError(() => new Error('affair not found.'));
+        }
+        return throwError(() => new Error('An error occurred while deleting the affair.'));
+      })
+    );
   }
 }

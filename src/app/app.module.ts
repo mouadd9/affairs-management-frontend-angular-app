@@ -20,7 +20,9 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTabsModule } from '@angular/material/tabs';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 import { LoginComponent } from './components/login/login.component';
@@ -82,7 +84,9 @@ import { CreateAgencyComponent } from './components/create-agency/create-agency.
     FormsModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
-    MatTabsModule
+    MatDatepickerModule,
+    MatNativeDateModule
+
   ],
   providers: [
     provideAnimationsAsync(),

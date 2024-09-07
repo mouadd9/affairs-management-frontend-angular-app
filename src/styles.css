@@ -260,6 +260,14 @@ table.mat-mdc-table {
   background-color: var(--mat-table-background-color) !important;
 }
 
+.group-header-row {
+
+  background-color: rgba(0, 0, 0, 0.110) !important;
+  text-align: center !important;
+  border-right:1px solid rgba(0, 0, 0, 0.300) !important;
+
+}
+
 .mat-mdc-header-row {
   background-color: rgba(0, 0, 0, 0.045) !important;
   height: var(--mat-table-header-container-height) !important;
@@ -298,6 +306,11 @@ table.mat-mdc-table {
 .mat-column-address { min-width: 180px; }
 .mat-column-status { min-width: 100px; }
 .mat-column-creationDate { min-width: 180px; }
+.mat-column-medium-width { min-width: 180px;}
+.mat-column-short { min-width: 110px; }
+.mat-column-long { min-width: 220px; }
+
+
 
 .action-cell {
   padding-right: 0px !important;

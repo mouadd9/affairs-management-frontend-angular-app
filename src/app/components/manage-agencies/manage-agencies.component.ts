@@ -397,10 +397,10 @@ export class ManageAgenciesComponent
   editUser(user: UserDTO): void {
     this.editingUserId = user.id;
     this.editUserForm = this.fb.group({
-      firstName: [user.firstName, Validators.required],
-      lastName: [user.lastName, Validators.required],
+      username: [user.username, [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
       email: [user.email, [Validators.required, Validators.email]],
-      username: [user.username, Validators.required],
+      lastName: [user.lastName, Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
+      firstName: [user.firstName, Validators.required, Validators.pattern('^[a-zA-Z ]*$')]
     });
   }
 

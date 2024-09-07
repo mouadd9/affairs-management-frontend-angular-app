@@ -4,16 +4,16 @@ import {
 } from '@angular/router';
 import { Observable} from 'rxjs';
 
-import { Affair } from '../model/AffairModel';
+import { AffairDTO } from '../model/affair-dto.interface';
 import { AffairsService } from '../services/affairs.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class AffairsResolver implements Resolve<Affair[]> {
+export class AffairsResolver implements Resolve<AffairDTO[]> {
   constructor(private affairsService: AffairsService) {}
-  resolve(): Observable<Affair[]> {
+  resolve(): Observable<AffairDTO[]> {
     return this.affairsService.getAffairs();
   }
 
