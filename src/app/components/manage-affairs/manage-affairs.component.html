@@ -11,7 +11,7 @@
     </div>
 
     <div class="upperSection">
-
+   
       <mat-form-field appearance="fill" class="custom-form-field">
         <mat-label>Filter</mat-label>
         <input matInput type="text" (change)="filterAffairs($event)">
@@ -19,15 +19,26 @@
     </mat-form-field>
         
 
-        <span class="spacer"></span>
-
-        <button class="icon2" mat-button >
-            <mat-icon>add_circle_outline</mat-icon>
-            Create Affair
-        </button>
+        
 
     </div>
-    <div class="table-container">
+    <div class="upperSection">
+    <button class="icon2" mat-button  (click)="toggleDetailedView()">
+      <mat-icon *ngIf="!this.showDetailedView">chevron_right</mat-icon>
+      <div *ngIf="!this.showDetailedView">expand</div>
+      <mat-icon *ngIf="this.showDetailedView">chevron_left</mat-icon>
+      <div *ngIf="this.showDetailedView">shrink</div>
+
+  </button>
+  <span class="spacer"></span>
+
+  <button class="icon2" mat-button >
+      <mat-icon>add_circle_outline</mat-icon>
+      Create Affair
+  </button></div>
+
+    <div class="table-container" [class.detailed-view]="showDetailedView"
+    [class.transitioning]="isTransitioning">
       <div class="message-container">
         <div *ngIf="errorMessage" class="error-message">
           <mat-icon>error</mat-icon> {{errorMessage}}
@@ -526,8 +537,8 @@
                 <!-- Header row definitions -->
                 <tr mat-header-row *matHeaderRowDef="groupHeaders" ></tr>
         
-                <tr mat-header-row *matHeaderRowDef="expandedColumns" class="mat-mdc-header-row"></tr>
-                <tr mat-row *matRowDef="let row; columns: expandedColumns;" class="mat-mdc-row"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-mdc-header-row"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-mdc-row"></tr>
             </table>
         </div>
     

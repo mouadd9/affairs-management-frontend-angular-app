@@ -84,9 +84,7 @@
   .icon2:hover  {
     background-color: transparent !important;
   }
-  .icon2:focus  {
-    background-color: transparent !important;
-  }
+ 
   
   .icon2 mat-icon {
     color: #000000;
@@ -192,6 +190,9 @@
     z-index: 1000;
   }
   
+  .close-button {
+    color: black;
+  }
   
   
   
@@ -199,4 +200,50 @@
   
     .mdc-text-field--filled:not(.mdc-text-field--disabled) {
       background-color: transparent !important;
+  }
+
+  .table-container {
+    width: 100%;
+    overflow-x: hidden;
+    transition: all 0.7s ease-in-out;
+  }
+  
+  .table-container.detailed-view {
+    overflow-x: auto;
+  }
+  
+  .table-container table {
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .table-container.detailed-view table {
+    min-width: 1500px; /* Adjust this value based on your needs */
+  }
+  
+  .mat-mdc-table .mat-mdc-header-cell,
+  .mat-mdc-table .mat-mdc-cell {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Hide columns smoothly */
+  .mat-mdc-table .mat-mdc-header-cell.ng-hide,
+  .mat-mdc-table .mat-mdc-cell.ng-hide {
+    opacity: 0;
+    width: 0;
+    padding: 0;
+  }
+  
+  /* Transition for group headers */
+  .group-header-row {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Optional: Add a fade effect for rows */
+  .mat-mdc-row {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .transitioning .mat-mdc-row {
+    opacity: 0.5;
   }

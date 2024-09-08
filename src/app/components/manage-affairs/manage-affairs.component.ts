@@ -64,9 +64,9 @@ export class ManageAffairsComponent implements OnInit {
     'actions'
   ];
 
-  allColumns: string[] = [...this.displayedColumns.slice(0, -1), ...this.expandedColumns, 'actions'];
+  
 
-  groupHeaders: string[] = ['generalInfo', 'beneficiaireInfo', 'financementInfo', 'logementInfo' , 'CoindivisaireInfo'];
+  groupHeaders: string[] = ['generalInfo'];
 
   errorMessage: string = '';
   successMessage: string = '';
@@ -108,10 +108,31 @@ export class ManageAffairsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+  isTransitioning: boolean = false;
 
   toggleDetailedView() {
+    this.isTransitioning = true;
     this.showDetailedView = !this.showDetailedView;
-    this.displayedColumns = this.showDetailedView ? this.allColumns : this.displayedColumns;
+    if (this.showDetailedView) {
+      this.groupHeaders= ['generalInfo', 'beneficiaireInfo', 'financementInfo', 'logementInfo' , 'CoindivisaireInfo'];
+
+      this.displayedColumns = this.expandedColumns;
+    } else {
+      this.groupHeaders = ['generalInfo'];
+      this.displayedColumns =  [
+        'codeAgence',
+        'typeFinancement',
+        'typeIntervention',
+        'cible',
+        'actions'
+      ]; 
+      
+
+    }
+
+    setTimeout(() => {
+      this.isTransitioning = false;
+    }, 300);
   }
 
   @HostListener('window:scroll', [])
