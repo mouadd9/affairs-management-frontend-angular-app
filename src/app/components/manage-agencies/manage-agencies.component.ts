@@ -399,8 +399,8 @@ export class ManageAgenciesComponent
     this.editUserForm = this.fb.group({
       username: [user.username, [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
       email: [user.email, [Validators.required, Validators.email]],
-      lastName: [user.lastName, Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
-      firstName: [user.firstName, Validators.required, Validators.pattern('^[a-zA-Z ]*$')]
+      lastName: [user.lastName, [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      firstName: [user.firstName, [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]]
     });
   }
 

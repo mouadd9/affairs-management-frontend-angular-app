@@ -34,9 +34,9 @@ export class CreateUserComponent implements OnInit {
     this.myForm = this.fb.group({
       username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]*$')]],
       email: ['', [Validators.required, Validators.email]],
-      lastName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
-      firstName: ['', Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$')]],
+      lastName: ['',[ Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      firstName: ['',[ Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')]],
       role: ['', Validators.required],
       agency: ['']
     });
@@ -67,6 +67,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onSubmit(): void {
+    
     if (this.myForm.valid) {
       this.isCreatingUser = true;
       const formData = this.myForm.value;
@@ -91,14 +92,24 @@ export class CreateUserComponent implements OnInit {
         error: (error) => {
           console.error('User creation failed:', error);
           this.showError(error.message || 'Failed to create user. Please try again.');
+          // this.isCreatingUser = false;
+        },
+        complete: () => {
           this.isCreatingUser = false;
         }
       });
     } else {
+      console.log( this.myForm.value);
+      this.markAllFieldsAsTouched();
       this.showError('Please fill all required fields correctly');
     }
   }
-
+  markAllFieldsAsTouched() {
+    Object.keys(this.myForm.controls).forEach(key => {
+      const control = this.myForm.get(key);
+      control?.markAsTouched();
+    });
+  }
   private addAdminRole(userId?: number): void {
     this.userService.addAdminRole(userId).subscribe({
       next: () => this.handleSuccessfulCreation(),
@@ -124,6 +135,7 @@ export class CreateUserComponent implements OnInit {
   private handleSuccessfulCreation(): void {
     this.userService.changeState();
     this.showSuccess('User created successfully');
+    
     this.myForm.reset();
     this.myForm.patchValue({ role: '' });
     this.isCreatingUser = false;

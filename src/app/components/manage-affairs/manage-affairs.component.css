@@ -48,7 +48,7 @@
   
   .upperSection {
     max-width: 1500px;
-    height: 65px;
+    height: 45px;
     display: flex;
     flex-direction: row;
     align-items: flex-end;
@@ -166,64 +166,34 @@
   }
   
   
-    
-    
-  .toggle-details-button {
-    position: absolute;
-    left: -120px;
-    top: 50%;
-    transform: translateY(-50%) rotate(-90deg);
-    transform-origin: right center;
-    height: 48px;
-    width: 200px;
-    transition: all 0.3s ease;
-  }
-  
-  .toggle-details-button:hover {
-    left: -116px;
-  }
-  
-  .scroll-to-top-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-  }
-  
   .close-button {
     color: black;
   }
-  
-  
-  
-  
-  
+
     .mdc-text-field--filled:not(.mdc-text-field--disabled) {
       background-color: transparent !important;
   }
 
-  .table-container {
-    width: 100%;
-    overflow-x: hidden;
-    transition: all 0.7s ease-in-out;
-  }
+
+
+
+ 
   
-  .table-container.detailed-view {
-    overflow-x: auto;
-  }
+  /* whenwe click on the button for expanding we will apply this css rule*/
+ 
   
+
   .table-container table {
-    width: 100%;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
   }
   
   .table-container.detailed-view table {
-    min-width: 1500px; /* Adjust this value based on your needs */
+  min-width: 1500px;
   }
   
   .mat-mdc-table .mat-mdc-header-cell,
   .mat-mdc-table .mat-mdc-cell {
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
   
   /* Hide columns smoothly */
@@ -236,12 +206,12 @@
   
   /* Transition for group headers */
   .group-header-row {
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
   
   /* Optional: Add a fade effect for rows */
   .mat-mdc-row {
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   
   .transitioning .mat-mdc-row {

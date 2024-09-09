@@ -1,0 +1,233 @@
+<div class="affair-form-container">
+    <div class="affair-form-card">
+      <!-- Header section with title and close button -->
+      <div class="affair-form-header">
+        <h2><mat-icon>assignment</mat-icon> Create New Affair</h2>
+        <button mat-icon-button class="close-button" (click)="goBack()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      
+      <!-- Container for error and success messages -->
+      <div class="message-container">
+        <div *ngIf="errorMessage" class="error-message">
+          <mat-icon>error</mat-icon> {{errorMessage}}
+        </div>
+        <div *ngIf="successMessage" class="success-message">
+          <mat-icon>check_circle</mat-icon> {{successMessage}}
+        </div>
+      </div>
+  
+      <!-- Affair creation form -->
+      <form [formGroup]="affairForm" (ngSubmit)="submitForm()" class="affair-form">
+        <!-- Step 1: General Information -->
+        <div *ngIf="currentStep === 1">
+          <h3>Step 1: General Information</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>Code Agence</mat-label>
+            <mat-select matInput formControlName="codeAgence" required>
+                <mat-option *ngFor="let agency of activeAgencies" [value]="agency.agencyCode">
+                    {{agency.agencyCode}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="affairForm.get('codeAgence')?.invalid">Code Agence is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Type de Financement</mat-label>
+            <input matInput formControlName="typeFinancement" required>
+            <mat-error *ngIf="affairForm.get('typeFinancement')?.invalid">Type de Financement is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Type d'Intervention</mat-label>
+            <input matInput formControlName="typeIntervention" required>
+            <mat-error *ngIf="affairForm.get('typeIntervention')?.invalid">Type d'Intervention is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Cible</mat-label>
+            <input matInput formControlName="cible" required>
+            <mat-error *ngIf="affairForm.get('cible')?.invalid">Cible is required</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Step 2: Beneficiary Information -->
+        <div *ngIf="currentStep === 2">
+          <h3>Step 2: Beneficiary Information</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>Nom du Bénéficiaire</mat-label>
+            <input matInput formControlName="nomBeneficiaire" required>
+            <mat-error *ngIf="affairForm.get('nomBeneficiaire')?.invalid">Nom du Bénéficiaire is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Prénom du Bénéficiaire</mat-label>
+            <input matInput formControlName="prenomBeneficiaire" required>
+            <mat-error *ngIf="affairForm.get('prenomBeneficiaire')?.invalid">Prénom du Bénéficiaire is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Numéro CNIE du Bénéficiaire</mat-label>
+            <input matInput formControlName="numeroCNIEBeneficiaire" required>
+            <mat-error *ngIf="affairForm.get('numeroCNIEBeneficiaire')?.invalid">Numéro CNIE du Bénéficiaire is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Genre du Bénéficiaire</mat-label>
+            <mat-select formControlName="genreBeneficiaire" required>
+              <mat-option value="M">Masculin</mat-option>
+              <mat-option value="F">Féminin</mat-option>
+            </mat-select>
+            <mat-error *ngIf="affairForm.get('genreBeneficiaire')?.invalid">Genre du Bénéficiaire is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Date de Naissance du Bénéficiaire</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateDeNaissanceBeneficiaire" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="affairForm.get('dateDeNaissanceBeneficiaire')?.invalid">Date de Naissance du Bénéficiaire is required</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Step 3: Financing Details -->
+        <div *ngIf="currentStep === 3">
+          <h3>Step 3: Financing Details</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>Numéro Financement Banque</mat-label>
+            <input matInput formControlName="numeroFinancementBanque" required>
+            <mat-error *ngIf="affairForm.get('numeroFinancementBanque')?.invalid">Numéro Financement Banque is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Objet du Financement</mat-label>
+            <input matInput formControlName="objetDuFinancement" required>
+            <mat-error *ngIf="affairForm.get('objetDuFinancement')?.invalid">Objet du Financement is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Montant du Financement</mat-label>
+            <input matInput type="number" formControlName="montantDuFinancement" required>
+            <mat-error *ngIf="affairForm.get('montantDuFinancement')?.invalid">Montant du Financement is required and must be positive</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Coût d'Acquisition</mat-label>
+            <input matInput type="number" formControlName="coutAcquisition" required>
+            <mat-error *ngIf="affairForm.get('coutAcquisition')?.invalid">Coût d'Acquisition is required and must be positive</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Taux de Marge (%)</mat-label>
+            <input matInput type="number" formControlName="tauxDeMarge" required>
+            <mat-error *ngIf="affairForm.get('tauxDeMarge')?.invalid">Taux de Marge is required and must be between 0 and 100</mat-error>
+          </mat-form-field>
+  
+          <mat-checkbox formControlName="margeSurDiffere">Marge sur Différé</mat-checkbox>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Apport du Bénéficiaire</mat-label>
+            <input matInput type="number" formControlName="apportDuBeneficiaire" required>
+            <mat-error *ngIf="affairForm.get('apportDuBeneficiaire')?.invalid">Apport du Bénéficiaire is required and must be positive</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Prix Logement</mat-label>
+            <input matInput type="number" formControlName="prixLogement" required>
+            <mat-error *ngIf="affairForm.get('prixLogement')?.invalid">Prix Logement is required and must be positive</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Durée (en mois)</mat-label>
+            <input matInput type="number" formControlName="duree" required>
+            <mat-error *ngIf="affairForm.get('duree')?.invalid">Durée is required and must be positive</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Step 4: Housing Information -->
+        <div *ngIf="currentStep === 4">
+          <h3>Step 4: Housing Information</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>Numéro TF</mat-label>
+            <input matInput formControlName="numeroTF" required>
+            <mat-error *ngIf="affairForm.get('numeroTF')?.invalid">Numéro TF is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Nature du TF</mat-label>
+            <input matInput formControlName="natureDuTF" required>
+            <mat-error *ngIf="affairForm.get('natureDuTF')?.invalid">Nature du TF is required</mat-error>
+          </mat-form-field>
+  
+          <mat-checkbox formControlName="acquisitionIndivision">Acquisition dans l'indivision</mat-checkbox>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Adresse du Logement</mat-label>
+            <input matInput formControlName="adresseLogement" required>
+            <mat-error *ngIf="affairForm.get('adresseLogement')?.invalid">Adresse du Logement is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Code Ville</mat-label>
+            <input matInput formControlName="codeVille" required>
+            <mat-error *ngIf="affairForm.get('codeVille')?.invalid">Code Ville is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Superficie (m²)</mat-label>
+            <input matInput type="number" formControlName="superficie" required>
+            <mat-error *ngIf="affairForm.get('superficie')?.invalid">Superficie is required and must be positive</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Vendeur du Logement</mat-label>
+            <input matInput formControlName="vendeurLogement" required>
+            <mat-error *ngIf="affairForm.get('vendeurLogement')?.invalid">Vendeur du Logement is required</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Step 5: Co-owner Information -->
+        <div *ngIf="currentStep === 5">
+          <h3>Step 5: Co-owner Information</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>Nom du Co-Indivisaire</mat-label>
+            <input matInput formControlName="nomCoIndivisaire">
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Prénom du Co-Indivisaire</mat-label>
+            <input matInput formControlName="prenomCoIndivisaire">
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Numéro CNIE du Co-Indivisaire</mat-label>
+            <input matInput formControlName="numeroCNIECoIndivisaire">
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Genre du Co-Indivisaire</mat-label>
+            <mat-select formControlName="genreCoIndivisaire">
+              <mat-option value="M">Masculin</mat-option>
+              <mat-option value="F">Féminin</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Liaison Familiale du Co-Indivisaire</mat-label>
+            <input matInput formControlName="liaisonFamilialeCoIndivisaire">
+          </mat-form-field>
+        </div>
+  
+        <!-- Navigation and submit buttons -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
+          <button mat-button type="button" (click)="nextStep()" [disabled]="currentStep === totalSteps">Next</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!affairForm.valid || isSubmitting || currentStep !== totalSteps">
+            <mat-spinner *ngIf="isSubmitting" diameter="24"></mat-spinner>
+            <span *ngIf="!isSubmitting"><mat-icon>save</mat-icon>Create Affair</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

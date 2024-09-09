@@ -1,10 +1,10 @@
-import { Component, HostListener, OnInit, ViewChild  } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild  } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AffairsService } from '../../services/affairs.service';
 import { AffairDTO } from '../../model/affair-dto.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder,
   FormControl,
@@ -13,18 +13,12 @@ import {
 } from '@angular/forms';
 
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manage-affairs',
   templateUrl: './manage-affairs.component.html',
   styleUrl: './manage-affairs.component.css',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
 })
 export class ManageAffairsComponent implements OnInit {
   affairs: AffairDTO[] = []; // this will hold affairs fetched by the resolvers
@@ -74,14 +68,21 @@ export class ManageAffairsComponent implements OnInit {
   showDetailedView: boolean = false;
   showScrollTopButton: boolean = false;
 
+  private updateSubscription: Subscription = new Subscription();
+
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('affairFormOutlet') affairFormOutlet!: ElementRef;
+  @ViewChild('chart') chart!: ElementRef;
 
   editForm: FormGroup | null = null;
   editingAffairId: any;
+  ngZone: any;
 
   constructor(
     private affairsService: AffairsService,
+    private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder
   ) {
@@ -96,6 +97,8 @@ export class ManageAffairsComponent implements OnInit {
       },
       error: (error) => console.error('Error fetching affairs:', error),
     });
+    
+    this.setupSubscriptions();
   }
 
   initializeDataSources() {
@@ -108,6 +111,56 @@ export class ManageAffairsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+
+  private setupSubscriptions(): void {
+    this.updateSubscription.add(
+      // if we send a signal to the observable "update$" the following will happen
+      // - we will repopulate our data source with the new users 
+      // - so that when the user clicks save a new user will add up in the table without rebooting the entire component
+      // instead of nesting subscription we just used the .pipe() and some operators "l"
+      this.affairsService.changeAffairsState$.subscribe({ // now we subscribe to the new observable
+        next: (newAffairs: AffairDTO[]) => {
+          this.affairs = newAffairs;
+          this.dataSource.data = this.affairs;
+        },
+        error: (error) => {
+          console.error('Error fetching affairs:', error);
+        },
+      })
+    )
+    this.updateSubscription.add(
+      this.affairsService.closeAffairForm$.subscribe(() => this.scrollThenNavigate())
+    );
+  }
+
+  // Method to scroll to top and then navigate
+  private scrollThenNavigate(): void {
+    if (this.chart && this.chart.nativeElement) {
+      this.smoothScrollToElement(this.chart.nativeElement)
+        .then(() => {
+          this.ngZone.run(() => this.router.navigateByUrl('/admin/affairs'));
+        })
+        .catch((error) => {
+          console.error('Error during scroll:', error);
+          this.router.navigateByUrl('/admin/affairs');
+        });
+    } else {
+      console.warn('Chart element not found, navigating immediately');
+      this.router.navigateByUrl('/admin/affairs');
+    }
+  }
+
+  // Helper method to perform smooth scrolling
+  private smoothScrollToElement(element: HTMLElement): Promise<void> {
+    return new Promise((resolve) => {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(resolve, 700);
+    });
+  }
+
+
+
   isTransitioning: boolean = false;
 
   toggleDetailedView() {
@@ -133,16 +186,6 @@ export class ManageAffairsComponent implements OnInit {
     setTimeout(() => {
       this.isTransitioning = false;
     }, 300);
-  }
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const scrollPosition = window.scrollY  || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.showScrollTopButton = scrollPosition > 300;
-  }
-
-  scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // edit
@@ -265,5 +308,22 @@ export class ManageAffairsComponent implements OnInit {
     this.successMessage = message;
 
     setTimeout(() => (this.successMessage = ''), 7000);
+  }
+
+
+    // Method to scroll to the agency creation form (naviguation -> scrollIntoView)
+    scrollToForm(): void {
+      this.router.navigate(['create'], { relativeTo: this.route });
+      setTimeout(() => {
+        this.affairFormOutlet.nativeElement.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }, 100);
+    }
+
+    
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.updateSubscription.unsubscribe();
   }
 }

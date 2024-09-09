@@ -42,6 +42,7 @@ import { AgencyEmployeeTemplateComponent } from './components/agency-employee-te
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { CountUpDirective } from './directives/count-up.directive';
 import { CreateAgencyComponent } from './components/create-agency/create-agency.component';
+import { CreateAffairComponent } from './components/create-affair/create-affair.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { CreateAgencyComponent } from './components/create-agency/create-agency.
     AgencyEmployeeTemplateComponent,
     UnauthorizedComponent,
     CountUpDirective,
-    CreateAgencyComponent
+    CreateAgencyComponent,
+    CreateAffairComponent
   ],
   imports: [
     BrowserModule,
