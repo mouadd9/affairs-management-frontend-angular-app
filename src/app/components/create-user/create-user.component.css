@@ -15,7 +15,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: solid 1px #7b7b7b77;
   width: 100%;
-  max-width: 500px;
+  max-width: 500px; 
   padding: 20px;
   transition: all 0.3s ease;
 }
@@ -118,13 +118,18 @@ button[type="submit"] mat-icon {
   margin-right: 5px; /* Space between icon and text */
 }
 
-mat-spinner {
-  color: white !important;
-}
 
 /* Responsive styles */
 @media (max-width: 600px) {
   .user-form-card {
     padding: 20px;
   }
+}
+
+mat-form-field {
+  background-color: #deffe25c !important;
+}
+
+mat-error {
+  margin-top: 2px
 }

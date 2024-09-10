@@ -191,6 +191,8 @@ export class ManageAffairsComponent implements OnInit {
   // edit
 
   editAffair(affair: AffairDTO): void {
+    if(!this.showDetailedView){this.toggleDetailedView();}
+    
     this.editingAffairId = affair.id;
     this.editForm = this.fb.group({
       typeFinancement: [affair.typeFinancement, Validators.required],
@@ -235,6 +237,7 @@ export class ManageAffairsComponent implements OnInit {
   cancelEdit(): void {
     this.editingAffairId = null;
     this.editForm = null;
+    this.toggleDetailedView();
   }
 
   saveChanges(affair: AffairDTO): void {
@@ -260,6 +263,7 @@ export class ManageAffairsComponent implements OnInit {
         })
         .add(() => {
           this.isSaving = false;
+      
         });
     } else {
       this.showError('Please fill all required fields correctly');
@@ -271,7 +275,7 @@ export class ManageAffairsComponent implements OnInit {
     if (confirm('Are you sure you want to delete this agency?')) {
       this.affairsService.deleteAffair(AffairId).subscribe({
         next: (response) => {
-          //this.agencyService.changeState();
+          this.affairsService.changeState();
           this.showSuccess('agency deleted successfully');
         },
         error: (error: Error) => {

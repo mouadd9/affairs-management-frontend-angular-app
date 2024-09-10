@@ -39,6 +39,14 @@
     display: flex;
     align-items: center;
   }
+  h3 {
+
+    margin:0;
+    font-size: 30px;
+    color: #333;
+
+
+  }
   
   .affair-form-header h2 mat-icon {
     margin-right: 10px;
@@ -118,10 +126,6 @@
     margin-right: 5px; /* Space between icon and text */
   }
   
-  mat-spinner {
-    color: white !important;
-  }
-  
   /* Form actions */
   .form-actions {
     display: flex;
@@ -134,4 +138,32 @@
     .affair-form-card {
       padding: 15px;
     }
+  }
+
+  mat-form-field {
+    background-color: #deffe25c !important;
+  }
+  
+  mat-error {
+    margin-top: 2px
+  }
+
+  .nav-button {
+    color: black;
+  }
+  
+  .nav-button[disabled] {
+    color: rgba(0, 0, 0, 0.38); /* This creates a faded black color */
+  }
+
+  .nav-button mat-icon {
+    color: black;
+  }
+  
+  .nav-button[disabled] mat-icon {
+    color: rgba(0, 0, 0, 0.38);
+  }
+
+  .spacer {
+    flex: 1 1 auto;
   }

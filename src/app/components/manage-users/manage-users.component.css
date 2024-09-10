@@ -129,7 +129,7 @@
 
   }
 
- button {
+.upperSection button {
     height: 30px !important;
   }
 
@@ -171,7 +171,9 @@
   
   
 
-
+.action-buttons-container button {
+  color : black;
+}
 
 
 

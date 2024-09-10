@@ -17,6 +17,7 @@ import { AgenciesResolver } from './resolvers/agencies.resolver';
 import { CreateAgencyComponent } from './components/create-agency/create-agency.component';
 import { AffairsResolver } from './resolvers/affairs.resolver';
 import { CreateAffairComponent } from './components/create-affair/create-affair.component';
+import { AffairCountResolver } from './resolvers/affair-count.resolver';
 
 const routes: Routes = [
 
@@ -37,7 +38,8 @@ const routes: Routes = [
     ]},
     {path:"dashboard", component:DashboardComponent, resolve: {
       userCounts: userCountsResolver,
-      agencyCount: AgencyDataResolver
+      agencyCount: AgencyDataResolver,
+      affairCount: AffairCountResolver
     } },
     {path:"agencies", component:ManageAgenciesComponent, resolve: {agencies: AgenciesResolver}, children:[
       { path: 'create', component: CreateAgencyComponent }

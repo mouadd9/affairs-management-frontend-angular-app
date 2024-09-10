@@ -127,7 +127,7 @@
   
     }
   
-   button {
+    .upperSection button {
       height: 30px !important;
     }
   
@@ -216,4 +216,8 @@
   
   .transitioning .mat-mdc-row {
     opacity: 0.5;
+  }
+
+  .action-buttons-container button {
+    color : black;
   }

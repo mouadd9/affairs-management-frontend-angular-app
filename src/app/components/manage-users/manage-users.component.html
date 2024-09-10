@@ -135,19 +135,19 @@
                 <th mat-header-cell *matHeaderCellDef class="mat-mdc-header-cell mat-column-actions"> Actions </th>
                 <td mat-cell *matCellDef="let user" class="mat-mdc-cell mat-column-actions action-cell" [class.expanded]="user.id === editingUserId">
                 <div class="action-buttons-container">
-                    <button mat-icon-button color="primary" (click)="editUser(user)"  *ngIf="user.id !== editingUserId" [disabled]="isSaving">
+                    <button mat-icon-button  (click)="editUser(user)"  *ngIf="user.id !== editingUserId" [disabled]="isSaving">
                         <mat-icon>edit</mat-icon>
 
                     </button>
-                    <button mat-icon-button color="accent" (click)="saveUser(user)" *ngIf="user.id === editingUserId" [disabled]="isSaving || editForm?.invalid">
+                    <button mat-icon-button (click)="saveUser(user)" *ngIf="user.id === editingUserId" [disabled]="isSaving || editForm?.invalid">
                         <mat-icon *ngIf="!isSaving" >save</mat-icon>
                         <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
 
                     </button>
-                    <button mat-icon-button color="warn" (click)="cancelEdit()" *ngIf="user.id === editingUserId">
+                    <button mat-icon-button  (click)="cancelEdit()" *ngIf="user.id === editingUserId">
                         <mat-icon>cancel</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn" (click)="deleteUser(user.id)" [disabled]="isSaving">
+                    <button mat-icon-button  (click)="deleteUser(user.id)" [disabled]="isSaving">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

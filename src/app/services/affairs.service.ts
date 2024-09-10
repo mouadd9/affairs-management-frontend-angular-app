@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError, map, Observable, Subject, switchMap, throwError } from 'rxjs';
@@ -37,6 +37,13 @@ export class AffairsService {
     return this.http.get<AffairDTO[]>(this.baseUrl + '/');
 
   }
+
+  getAffairCounts(): Observable<number>{
+    let params = new HttpParams()
+    .set('countOnly', 'true');
+    return this.http.get<number>(this.baseUrl+'/', {params: params});
+  }
+
 
   createAffair(affair: AffairDTO): Observable<AffairDTO>{
     return this.http

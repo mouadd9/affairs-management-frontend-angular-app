@@ -73,9 +73,14 @@ export class AgenciesService {
           // Handle CONFLICT error
           console.log('Conflict error: The agency cannot be deleted');
           // You can return a custom error message or handle it as needed
-          return throwError(() => new Error('The agency has users.'));
+          return throwError(() => new Error('The agency has users/affairs.'));
+        } else if (error.status === HttpStatusCode.NotFound) {
+          console.log('Not Found error: The agency cannot be found');
+          // You can return a custom error message or handle it as needed
+          return throwError(() => new Error('The agency is not found.'));
+
         }
-        // Handle other errors
+        // Handle other errorsf
         return throwError(
           () => new Error('An error occurred while deleting the agency.')
         );

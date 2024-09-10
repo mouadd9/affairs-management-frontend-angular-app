@@ -19,10 +19,10 @@
       </div>
   
       <!-- Affair creation form -->
-      <form [formGroup]="affairForm" (ngSubmit)="submitForm()" class="affair-form">
+      <form [formGroup]="affairForm" (ngSubmit)="submitForm()" >
         <!-- Step 1: General Information -->
-        <div *ngIf="currentStep === 1">
-          <h3>Step 1: General Information</h3>
+        <div *ngIf="currentStep === 1" class="affair-form">
+          <h3>Etape 1: Informations globales</h3>
           <mat-form-field appearance="fill">
             <mat-label>Code Agence</mat-label>
             <mat-select matInput formControlName="codeAgence" required>
@@ -53,8 +53,8 @@
         </div>
   
         <!-- Step 2: Beneficiary Information -->
-        <div *ngIf="currentStep === 2">
-          <h3>Step 2: Beneficiary Information</h3>
+        <div *ngIf="currentStep === 2" class="affair-form">
+          <h3>Etape 2: Informations Bénéficiaire</h3>
           <mat-form-field appearance="fill">
             <mat-label>Nom du Bénéficiaire</mat-label>
             <input matInput formControlName="nomBeneficiaire" required>
@@ -92,8 +92,8 @@
         </div>
   
         <!-- Step 3: Financing Details -->
-        <div *ngIf="currentStep === 3">
-          <h3>Step 3: Financing Details</h3>
+        <div *ngIf="currentStep === 3" class="affair-form">
+          <h3>Etape 3: Details du Financement</h3>
           <mat-form-field appearance="fill">
             <mat-label>Numéro Financement Banque</mat-label>
             <input matInput formControlName="numeroFinancementBanque" required>
@@ -146,8 +146,8 @@
         </div>
   
         <!-- Step 4: Housing Information -->
-        <div *ngIf="currentStep === 4">
-          <h3>Step 4: Housing Information</h3>
+        <div *ngIf="currentStep === 4" class="affair-form">
+          <h3>Etape 4: Informations du Logement</h3>
           <mat-form-field appearance="fill">
             <mat-label>Numéro TF</mat-label>
             <input matInput formControlName="numeroTF" required>
@@ -188,8 +188,8 @@
         </div>
   
         <!-- Step 5: Co-owner Information -->
-        <div *ngIf="currentStep === 5">
-          <h3>Step 5: Co-owner Information</h3>
+        <div *ngIf="currentStep === 5" class="affair-form">
+          <h3>Etape 5: Informations du Co-Indivisaire</h3>
           <mat-form-field appearance="fill">
             <mat-label>Nom du Co-Indivisaire</mat-label>
             <input matInput formControlName="nomCoIndivisaire">
@@ -221,10 +221,15 @@
   
         <!-- Navigation and submit buttons -->
         <div class="form-actions">
-          <button mat-button type="button" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
-          <button mat-button type="button" (click)="nextStep()" [disabled]="currentStep === totalSteps">Next</button>
+          <button mat-icon-button type="button" class="nav-button" (click)="previousStep()" [disabled]="currentStep === 1">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <button mat-icon-button type="button" class="nav-button" (click)="nextStep()" [disabled]="currentStep === totalSteps">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+          <span class="spacer"></span>
           <button mat-raised-button color="primary" type="submit" [disabled]="!affairForm.valid || isSubmitting || currentStep !== totalSteps">
-            <mat-spinner *ngIf="isSubmitting" diameter="24"></mat-spinner>
+            <mat-spinner *ngIf="isSubmitting" style="color:  white !important;" diameter="24"></mat-spinner>
             <span *ngIf="!isSubmitting"><mat-icon>save</mat-icon>Create Affair</span>
           </button>
         </div>

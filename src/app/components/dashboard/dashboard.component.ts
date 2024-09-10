@@ -17,8 +17,11 @@ export class DashboardComponent implements OnInit{
     backOfficeEmployees: 0
     // we still need 
     ,
+
+
     active: 0,
-    inactive: 0
+    inactive: 0,
+    totalAffairs: 0
   };
 
 
@@ -40,6 +43,7 @@ export class DashboardComponent implements OnInit{
       this.dashboardCounts.totalAgencies = data['agencyCount']['total'];
       this.dashboardCounts.active = data['agencyCount']['active'];
       this.dashboardCounts.inactive = data['agencyCount']['inactive'];
+      this.dashboardCounts.totalAffairs = data['affairCount'];
 
        // Trigger the animation after a short delay to ensure all directives are initialized
        setTimeout(() => this.countUpService.triggerAnimation(), 90);
@@ -48,6 +52,6 @@ export class DashboardComponent implements OnInit{
 
      error: error => console.error('Error fetching user counts:', error)
     
-    });
+    }); 
   }
 }

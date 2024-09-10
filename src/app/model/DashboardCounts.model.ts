@@ -6,7 +6,7 @@ export interface DashboardCounts {
     employeeUsers: number;
     adminUsers: number;
     // Future additions:
-    // totalAffairs: number;
+    totalAffairs: number;
     backOfficeEmployees: number;
   }
   

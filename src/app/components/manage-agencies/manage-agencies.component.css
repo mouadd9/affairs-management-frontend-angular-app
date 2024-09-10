@@ -131,9 +131,10 @@
 
 }
 
-button {
+.upperSection button {
   height: 30px !important;
 }
+
 
 
 
@@ -211,4 +212,7 @@ button {
 
 .error-message mat-icon, .success-message mat-icon {
   margin-right: 8px;
+}
+.action-buttons-container button {
+  color : black;
 }
