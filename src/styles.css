@@ -236,9 +236,45 @@ html {
     --mat-sort-arrow-color:  black ;
 
 
+    --mdc-radio-disabled-selected-icon-color: #91a391e3;
+    --mdc-radio-disabled-unselected-icon-color: #91a391e3;
+    --mdc-radio-unselected-hover-icon-color: #91a391e3;
+    --mdc-radio-unselected-icon-color: #434d43e3;
+    --mdc-radio-unselected-pressed-icon-color: #434d43e3;
+    --mdc-radio-selected-focus-icon-color: #2c372ce3;
+    --mdc-radio-selected-hover-icon-color: #2c372ce3;
+    --mdc-radio-selected-icon-color: #2c372ce3;
+    --mdc-radio-selected-pressed-icon-color: #2c372c;
+    --mdc-radio-state-layer-size: 40px;
+    --mdc-radio-disabled-selected-icon-opacity: 0.38;
+    --mdc-radio-disabled-unselected-icon-opacity: 0.38;
+    --mat-radio-ripple-color: #2c372c;
+    --mat-radio-checked-ripple-color: #2c372c;
+    --mat-radio-disabled-label-color: #2c372ce3;
+    --mat-radio-label-text-color: #2c372ce3;
+    --mat-radio-label-text-font: Roboto, sans-serif;
+    --mat-radio-label-text-line-height: 1.25rem;
+    --mat-radio-label-text-size: 0.875rem;
+    --mat-radio-label-text-tracking: 0.016rem;
+    --mat-radio-label-text-weight: 400;
+    --mat-radio-touch-target-display: block;
+
+   
+
     
 }
 
+.mat-accent.mat-mdc-radio-button {
+
+  --mat-radio-checked-ripple-color: #2c372c;
+
+  --mdc-radio-selected-focus-icon-color: #2c372ce3;
+  --mdc-radio-selected-hover-icon-color: #2c372ce3;
+  --mdc-radio-selected-icon-color: #2c372ce3;
+  --mdc-radio-selected-pressed-icon-color: #2c372c;
+
+
+}
 
 
 
