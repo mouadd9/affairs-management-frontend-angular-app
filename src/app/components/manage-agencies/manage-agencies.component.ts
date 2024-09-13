@@ -15,16 +15,18 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserDTO } from '../../model/user.model';
 import { UsersService } from '../../services/users.service';
-import { Subscription } from 'rxjs';
+import { catchError, finalize, forkJoin, Subscription, switchMap, Observable, map } from 'rxjs';
 import { NgZone } from '@angular/core';
 import { Agency } from '../../model/agency.model';
 import { AgenciesService } from '../../services/agencies.service';
+import { AffairDTO } from '../../model/affair-dto.interface';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { AffairsService } from '../../services/affairs.service';
 
 @Component({
   selector: 'app-manage-agencies',
@@ -105,7 +107,8 @@ export class ManageAgenciesComponent
     private ngZone: NgZone,
     private usersService: UsersService,
     private cdr: ChangeDetectorRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private affairService: AffairsService
   ) {
     // Initialize the data sources for agencies and employees tables
     this.dataSource = new MatTableDataSource<Agency>([]);
@@ -237,6 +240,8 @@ export class ManageAgenciesComponent
 
   // Method to save changes made to an agency
   // This is called when the user clicks the save button after editing
+  
+  
   saveChanges(agency: Agency): void {
     // Check if the editForm exists and is valid
     if (this.editForm && this.editForm?.valid) {
@@ -257,19 +262,19 @@ export class ManageAgenciesComponent
             Object.assign(agency, response);
 
             this.showSuccess('Agency updated successfully');
-
             // Cancel the edit mode
             this.cancelEdit();
           },
           error: (error: Error) => {
             // If there's an error, set the error message to display to the user
-            
+
             this.showError(error.message);
           },
         })
         .add(() => {
           // Whether the update succeeds or fails, set isSaving back to false
           // This hides the loading indicator
+
           this.isSaving = false;
         });
     } else {
@@ -277,7 +282,6 @@ export class ManageAgenciesComponent
      this.showError('Please fill all required fields correctly');
     }
   }
-
   // Method to delete an agency
   deleteAgency(AgencyId: number): void {
     if (confirm('Are you sure you want to delete this agency?')) {

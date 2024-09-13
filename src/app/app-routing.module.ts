@@ -18,6 +18,9 @@ import { CreateAgencyComponent } from './components/create-agency/create-agency.
 import { AffairsResolver } from './resolvers/affairs.resolver';
 import { CreateAffairComponent } from './components/create-affair/create-affair.component';
 import { AffairCountResolver } from './resolvers/affair-count.resolver';
+import { ManageAffairsEmployeeComponent } from './components/manage-affairs-employee/manage-affairs-employee.component';
+import { CreateAffairEmployeeComponent } from './components/create-affair-employee/create-affair-employee.component';
+import { AgencyAffairsResolver } from './resolvers/agency-affairs.resolver';
 
 const routes: Routes = [
 
@@ -49,7 +52,13 @@ const routes: Routes = [
 
   },
 
-  {path:"agencyEmployee" , component:AgencyEmployeeTemplateComponent, canActivate : [AuthorizationGuard], data : {roles : ['AGENCY_EMPLOYEE']}},
+  {path:"agencyEmployee" , component:AgencyEmployeeTemplateComponent, canActivate : [AuthorizationGuard], data : {roles : ['AGENCY_EMPLOYEE']},
+  children: [
+    {path:"affairs", component:ManageAffairsEmployeeComponent, resolve: { affairs: AgencyAffairsResolver}, children:[
+      { path: 'create', component: CreateAffairEmployeeComponent }
+    ]}
+  ]
+},
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '**', redirectTo: '/login' } // This should be the last route
 

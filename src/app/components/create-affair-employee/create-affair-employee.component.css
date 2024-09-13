@@ -1,0 +1,169 @@
+/* Container styles */
+.affair-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: transparent;
+    padding: 20px;
+  }
+  
+  /* Card styles */
+  .affair-form-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: solid 1px #7b7b7b77;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .affair-form-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Header styles */
+  .affair-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .affair-form-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
+  }
+  h3 {
+
+    margin:0;
+    font-size: 30px;
+    color: #333;
+
+
+  }
+  
+  .affair-form-header h2 mat-icon {
+    margin-right: 10px;
+    color: #062c06;
+  }
+  
+  .close-button {
+    color: #7b7b7b77;
+  }
+  
+  /* Message styles */
+  .message-container {
+    margin-bottom: 20px;
+  }
+  
+  .error-message, .success-message {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  .error-message {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .error-message mat-icon, .success-message mat-icon {
+    margin-right: 8px;
+  }
+  
+  /* Form styles */
+  .affair-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  /* Submit button styles */
+  button[type="submit"] {
+    background-color: #2c372ce3;
+    border-radius: 4px;
+    border: solid 1px #7b7b7b77;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 48px;
+    font-size: 16px;
+    transition: all 0.10s ease-in-out;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #576657e3 !important;
+  }
+  
+  button[type="submit"] mat-icon {
+    color: white;
+    font-size: 22px !important;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    margin-right: 5px; /* Space between icon and text */
+  }
+  
+  /* Form actions */
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 600px) {
+    .affair-form-card {
+      padding: 15px;
+    }
+  }
+
+  mat-form-field {
+    background-color: #deffe25c !important;
+  }
+  
+  mat-error {
+    margin-top: 2px
+  }
+
+  .nav-button {
+    color: black;
+  }
+  
+  .nav-button[disabled] {
+    color: rgba(0, 0, 0, 0.38); /* This creates a faded black color */
+  }
+
+  .nav-button mat-icon {
+    color: black;
+  }
+  
+  .nav-button[disabled] mat-icon {
+    color: rgba(0, 0, 0, 0.38);
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }

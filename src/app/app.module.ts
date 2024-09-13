@@ -43,6 +43,8 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
 import { CountUpDirective } from './directives/count-up.directive';
 import { CreateAgencyComponent } from './components/create-agency/create-agency.component';
 import { CreateAffairComponent } from './components/create-affair/create-affair.component';
+import { ManageAffairsEmployeeComponent } from './components/manage-affairs-employee/manage-affairs-employee.component';
+import { CreateAffairEmployeeComponent } from './components/create-affair-employee/create-affair-employee.component';
 
 
 @NgModule({
@@ -59,7 +61,9 @@ import { CreateAffairComponent } from './components/create-affair/create-affair.
     UnauthorizedComponent,
     CountUpDirective,
     CreateAgencyComponent,
-    CreateAffairComponent
+    CreateAffairComponent,
+    ManageAffairsEmployeeComponent,
+    CreateAffairEmployeeComponent
   ],
   imports: [
     BrowserModule,

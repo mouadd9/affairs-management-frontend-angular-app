@@ -10,6 +10,7 @@ import { UserCounts } from '../model/userCounts.model';
 // This object holds configuration values that can change depending on the environment (e.g., development, production).
 import {environment} from "../../environments/environment";
 import { AgencyCounts } from '../model/agencyCounts.model';
+import { AgencyEmployee } from '../model/Employee-details.interface';
 
 
 
@@ -141,6 +142,10 @@ export class UsersService {
 
   getUsersByAgency(agencyId: number): Observable<UserDTO[]> {
     return this.http.get<UserDTO[]>(this.baseUrl + "/agencies/" + agencyId )
+  }
+
+  getEmployeeDetailsByUsername(username: string): Observable<AgencyEmployee> {
+    return this.http.get<AgencyEmployee>(this.baseUrl + "/details/" + username ) 
   }
  
 

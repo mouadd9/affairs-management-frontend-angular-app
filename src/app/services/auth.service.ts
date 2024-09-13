@@ -4,11 +4,22 @@ import { Observable } from 'rxjs'; // Observer design pattern library
 import { jwtDecode } from "jwt-decode";
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { AgencyEmployee } from '../model/Employee-details.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  employee: AgencyEmployee = {
+    id : 0,
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    agencyId: 0,
+    agencyCode: ''
+    
+  };
   isAuthenticated: boolean = false;
   roles: any;
   username!: any; // we may or may not extract this info
@@ -34,7 +45,7 @@ export class AuthService {
     return this.http.post(this.apiUrl, requBody, { headers });
   }
 
-  //METHOD 2
+  //METHOD 2 here we work with the Token decoder ( parser )
   loadProfile(response: any) {
     // we change the session status
     this.isAuthenticated = true;
@@ -72,7 +83,8 @@ export class AuthService {
         
       this.router.navigate(['/admin/dashboard']);
     } else if (this.roles.includes('AGENCY_EMPLOYEE')) {
-      this.router.navigate(['/agencyEmployee']);
+
+      this.router.navigate(['/agencyEmployee/affairs']);
     } 
     } else {
       this.router.navigate(['/login']);

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError, map, Observable, Subject, switchMap, throwError } from 'rxjs';
 import { AffairDTO } from '../model/affair-dto.interface';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,16 @@ export class AffairsService {
 
   private baseUrl = environment.backendHost + '/api/affairs';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private auth:AuthService
+  ) {}
 
 
   private changeAffairsState = new Subject<void>();
   changeAffairsState$ = this.changeAffairsState.asObservable().pipe( switchMap( () => this.getAffairs() ) );
+
+  private changeAffairsState2 = new Subject<void>();
+  changeAffairsState2$ = this.changeAffairsState2.asObservable().pipe( switchMap( () => this.getAffairsByAgency(this.auth.employee.agencyId) ) );
 
   private closeCreateAffairSection = new Subject<void>();
   closeAffairForm$ = this.closeCreateAffairSection.asObservable();
@@ -23,18 +29,26 @@ export class AffairsService {
   closeForm(){ // this will send a signal to the closeAffairForm observable
     this.closeCreateAffairSection.next();
   }
-
+   
   changeState(){
     this.changeAffairsState.next();
   }
 
-
-
-
+  changeState2(){
+    this.changeAffairsState2.next();
+  }
 
   getAffairs(): Observable<AffairDTO[]> {
     
     return this.http.get<AffairDTO[]>(this.baseUrl + '/');
+
+  }
+
+  // first we get affairs by agency
+  // then we update all affairs with the new agency code 
+  getAffairsByAgency(id: number):Observable<AffairDTO[]> {
+    
+    return this.http.get<AffairDTO[]>(this.baseUrl + '/' + id);
 
   }
 
