@@ -11,52 +11,135 @@
     gap: 25px;
 
   }
-
-
   
-  .formcontainer {
-    width: 65vh; /* Full width relative to its container */
-    max-width: 65vh; /* Max width for the form container */
-    height: 41vh;
-    border: solid 1px #006938;
-    border-radius: 10px;
-    
-    
-    padding: 20px; /* Slightly increased padding */
+  /* Card styles */
+  .login-form-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: solid 1px #7b7b7b77;
+    width: 70vh; /* Full width relative to its container */
+    max-width: 70vh; /* Max width for the form container */
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .login-form-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .login-form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-   
-    background-color: #b3ffdbce;
-    box-shadow: 0 0px 100px rgb(165, 255, 213) /* Added a subtle shadow */
-   
+    gap: 20px;
   }
-
-  .upperSection {
+  mat-form-field {
     width: 100%;
   }
-
   
-  .form {
-    margin-top: 15px;
+  /* Header styles */
+  .login-form-header {
     display: flex;
-    padding: 0px;
-    flex-direction: column;
-    gap: 15px; /* Space between form fields */
-  }
-
-
-  .custom-form-field {
-    width: 100%; /* Ensure form fields take the full width */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
   }
   
-  .save-button {
-    background-color: #006938; /* Customize the save button color */
-    color: white !important; /* Ensure text color is white */
-    width: 100%; /* Full width button */
-    border-radius: 7px;
-    margin:0;
-    padding: 0; /* Added padding for better button size */
-    font-size: 1.1em; /* Slightly increased font size for better readability */
+  .login-form-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
   }
+  
+  .login-form-header h2 mat-icon {
+    margin-right: 10px;
+    color: #062c06;
+  }
+  
+  /* Message styles */
+.message-container {
+  margin-bottom: 20px;
+}
+
+.error-message, .success-message {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.error-message mat-icon, .success-message mat-icon {
+  margin-right: 8px;
+}
+  
+mat-form-field {
+  background-color: #9cffd13a !important;
+}
+
+mat-error {
+  margin-top: 2px
+}
+
+  
+
+
+  
+
+
+
+
+
+
+  /* Submit button styles */
+button[type="submit"] {
+  background-color: #00522c;
+  border-radius: 4px;
+  border: solid 1px #7b7b7b77;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 48px;
+  font-size: 16px;
+  transition: all 0.10s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  background-color: #00522ceb !important;
+}
+
+button[type="submit"] mat-icon {
+  color: white;
+  font-size: 22px !important;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  margin-right: 8px; /* Space between icon and text */
+  margin-bottom: 2px;
+}
+
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .login-form-card {
+    padding: 20px;
+  }
+}
 

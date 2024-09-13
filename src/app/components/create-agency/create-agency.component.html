@@ -47,8 +47,8 @@
       </div>
 
       <!-- Submit button with loading spinner -->
-      <button color="primary" type="submit">
-        <mat-spinner *ngIf="isCreatingAgency" diameter="24"></mat-spinner>
+      <button mat-button color="primary" type="submit">
+        <mat-spinner *ngIf="isCreatingAgency" style="color:  white !important;" diameter="24"></mat-spinner>
         <div *ngIf="!isCreatingAgency"><mat-icon>save</mat-icon>Create Agency</div>
       </button>
     </form>

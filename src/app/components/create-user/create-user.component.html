@@ -93,7 +93,7 @@
       </mat-form-field>
 
       <!-- Submit button with loading spinner -->
-      <button color="primary" type="submit">
+      <button mat-button color="primary" type="submit">
         <mat-spinner *ngIf="isCreatingUser" style="color:  white !important;"diameter="24"></mat-spinner>
         <div *ngIf="!isCreatingUser"><mat-icon>save</mat-icon>Create User</div>
       </button>

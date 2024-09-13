@@ -1,26 +1,42 @@
 <div class="loginContainer">
     <img src="assets/logo.png" alt="Login Logo" width="268px" height="76px" style="margin-right:8px;"/>
 
-    <div class="formcontainer">
-      <div class="upperSection">
-        <span style="margin-top: 6px; color: #062c06; font-size:1.9em;" class="padding-bottom-10 icon">
-          Login
-        </span>
+    <div class="login-form-card">
+      <div class="login-form-header">
+        <h2><mat-icon>login</mat-icon>Log In</h2>
+        
+      </div>
+
+      <div class="message-container">
+        <div *ngIf="errorMessage" class="error-message">
+          <mat-icon>error</mat-icon> {{errorMessage}}
+        </div>
+        <div *ngIf="successMessage" class="success-message">
+          <mat-icon>check_circle</mat-icon> {{successMessage}}
+        </div>
       </div>
   
       <!-- This is my form -->
-      <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="custom-form-field">
+      <form class="login-form" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
-          <input matInput type="text" formControlName="username">
+          <input matInput type="text" formControlName="username" placeholder="Enter username">
+          <mat-error *ngIf="myForm.get('username')?.hasError('required')">Username is required</mat-error>
         </mat-form-field>
   
-        <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password">
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Enter password">
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="myForm.get('password')?.hasError('required')">Password is required</mat-error>
         </mat-form-field>
   
-        <button mat-button color="primary" class="save-button" type="submit">Login</button>
+        <button mat-button color="primary" type="submit">
+          <mat-spinner *ngIf="isLogingUser" style="color:  white !important;"diameter="24"></mat-spinner>
+        <div *ngIf="!isLogingUser"><mat-icon>login</mat-icon>Sign in</div>
+        </button>
       </form>
     </div>
 </div>

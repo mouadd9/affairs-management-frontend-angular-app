@@ -123,7 +123,8 @@
     width: auto;
     height: auto;
     line-height: normal;
-    margin-right: 5px; /* Space between icon and text */
+    margin-right: 8px; /* Space between icon and text */
+  margin-bottom: 2px;
   }
   
   /* Form actions */

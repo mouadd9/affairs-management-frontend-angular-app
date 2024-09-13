@@ -228,7 +228,7 @@
             <mat-icon>navigate_next</mat-icon>
           </button>
           <span class="spacer"></span>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!affairForm.valid || isSubmitting || currentStep !== totalSteps">
+          <button mat-button color="primary" type="submit" [disabled]="!affairForm.valid || isSubmitting || currentStep !== totalSteps">
             <mat-spinner *ngIf="isSubmitting" style="color:  white !important;" diameter="24"></mat-spinner>
             <span *ngIf="!isSubmitting"><mat-icon>save</mat-icon>Create Affair</span>
           </button>
