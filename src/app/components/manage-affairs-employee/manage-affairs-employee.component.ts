@@ -280,7 +280,7 @@ export class ManageAffairsEmployeeComponent implements OnInit {
       this.affairsService.deleteAffair(AffairId).subscribe({
         next: (response) => {
           this.affairsService.changeState();
-          this.showSuccess('agency deleted successfully');
+          this.showSuccess('affair deleted successfully');
         },
         error: (error: Error) => {
           this.showError(error.message);
