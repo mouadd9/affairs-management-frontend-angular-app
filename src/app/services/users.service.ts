@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, Subject, switchMap, throwError } from 'rxjs';
 
@@ -148,5 +148,15 @@ export class UsersService {
     return this.http.get<AgencyEmployee>(this.baseUrl + "/details/" + username ) 
   }
  
+  checkFirstLoginStatus(username: string): Observable<Boolean> {
+    return this.http.get<Boolean>(this.baseUrl + "/first-login-status/" + username)
+  } // this will return true if the user is authenticating for the first time and false if he authenticated before
 
+  resetPassword(username: string, newPassword: string) {
+    let params = new HttpParams()
+    .set('username', username)
+    .set('newPassword', newPassword);
+    return this.http.post( this.baseUrl + '/reset-password',null, { params: params });
+  }
+ 
 }

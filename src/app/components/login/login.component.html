@@ -18,12 +18,13 @@
   
       <!-- This is my form -->
       <form class="login-form" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        <ng-container *ngIf="!isFirstTimeLogin">
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
           <input matInput type="text" formControlName="username" placeholder="Enter username">
           <mat-error *ngIf="myForm.get('username')?.hasError('required')">Username is required</mat-error>
         </mat-form-field>
-  
+
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Enter password">
@@ -32,10 +33,31 @@
           </button>
           <mat-error *ngIf="myForm.get('password')?.hasError('required')">Password is required</mat-error>
         </mat-form-field>
+      </ng-container>
+ 
+      <ng-container *ngIf="isFirstTimeLogin">
+        <mat-form-field appearance="fill">
+          <mat-label>New Password</mat-label>
+          <input matInput type="password" formControlName="newPassword" placeholder="Enter new password">
+          <mat-error *ngIf="myForm.get('newPassword')?.hasError('required')">New password is required</mat-error>
+          <mat-error *ngIf="myForm.get('newPassword')?.hasError('minlength')">Password must be at least 8 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm New Password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" placeholder="Confirm new password">
+          <mat-error *ngIf="myForm.get('confirmPassword')?.hasError('required')">Confirm password is required</mat-error>
+          <mat-error *ngIf="myForm.hasError('mismatch')">Passwords do not match</mat-error>
+        </mat-form-field>
+      </ng-container>
+
   
         <button mat-button color="primary" type="submit">
           <mat-spinner *ngIf="isLogingUser" style="color:  white !important;"diameter="24"></mat-spinner>
-        <div *ngIf="!isLogingUser"><mat-icon>login</mat-icon>Sign in</div>
+          <div *ngIf="!isLogingUser">
+            <mat-icon>{{ isFirstTimeLogin ? 'lock_reset' : 'login' }}</mat-icon>
+            {{ isFirstTimeLogin ? 'Change Password' : 'Sign in' }}
+          </div>
         </button>
       </form>
     </div>

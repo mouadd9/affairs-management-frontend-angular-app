@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { AgencyEmployee } from '../model/Employee-details.interface';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,10 +25,12 @@ export class AuthService {
   roles: any;
   username!: any; // we may or may not extract this info
   access_token!: any;
+  firstTimeAuth: Boolean = false;
+
 
   private apiUrl = environment.backendHost + '/api/auth/login'; // Auth API endpoint
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private userService: UsersService) {}
 
   //METHOD 1
   // in a nutshell this whole method will create and send an http request using :
@@ -83,8 +86,21 @@ export class AuthService {
         
       this.router.navigate(['/admin/dashboard']);
     } else if (this.roles.includes('AGENCY_EMPLOYEE')) {
-
-      this.router.navigate(['/agencyEmployee/affairs']);
+      
+      this.userService.checkFirstLoginStatus(this.username).subscribe({
+        next : status => {
+          if(status){
+            // this will be checked in the login component ts in order to complete the work 
+            this.firstTimeAuth = true;
+          } else {
+            this.router.navigate(['/agencyEmployee/affairs']);
+          }
+        },
+        error: error => {
+          console.error('Error checking first login status:', error);
+          this.router.navigate(['/login']);
+        }
+      })
     } 
     } else {
       this.router.navigate(['/login']);
