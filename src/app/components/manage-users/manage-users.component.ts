@@ -11,9 +11,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserDTO } from '../../model/user.model';
 import { UsersService } from '../../services/users.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { NgZone } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-manage-users',
@@ -46,22 +47,26 @@ isSaving: boolean = false;
   private updateSubscription: Subscription = new Subscription();
   editForm: FormGroup | null = null;
   editingUserId: any;
+  private sub: any;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private usersService: UsersService,
     private ngZone: NgZone,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private auth: AuthService
   ) {
     // here we create a new instance of MatTableDataSource initilized with an empty array
     this.dataSource = new MatTableDataSource<UserDTO>([]);
     // Added: Initialize the editForm
     
   }
+  public usern!: string;
 
   ngOnInit(): void {
-    this.route.data.subscribe({
+    this.usern = this.auth.username; 
+    this.sub = this.route.data.subscribe({
       next: data => {
       this.users = data['users'];
       this.dataSource.data = this.users;
@@ -96,6 +101,9 @@ isSaving: boolean = false;
     this.updateSubscription.add(
       this.usersService.closeUserForm$.subscribe(() => this.scrollThenNavigate())
     );
+    this.updateSubscription.add(
+       this.sub
+    )
   }
 
   // Method to scroll to top and then navigate
@@ -137,7 +145,7 @@ isSaving: boolean = false;
   deleteUser(userId: number): void {
 
     if (confirm('Are you sure you want to delete this user?')) {
-      this.usersService.deleteUser(userId).subscribe({
+      this.usersService.deleteUser(userId).pipe(take(1)).subscribe({
         next: () => {
           this.usersService.changeState();
           this.showSuccess('User deleted successfully');
@@ -154,11 +162,18 @@ isSaving: boolean = false;
 
 }
 
+// this will track if the user that will be edited is the same as the one logged
+isTheOneLogged: boolean = false;
 
 saveUser(user: UserDTO) : void {
+  console.log(this.auth.username)
+  console.log(user.username)
    // First, update the form with the current user data
    if (this.editForm && this.editForm.valid) {
    
+   if(user.username ===  this.auth.username) {
+    this.isTheOneLogged = true;
+   }
 
     this.isSaving = true;
     console.log("this is the live form")
@@ -167,18 +182,27 @@ saveUser(user: UserDTO) : void {
       ...user,
       ...this.editForm.value
     };
-    console.log(updatedUser);
-
-    this.usersService.updateUser(updatedUser).subscribe({
+  
+    this.usersService.updateUser(updatedUser).pipe(take(1)).subscribe({
       next: response => {
         Object.assign(user, response);
+        // here we check if the user edited is the one logged 
+        if(this.isTheOneLogged){
+          // here we will call this method passing in the new user 
+          console.log("test")
+          this.auth.updateCurrentUser(response);
+          this.usern = response.username;
+          this.isTheOneLogged = false;
+        }
         this.showSuccess('User updated successfully');
         this.cancelEdit();
       },
       error: (error: Error) => {
+        this.isTheOneLogged = false;
         this.showError(error.message);  
       }
     }).add(() => {
+      this.isTheOneLogged = false;
       this.isSaving = false;
     });
    } else {
@@ -194,7 +218,7 @@ saveUser(user: UserDTO) : void {
   // so what will happen is , when we click the editUser button
   // we will first change the isEditing boolean to true , so that we will hide the current value
   // and show an form field that we will use to bind inputed data 
-editUser(user: UserDTO): void {
+editUser(user: UserDTO): void { 
    // Added: Set form values when entering edit mode
    this.editingUserId = user.id;
     this.editForm = this.fb.group({

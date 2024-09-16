@@ -147,7 +147,7 @@
                     <button mat-icon-button  (click)="cancelEdit()" *ngIf="user.id === editingUserId">
                         <mat-icon>cancel</mat-icon>
                     </button>
-                    <button mat-icon-button  (click)="deleteUser(user.id)" [disabled]="isSaving">
+                    <button mat-icon-button  (click)="deleteUser(user.id)" [disabled]="isSaving || (this.usern === user.username)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

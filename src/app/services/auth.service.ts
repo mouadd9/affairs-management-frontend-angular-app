@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'; // Observer design pattern library
+import { BehaviorSubject, Observable } from 'rxjs'; // Observer design pattern library
 import { jwtDecode } from "jwt-decode";
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { AgencyEmployee } from '../model/Employee-details.interface';
 import { UsersService } from './users.service';
+import { UserDTO } from '../model/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class AuthService {
   };
   isAuthenticated: boolean = false;
   roles: any;
-  username!: any; // we may or may not extract this info
+  username: string = '';
   access_token!: any;
   firstTimeAuth: Boolean = false;
 
@@ -31,6 +32,18 @@ export class AuthService {
   private apiUrl = environment.backendHost + '/api/auth/login'; // Auth API endpoint
 
   constructor(private http: HttpClient, private router: Router, private userService: UsersService) {}
+
+  // here we will add a behavioral subject , when subscribed to it will change the username in the admin template in case the admin edited his name
+  private currentUserSubject = new BehaviorSubject<UserDTO | null>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
+
+  // here we should add a method that will be called after we edit the user
+  // we will pass the new state to this method
+  updateCurrentUser(user:UserDTO){
+    this.currentUserSubject.next(user);
+    
+  }
+
 
   //METHOD 1
   // in a nutshell this whole method will create and send an http request using :
@@ -62,6 +75,8 @@ export class AuthService {
     // we extract/parse claims
     this.roles = decodedToken.scope; // Assuming roles are stored in a "roles" claim
     this.username = decodedToken.sub; // Assuming username is stored in the "sub" claim
+    console.log("this line is right before we store the username's name");
+    console.log(this.username);
 
     window.localStorage.setItem('jwt-token', this.access_token); // here we put the token in our local storage
 
@@ -74,7 +89,7 @@ export class AuthService {
 
     this.access_token = undefined;
     this.roles = undefined;
-    this.username = undefined;
+    this.username = '';
 
     window.localStorage.removeItem('jwt-token');
     this.redirectUserBasedOnRole();
