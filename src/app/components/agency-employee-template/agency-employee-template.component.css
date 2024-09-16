@@ -50,7 +50,7 @@
   margin-top: 9vh; /* Should match the height of your toolbar */
   flex: 1;
   overflow-y: auto;
-  padding: 20px; /* Add padding as needed */
+  padding: 0px; /* Add padding as needed */
 }
 
 /* Your existing styles */
