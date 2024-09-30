@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class AffairsService {
 
-  private baseUrl = environment.backendHost + '/api/affairs';
+  private baseUrl = environment.backendHost + '/affairs';
 
   constructor(private http: HttpClient,
     private auth:AuthService

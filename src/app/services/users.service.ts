@@ -47,7 +47,7 @@ export class UsersService {
  
 
 
-  private baseUrl = environment.backendHost + '/api/users'; // this is the base url 
+  private baseUrl = environment.backendHost + '/users'; // this is the base url 
 
   constructor(private http: HttpClient) { }
 
@@ -67,7 +67,7 @@ export class UsersService {
 
     let params = new HttpParams()
     .set('countOnly', 'true');
-    return this.http.get<AgencyCounts>(environment.backendHost + '/api/agencies/', {params: params})
+    return this.http.get<AgencyCounts>(environment.backendHost + '/agencies/', {params: params})
   }
 
   deleteUser(userId: number): Observable<void> {

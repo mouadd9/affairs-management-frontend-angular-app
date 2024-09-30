@@ -29,7 +29,7 @@ export class AuthService {
   firstTimeAuth: Boolean = false;
 
 
-  private apiUrl = environment.backendHost + '/api/auth/login'; // Auth API endpoint
+  private apiUrl = environment.backendHost + '/auth/login'; // Auth API endpoint
 
   constructor(private http: HttpClient, private router: Router, private userService: UsersService) {}
 

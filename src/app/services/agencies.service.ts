@@ -40,7 +40,7 @@ export class AgenciesService {
     this.closeCreateAgencySection.next();
   }
 
-  private baseUrl = environment.backendHost + '/api/agencies'; // this is the base url
+  private baseUrl = environment.backendHost + '/agencies'; // this is the base url
   constructor(private http: HttpClient) {}
 
   getAllAgencies(): Observable<Agency[]> {
